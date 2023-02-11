@@ -190,5 +190,10 @@ public final class Constants {
 
     public static final int motorRightId = 52;
     public static final int canConderRightId = 62;
+
+    public static final double elevatorKP = .01;
+    public static final double elevatorKI = .01;
+    public static final double elevatorKD = .01;
+    public static final double elevatorKF = .01;
   }
 }
