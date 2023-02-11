@@ -4,7 +4,6 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants;
 import frc.robot.autos.*;
 import frc.robot.subsystems.Swerve;
@@ -64,7 +63,7 @@ public class TeleopSwerve extends CommandBase {
 
     /* Drive */
     if(autoCenter.getAsBoolean()){
-      segmentLineUp lineup = new segmentLineUp(s_Swerve, segmentLineUp.SEGMENT.CUBE_2, () -> s_Swerve.getPoint());
+      segmentLineUp lineup = new segmentLineUp(s_Swerve, Constants.SEGMENT.CUBE_2, () -> s_Swerve.getPoint());
       lineup.schedule();
     }
     s_Swerve.drive(

@@ -14,17 +14,6 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
 
 public class segmentLineUp extends SequentialCommandGroup {
-    public enum SEGMENT { // Numbers in order of segment from left to right (driver station POV)
-        CONE_1,
-        CONE_2,
-        CONE_3,
-        CONE_4,
-        CONE_5,
-        CONE_6,
-        CUBE_1,
-        CUBE_2,
-        CUBE_3
-    }
 
     /**
      * 
@@ -32,7 +21,7 @@ public class segmentLineUp extends SequentialCommandGroup {
      * @param segment the segment TODO  
      * @param startPoint
      */
-    public segmentLineUp(Swerve s_Swerve, SEGMENT segment, Supplier<PathPoint> startPoint) {
+    public segmentLineUp(Swerve s_Swerve, Constants.SEGMENT segment, Supplier<PathPoint> startPoint) {
         PathPoint lineUpPoint = startPoint.get();
 
         switch (segment) {

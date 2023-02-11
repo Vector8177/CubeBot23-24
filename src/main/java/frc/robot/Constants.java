@@ -195,5 +195,49 @@ public final class Constants {
     public static final double elevatorKI = .01;
     public static final double elevatorKD = .01;
     public static final double elevatorKF = .01;
+
+    public static final double cone1 = 0;
+    public static final double cone2 = 1;
+    public static final double cone3 = 2;
+
+    public static final double cube1 = 0;
+    public static final double cube2 = 1;
+    public static final double cube3 = 2;
+
+    public static final double maxMotorSpeed = .5;
+
+  }
+
+  public enum SEGMENT { // Numbers in order of segment from left to right (driver station POV)
+    CONE_1(0), CONE_2(1), CONE_3(3), CONE_4(-1), CONE_5(-1), CONE_6(-1),
+    CUBE_1(0), CUBE_2(1), CUBE_3(3);
+
+    private int level;
+
+    private SEGMENT(int level){
+      this.level = level;
+    }
+
+    public static SEGMENT getSegment(int level, boolean cone){
+      if(cone){
+        switch(level){
+            case 1: return CONE_1;
+            case 2: return CONE_2;
+            case 3: return CONE_3;
+        }
+      }
+      else{
+        switch(level){
+            case 1: return CUBE_1;
+            case 2: return CUBE_2;
+            case 3: return CUBE_3;
+        }
+      }
+      return null;
+    }
+
+    public int getValue(){
+      return level;
+    }
   }
 }

@@ -73,7 +73,7 @@ public class RobotContainer {
     /* Driver Buttons */
     driver.x().onTrue(new AutoBalancing(s_Swerve));
     driver.y().onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
-    driver.povDown().onTrue(new segmentLineUp(s_Swerve, segmentLineUp.SEGMENT.CUBE_3, () -> s_Swerve.getPoint()));
+    driver.povDown().onTrue(new segmentLineUp(s_Swerve, Constants.SEGMENT.CUBE_3, () -> s_Swerve.getPoint()));
   }
   private void configureSmartDashboard() {
     autoChooser.setDefaultOption("Move forward", moveForward);
