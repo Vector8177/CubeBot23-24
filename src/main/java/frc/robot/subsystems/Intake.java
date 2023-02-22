@@ -14,14 +14,14 @@ import frc.robot.Constants.IntakeConstants;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard; 
 
-public class IntakeSubsystem extends SubsystemBase {
+public class Intake extends SubsystemBase {
     // private final CANSparkMax wristMotor;
     private final CANSparkMax intakeMotor; 
     private final RelativeEncoder outtakEncoder; 
    
 
 
-    public IntakeSubsystem(){
+    public Intake(){
         intakeMotor = new CANSparkMax(Constants.IntakeConstants.intakeMotorId, MotorType.kBrushless); 
         // wristMotor = new CANSparkMax(Constants.IntakeConstants.wristMotorId, MotorType.kBrushless);
         // pdm = new PowerDistribution(1, PowerDistribution.ModuleType.kRev); 

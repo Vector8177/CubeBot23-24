@@ -3,15 +3,15 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.Intake;
 
 public class OuttakeConeCmd extends CommandBase {
     //TODO add rpm for outtake
     
-    IntakeSubsystem intakeSubsystem; 
+    Intake intakeSubsystem; 
     Timer time;
 
-    public OuttakeConeCmd(IntakeSubsystem intakeSubsystem){
+    public OuttakeConeCmd(Intake intakeSubsystem){
         this.intakeSubsystem = intakeSubsystem; 
         this.time = new Timer();
         addRequirements(intakeSubsystem);

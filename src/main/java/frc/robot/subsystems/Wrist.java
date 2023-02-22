@@ -6,11 +6,11 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.WristConstants;
 
-public class WristSubsystem extends SubsystemBase{
+public class Wrist extends SubsystemBase{
 
     private final CANSparkMax wristMotor; 
 
-    public WristSubsystem(){
+    public Wrist(){
         wristMotor = new CANSparkMax(WristConstants.wristMotorId, MotorType.kBrushless);
     }
 }

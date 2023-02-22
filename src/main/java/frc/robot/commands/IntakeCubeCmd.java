@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.Intake;
 //use encoders to figure out how to shoot cone curretly and cube
 //use encoders to get rpm
 
@@ -17,10 +17,10 @@ import frc.robot.subsystems.IntakeSubsystem;
  */
 //need pid to for encoders
 public class IntakeCubeCmd extends CommandBase{
-    private final IntakeSubsystem intakeSubsystem; 
+    private final Intake intakeSubsystem; 
     Timer time; 
     
-    public IntakeCubeCmd(IntakeSubsystem intakeSubsystem){
+    public IntakeCubeCmd(Intake intakeSubsystem){
         this.intakeSubsystem = intakeSubsystem; 
         this.time = new Timer(); 
         addRequirements(intakeSubsystem);

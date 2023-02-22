@@ -31,7 +31,7 @@ public class RobotContainer {
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
   private final PhotonVisionWrapper s_PhotonVisionWrapper;
-  private final IntakeSubsystem intakeSubsystem= new IntakeSubsystem();
+  private final Intake intakeSubsystem= new Intake();
 
   /* Autonomous Mode Chooser */
   private final SendableChooser<PathPlannerTrajectory> autoChooser = new SendableChooser<>();

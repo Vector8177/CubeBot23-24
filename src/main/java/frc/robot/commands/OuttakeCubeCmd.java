@@ -3,14 +3,14 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.Intake;
 
 public class OuttakeCubeCmd extends CommandBase {
     
-    IntakeSubsystem intakeSubsystem; 
+    Intake intakeSubsystem; 
     Timer time;
 
-    public OuttakeCubeCmd(IntakeSubsystem intakeSubsystem){
+    public OuttakeCubeCmd(Intake intakeSubsystem){
         this.intakeSubsystem = intakeSubsystem; 
         this.time = new Timer();
         
