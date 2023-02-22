@@ -18,5 +18,8 @@ public class ScoreGamePiece extends CommandBase {
 
     public void execute(){
         s_Elevator.raise(position.getValue());
+        if(s_Elevator.reachedSetpoint(position.getValue())){
+            
+        }
     }
 }

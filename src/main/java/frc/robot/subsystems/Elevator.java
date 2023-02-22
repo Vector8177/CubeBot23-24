@@ -51,10 +51,12 @@ public class Elevator extends SubsystemBase {
         distance -= currentPosition;
         this.move(MathUtil.clamp(pidController.calculate(distance), -Constants.Elevator.maxMotorSpeed, Constants.Elevator.maxMotorSpeed));
     }
-
     public void move(double speed){
         elevatorMotorLeft.set(speed/Constants.Elevator.maxMotorSpeed);
         elevatorMotorRight.set(speed/Constants.Elevator.maxMotorSpeed);
+    }
+    public boolean reachedSetpoint(double distance){
+        return pidController.getPositionTolerance() <= Math.abs(currentPosition - distance);
     }
 
     private void updatePosition(){
