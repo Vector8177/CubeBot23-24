@@ -1,12 +1,6 @@
 {
-<<<<<<< HEAD
     "currentLanguage": "java",
     "enableCppIntellisense": false,
-    "projectYear": "2022",
-=======
-    "enableCppIntellisense": false,
-    "currentLanguage": "java",
     "projectYear": "2023",
->>>>>>> ElevatorBranch
     "teamNumber": 8177
 }
