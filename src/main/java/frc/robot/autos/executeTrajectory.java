@@ -18,6 +18,7 @@ public class executeTrajectory extends SequentialCommandGroup {
 =======
 
   /**
+<<<<<<< Updated upstream
    * TODO
    * 
    * @param s_Swerve
@@ -25,6 +26,8 @@ public class executeTrajectory extends SequentialCommandGroup {
    * @param setInitialPose 
    */
   
+
+
   public executeTrajectory(Swerve s_Swerve, PathPlannerTrajectory trajectory, boolean setInitialPose) {
 
 >>>>>>> ElevatorBranch

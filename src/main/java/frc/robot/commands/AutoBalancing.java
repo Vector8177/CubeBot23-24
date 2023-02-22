@@ -16,6 +16,7 @@ public class AutoBalancing extends CommandBase {
    * 
    * @param s_Swerve TODO
    */
+
   public AutoBalancing(Swerve s_Swerve){
     this.s_Swerve = s_Swerve;
     pidController = new PIDController(
@@ -49,7 +50,9 @@ public class AutoBalancing extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        SmartDashboard.putBoolean("At Tolerance", pidController.atSetpoint());
-        return pidController.atSetpoint();
+        /* Temporary Auto disable */
+        return true;
+        // SmartDashboard.putBoolean("At Tolerance", pidController.atSetpoint());
+        // return pidController.atSetpoint();
     }
 }
