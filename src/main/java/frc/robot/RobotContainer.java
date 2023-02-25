@@ -21,6 +21,7 @@ import frc.robot.subsystems.*;
 public class RobotContainer {
   /* Controllers */
   public final CommandXboxController driver = new CommandXboxController(0);
+  public final CommandXboxController operator = new CommandXboxController(1);
 
   /* Drive Controls */
   private static final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -90,11 +91,11 @@ public class RobotContainer {
     driver.povLeft().onTrue(new OuttakeConeCmd(intakeSubsystem));
     driver.povRight().onTrue(new OuttakeCubeCmd(intakeSubsystem));
     */
-    driver.povUp().onTrue(new IntakeCmd(intakeSubsystem, .3, true, true, false)); 
-    driver.povDown().onTrue(new IntakeCmd(intakeSubsystem, .3,true, false,false)); 
+    operator.povUp().onTrue(new IntakeCmd(intakeSubsystem, .3, true, true, false)); 
+    operator.povDown().onTrue(new IntakeCmd(intakeSubsystem, .3,true, false,false)); 
     
-    driver.povLeft().onTrue(new IntakeCmd(intakeSubsystem, .3, false, true,false));
-    driver.povRight().onTrue(new IntakeCmd(intakeSubsystem, .3,false, false, false));
+    operator.povLeft().onTrue(new IntakeCmd(intakeSubsystem, .3, false, true,false));
+    operator.povRight().onTrue(new IntakeCmd(intakeSubsystem, .3,false, false, false));
   }
   
   private void configureSmartDashboard() {
