@@ -119,8 +119,8 @@ public final class Constants {
 
     /* Back Left Module - Module 2 */
     public static final class Mod2 {
-      public static final int driveMotorID = 12;
-      public static final int angleMotorID = 22;
+      public static final int driveMotorID = 22;
+      public static final int angleMotorID = 12;
       public static final int canCoderID = 32;
       public static final Rotation2d angleOffset = Rotation2d.fromDegrees(345.2);
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
@@ -129,8 +129,8 @@ public final class Constants {
 
     /* Back Right Module - Module 3 */
     public static final class Mod3 {
-      public static final int driveMotorID = 13;
-      public static final int angleMotorID = 23;
+      public static final int driveMotorID = 23;
+      public static final int angleMotorID = 13;
       public static final int canCoderID = 33;
       public static final Rotation2d angleOffset = Rotation2d.fromDegrees(205.7519);
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
@@ -185,11 +185,9 @@ public final class Constants {
   }
 
   public static final class Elevator{
-    public static final int motorLeftId = 51;
-    public static final int canConderLeftId = 61;
+    public static final int motorLeftId = 50;
 
-    public static final int motorRightId = 52;
-    public static final int canConderRightId = 62;
+    public static final int motorRightId = 51;
 
     public static final double elevatorKP = .01;
     public static final double elevatorKI = .01;
@@ -242,11 +240,11 @@ public final class Constants {
     
   }
   public static final class WristConstants{
-    public static final int wristMotorId = 59;
+    public static final int wristMotorId = 61;
   }
   public static final class IntakeConstants{
     
-    public static final int intakeMotorId = 58; 
+    public static final int intakeMotorId = 60; 
     
     public static final int pdpChannel = 2; //update number later
 

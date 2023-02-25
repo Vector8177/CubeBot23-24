@@ -21,17 +21,21 @@ import frc.robot.subsystems.*;
 public class RobotContainer {
   /* Controllers */
   public final CommandXboxController driver = new CommandXboxController(0);
+  public final CommandXboxController operator = new CommandXboxController(1);
 
   /* Drive Controls */
   private static final int translationAxis = XboxController.Axis.kLeftY.value;
   private static final int strafeAxis = XboxController.Axis.kLeftX.value;
   private static final int rotationAxis = XboxController.Axis.kRightX.value;
   private static final int motorComtrol = XboxController.Axis.kLeftTrigger.value;
+  /* Operator Controls */
+  private static final int elevatorAxis = XboxController.Axis.kLeftY.value;
 
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
-  private final PhotonVisionWrapper s_PhotonVisionWrapper;
-  private final Intake intakeSubsystem= new Intake();
+  private final Elevator s_Elevator = new Elevator();
+  private final PhotonVisionWrapper s_PhotonVisionWrapper = s_Swerve.getCamera();
+  //private final Intake intakeSubsystem= new Intake();
 
   /* Autonomous Mode Chooser */
   private final SendableChooser<PathPlannerTrajectory> autoChooser = new SendableChooser<>();
@@ -55,7 +59,10 @@ public class RobotContainer {
             () -> -driver.getRawAxis(rotationAxis),
             () -> driver.povDown().getAsBoolean(),
             () -> driver.leftBumper().getAsBoolean()));
-    s_PhotonVisionWrapper = s_Swerve.getCamera();
+    s_Elevator.setDefaultCommand(
+      new TeleopElevator(
+        s_Elevator, 
+        () -> operator.getRawAxis(elevatorAxis)));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -84,11 +91,11 @@ public class RobotContainer {
 
     //
 
-    driver.povUp().onTrue(new IntakeConeCmd(intakeSubsystem)); 
-    driver.povDown().onTrue(new IntakeCubeCmd(intakeSubsystem));
+   // driver.povUp().onTrue(new IntakeConeCmd(intakeSubsystem)); 
+   // driver.povDown().onTrue(new IntakeCubeCmd(intakeSubsystem));
 
-    driver.povLeft().onTrue(new OuttakeConeCmd(intakeSubsystem));
-    driver.povRight().onTrue(new OuttakeCubeCmd(intakeSubsystem));
+   // driver.povLeft().onTrue(new OuttakeConeCmd(intakeSubsystem));
+   // driver.povRight().onTrue(new OuttakeCubeCmd(intakeSubsystem));
     
   }
   
