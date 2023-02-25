@@ -18,9 +18,7 @@ public class Intake extends SubsystemBase {
     // private final CANSparkMax wristMotor;
     private final CANSparkMax intakeMotor; 
     private final RelativeEncoder outtakEncoder; 
-    
-    
-    
+
     public Intake(){
         intakeMotor = new CANSparkMax(Constants.IntakeConstants.intakeMotorId, MotorType.kBrushless); 
         // wristMotor = new CANSparkMax(Constants.IntakeConstants.wristMotorId, MotorType.kBrushless);

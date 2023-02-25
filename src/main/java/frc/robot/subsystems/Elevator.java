@@ -18,12 +18,10 @@ import frc.robot.commands.ScoreGamePiece;
 public class Elevator extends SubsystemBase {
     private final CANSparkMax elevatorMotorLeft; //making the left the lead motor
     private final CANSparkMax elevatorMotorRight; //the right motor is the follower
-
-
+    
+  
 
     
-  //  private final CANCoder elevatorLeftController;
-    //private final CANCoder elevatorRightController;
 
     private PIDController pidController;
 
@@ -37,13 +35,13 @@ public class Elevator extends SubsystemBase {
         //initialize motors
         //the right motor will spin clockwise and the left motor will go counter clockwise
         elevatorMotorLeft = new CANSparkMax(Constants.Elevator.motorLeftId, MotorType.kBrushless);
-       // elevatorLeftController = new CANCoder(Constants.Elevator.canConderLeftId);
+       
 
         elevatorMotorRight = new CANSparkMax(Constants.Elevator.motorRightId, MotorType.kBrushless);
         elevatorMotorLeft.restoreFactoryDefaults(); 
         elevatorMotorRight.restoreFactoryDefaults(); 
         elevatorMotorRight.setInverted(true);
-        //elevatorRightController = new CANCoder(Constants.Elevator.canConderRightId);
+        
 
         //The motors will follow each other
         //The right motor will follow whatever the applied output on the
