@@ -239,8 +239,9 @@ public final class Constants {
     }
     
   }
-
- 
+  public static final class WristConstants{
+    public static final int wristMotorId = 61;
+  }
   public static final class IntakeConstants{
 
     public static final int wristMotorId = 61; 
