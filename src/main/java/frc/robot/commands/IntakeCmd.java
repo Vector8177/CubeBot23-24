@@ -12,7 +12,7 @@ public class IntakeCmd extends CommandBase {
     private final Intake intakeSubsystem; 
     Timer time;
     
-    public IntakeCmd(Intake intakeSubsystem, boolean intake, boolean cone){
+    public IntakeCmd(Intake intakeSubsystem, boolean intake, boolean cone, boolean wrist){
         this.intakeSubsystem = intakeSubsystem; 
         
         this.time = new Timer();
