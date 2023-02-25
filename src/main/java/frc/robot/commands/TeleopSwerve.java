@@ -61,11 +61,6 @@ public class TeleopSwerve extends CommandBase {
     double rotationVal = rotationLimiter
         .calculate(MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.Swerve.stickDeadband));
 
-    /* Drive */
-    if(autoCenter.getAsBoolean()){
-      segmentLineUp lineup = new segmentLineUp(s_Swerve, Constants.SEGMENT.CUBE_2, () -> s_Swerve.getPoint());
-      lineup.schedule();
-    }
     s_Swerve.drive(
         new Translation2d(translationVal, strafeVal).times(Constants.Swerve.maxSpeed),
         rotationVal * Constants.Swerve.maxAngularVelocity,
