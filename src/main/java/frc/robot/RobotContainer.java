@@ -99,9 +99,9 @@ public class RobotContainer {
     driver.povRight().onTrue(new OuttakeCubeCmd(intakeSubsystem));
     */
     operator.povUp().onTrue(new IntakeCmd(intakeSubsystem, .3, true, true, false)); 
-    operator.povDown().onTrue(new IntakeCmd(intakeSubsystem, .3,true, false,false)); 
+    operator.povDown().onTrue(new IntakeCmd(intakeSubsystem, .3, false, true,false));
     
-    operator.povLeft().onTrue(new IntakeCmd(intakeSubsystem, .3, false, true,false));
+    operator.povLeft().onTrue(new IntakeCmd(intakeSubsystem, .3,true, false,false)); 
     operator.povRight().onTrue(new IntakeCmd(intakeSubsystem, .3,false, false, false));
   }
   
