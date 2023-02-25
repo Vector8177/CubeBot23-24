@@ -82,14 +82,19 @@ public class RobotContainer {
     driver.povDown().onTrue(new segmentLineUp(s_Swerve, Constants.SEGMENT.CUBE_3, () -> s_Swerve.getPoint()));
     // driver.povDown().onTrue(new segmentLineUp(s_Swerve, segmentLineUp.SEGMENT.CUBE_3, () -> s_Swerve.getPoint()));
 
-    //
-
+    
+  /* 
     driver.povUp().onTrue(new IntakeConeCmd(intakeSubsystem)); 
     driver.povDown().onTrue(new IntakeCubeCmd(intakeSubsystem));
 
     driver.povLeft().onTrue(new OuttakeConeCmd(intakeSubsystem));
     driver.povRight().onTrue(new OuttakeCubeCmd(intakeSubsystem));
+    */
+    driver.povUp().onTrue(new IntakeCmd(intakeSubsystem, true, true)); 
+    driver.povDown().onTrue(new IntakeCmd(intakeSubsystem, true, false)); 
     
+    driver.povLeft().onTrue(new IntakeCmd(intakeSubsystem, false, true));
+    driver.povRight().onTrue(new IntakeCmd(intakeSubsystem, false, false));
   }
   
   private void configureSmartDashboard() {
