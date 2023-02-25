@@ -33,7 +33,6 @@ public class Elevator extends SubsystemBase {
         //initialize motors
         //the right motor will spin clockwise and the left motor will go counter clockwise
         elevatorMotorLeft = new CANSparkMax(Constants.Elevator.motorLeftId, MotorType.kBrushless);
-       // elevatorLeftController = new CANCoder(Constants.Elevator.canConderLeftId);
 
         elevatorMotorRight = new CANSparkMax(Constants.Elevator.motorRightId, MotorType.kBrushless);
 
@@ -41,18 +40,20 @@ public class Elevator extends SubsystemBase {
         elevatorMotorRight.restoreFactoryDefaults(); 
 
         elevatorMotorRight.setInverted(true);
+        
         //elevatorRightController = new CANCoder(Constants.Elevator.canConderRightId);
 
         //The motors will follow each other
         //The right motor will follow whatever the applied output on the
         //left motor is so only need to adjust output for the left motor
-        elevatorMotorLeft.follow(elevatorMotorRight); 
         
 
         //initialize pidContoller
         pidController = new PIDController(Constants.Elevator.elevatorKP, Constants.Elevator.elevatorKI, Constants.Elevator.elevatorKD);
         pidController.setSetpoint(0);
         pidController.setTolerance(.1);
+
+        
     }
 
     public void resetEncoder(){
@@ -66,15 +67,15 @@ public class Elevator extends SubsystemBase {
         this.move(MathUtil.clamp(pidController.calculate(distance), -Constants.Elevator.maxMotorSpeed, Constants.Elevator.maxMotorSpeed));
     }
     public void move(double speed){
-        elevatorMotorLeft.set(speed/Constants.Elevator.maxMotorSpeed);
-        elevatorMotorRight.set(speed/Constants.Elevator.maxMotorSpeed);
+        elevatorMotorRight.set(speed*Constants.Elevator.maxMotorSpeed);
+        elevatorMotorLeft.set(speed*Constants.Elevator.maxMotorSpeed);
     }
     public boolean reachedSetpoint(double distance){
         return pidController.getPositionTolerance() <= Math.abs(currentPosition - distance);
     }
 
     private void updatePosition(){
-       currentPosition += (elevatorMotorLeft.getEncoder().getPosition() + elevatorMotorRight.getEncoder().getPosition())/2;
+       currentPosition = (-elevatorMotorLeft.getEncoder().getPosition() + elevatorMotorRight.getEncoder().getPosition())/2;
     }
 
     public void score(int level, boolean cone){
@@ -82,7 +83,7 @@ public class Elevator extends SubsystemBase {
     }
 
     public void periodic(){
-        SmartDashboard.putNumber("Left Elevator Motor", elevatorMotorLeft.getEncoder().getPosition());
+        SmartDashboard.putNumber("Left Elevator Motor", -elevatorMotorLeft.getEncoder().getPosition());
         SmartDashboard.putNumber("Right Elevator Motor", elevatorMotorRight.getEncoder().getPosition());
     }
 }

@@ -13,9 +13,11 @@ public class TeleopElevator extends CommandBase{
     public TeleopElevator(Elevator s_Elevator, DoubleSupplier moveVal){
         this.s_Elevator = s_Elevator;
         this.moveVal = moveVal;
+
+        addRequirements(s_Elevator);
     }
 
     public void execute(){
-        s_Elevator.move(MathUtil.clamp(moveVal.getAsDouble(), -.1, .1));
+        s_Elevator.move(MathUtil.clamp(moveVal.getAsDouble(), -.6, 6));
     }
 }
