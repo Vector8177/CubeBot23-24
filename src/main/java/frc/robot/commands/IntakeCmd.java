@@ -3,16 +3,16 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.Intake;
 
 public class IntakeCmd extends CommandBase {
     
     boolean intake; 
     boolean cone; 
-    private final IntakeSubsystem intakeSubsystem; 
+    private final Intake intakeSubsystem; 
     Timer time;
     
-    public IntakeCmd(IntakeSubsystem intakeSubsystem, boolean intake, boolean cone){
+    public IntakeCmd(Intake intakeSubsystem, boolean intake, boolean cone){
         this.intakeSubsystem = intakeSubsystem; 
         
         this.time = new Timer();
