@@ -268,5 +268,20 @@ public final class Constants {
         public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 60;
         public static final double kPTurning = 0.5;
 
+        //PID coefficeints for wrist 
+        //will make these final later
+        public static double kP = 5e-1;  
+        public static  double kI = 1e-6; 
+        public static  double kD = 0; 
+        public static  double kIz = 0; 
+        public static  double kFF = 0.000156; 
+        public static  double kMaxOutput = 1; 
+        public static  double kMinOutput = -1;
+        public static double maxRPM = 1500; 
+        
+        public static final double wristMaxVelocity = 2000; //rpm-> this is not an accurate value
+        public static final double wristMaxAcc = 1500; 
+
+
   }
 }
