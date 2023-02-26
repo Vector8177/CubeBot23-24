@@ -31,7 +31,7 @@ public class RobotContainer {
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
   private final PhotonVisionWrapper s_PhotonVisionWrapper;
-  private final IntakeSubsystem intakeSubsystem= new IntakeSubsystem();
+  private final Intake intakeSubsystem= new Intake();
 
   /* Autonomous Mode Chooser */
   private final SendableChooser<PathPlannerTrajectory> autoChooser = new SendableChooser<>();
@@ -79,6 +79,7 @@ public class RobotContainer {
     /* Driver Buttons */
     // driver.x().onTrue(new AutoBalancing(s_Swerve));
     driver.y().onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
+    // driver.povDown().onTrue(new segmentLineUp(s_Swerve, Constants.SEGMENT.CUBE_3, () -> s_Swerve.getPoint()));
     // driver.povDown().onTrue(new segmentLineUp(s_Swerve, segmentLineUp.SEGMENT.CUBE_3, () -> s_Swerve.getPoint()));
 
     
@@ -89,11 +90,11 @@ public class RobotContainer {
     driver.povLeft().onTrue(new OuttakeConeCmd(intakeSubsystem));
     driver.povRight().onTrue(new OuttakeCubeCmd(intakeSubsystem));
     */
-    driver.povUp().onTrue(new IntakeCmd(intakeSubsystem, true, true)); 
-    driver.povDown().onTrue(new IntakeCmd(intakeSubsystem, true, false)); 
+    driver.povUp().onTrue(new IntakeCmd(intakeSubsystem, .3, true, true, false)); 
+    driver.povDown().onTrue(new IntakeCmd(intakeSubsystem, .3,true, false,false)); 
     
-    driver.povLeft().onTrue(new IntakeCmd(intakeSubsystem, false, true));
-    driver.povRight().onTrue(new IntakeCmd(intakeSubsystem, false, false));
+    driver.povLeft().onTrue(new IntakeCmd(intakeSubsystem, .3, false, true,false));
+    driver.povRight().onTrue(new IntakeCmd(intakeSubsystem, .3,false, false, false));
   }
   
   private void configureSmartDashboard() {

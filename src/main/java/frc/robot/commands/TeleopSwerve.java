@@ -4,7 +4,6 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants;
 import frc.robot.autos.*;
 import frc.robot.subsystems.Swerve;
@@ -24,11 +23,7 @@ public class TeleopSwerve extends CommandBase {
   private SlewRateLimiter rotationLimiter = new SlewRateLimiter(3.0);
 
   /**
-<<<<<<< Updated upstream
-   * 
-=======
    * The constructor initializes the class variables. 
->>>>>>> Stashed changes
    * @param s_Swerve
    * @param translationSup
    * @param strafeSup
@@ -66,11 +61,6 @@ public class TeleopSwerve extends CommandBase {
     double rotationVal = rotationLimiter
         .calculate(MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.Swerve.stickDeadband));
 
-    /* Drive */
-    if(autoCenter.getAsBoolean()){
-      segmentLineUp lineup = new segmentLineUp(s_Swerve, segmentLineUp.SEGMENT.CUBE_2, () -> s_Swerve.getPoint());
-      lineup.schedule();
-    }
     s_Swerve.drive(
         new Translation2d(translationVal, strafeVal).times(Constants.Swerve.maxSpeed),
         rotationVal * Constants.Swerve.maxAngularVelocity,

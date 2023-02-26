@@ -119,8 +119,8 @@ public final class Constants {
 
     /* Back Left Module - Module 2 */
     public static final class Mod2 {
-      public static final int driveMotorID = 12;
-      public static final int angleMotorID = 22;
+      public static final int driveMotorID = 22;
+      public static final int angleMotorID = 12;
       public static final int canCoderID = 32;
       public static final Rotation2d angleOffset = Rotation2d.fromDegrees(345.2);
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
@@ -129,8 +129,8 @@ public final class Constants {
 
     /* Back Right Module - Module 3 */
     public static final class Mod3 {
-      public static final int driveMotorID = 13;
-      public static final int angleMotorID = 23;
+      public static final int driveMotorID = 23;
+      public static final int angleMotorID = 13;
       public static final int canCoderID = 33;
       public static final Rotation2d angleOffset = Rotation2d.fromDegrees(205.7519);
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
@@ -185,24 +185,74 @@ public final class Constants {
   }
 
   public static final class Elevator{
-    public static final int motorLeftId = 51;
-    public static final int canConderLeftId = 61;
+    public static final int motorLeftId = 50;
 
-    public static final int motorRightId = 52;
-    public static final int canConderRightId = 62;
+    public static final int motorRightId = 51;
 
+    public static final double elevatorKP = .01;
+    public static final double elevatorKI = .01;
+    public static final double elevatorKD = .01;
+    public static final double elevatorKF = .01;
+
+    public static final double cone1 = 0;
+    public static final double cone2 = 1;
+    public static final double cone3 = 2;
+
+    public static final double cube1 = 0;
+    public static final double cube2 = 1;
+    public static final double cube3 = 2;
+
+    public static final double maxMotorSpeed = .5;
+
+  }
+
+  public enum SEGMENT { // Numbers in order of segment from left to right (driver station POV)
+    CONE_1(0), CONE_2(1), CONE_3(3), CONE_4(-1), CONE_5(-1), CONE_6(-1),
+    CUBE_1(0), CUBE_2(1), CUBE_3(3);
+
+    private int level;
+
+    private SEGMENT(int level){
+      this.level = level;
+    }
+
+    public static SEGMENT getSegment(int level, boolean cone){
+      if(cone){
+        switch(level){
+            case 1: return CONE_1;
+            case 2: return CONE_2;
+            case 3: return CONE_3;
+        }
+      }
+      else{
+        switch(level){
+            case 1: return CUBE_1;
+            case 2: return CUBE_2;
+            case 3: return CUBE_3;
+        }
+      }
+      return null;
+    }
+
+    public int getValue(){
+      return level;
+    }
     
   }
+
+ 
   public static final class IntakeConstants{
+
+    public static final int wristMotorId = 61; 
     
-    public static final int intakeMotorId = 58; 
-    public static final int wristMotorId = 59;
+    public static final int intakeMotorId = 60; 
+    
     public static final int pdpChannel = 2; //update number later
 
-    public static final double coneIntakeSpeed = 1; 
-    public static final double cubeIntakeSpeed = 1; 
+    public static final double coneIntakeSpeed = .5; 
+    public static final double cubeIntakeSpeed = .5; 
 
-    public static final double outtakeSpeed = 1; 
+    public static final double outtakeSpeed = .5; 
 
     public static final double maxCurrentIntake = 80; 
 
