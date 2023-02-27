@@ -38,7 +38,7 @@ public class Intake extends SubsystemBase {
         wristPidController.setIZone(Constants.IntakeConstants.kIz); 
         wristPidController.setFF(Constants.IntakeConstants.kFF); 
         wristPidController.setOutputRange(Constants.IntakeConstants.kMinOutput, Constants.IntakeConstants.kMaxOutput);
-
+        
         SmartDashboard.putNumber("P Gain", Constants.IntakeConstants.kP);
         SmartDashboard.putNumber("I Gain", Constants.IntakeConstants.kI);
         SmartDashboard.putNumber("D Gain", Constants.IntakeConstants.kD);
@@ -47,7 +47,6 @@ public class Intake extends SubsystemBase {
         SmartDashboard.putNumber("Max Output", Constants.IntakeConstants.kMaxOutput);
         SmartDashboard.putNumber("Min Output", Constants.IntakeConstants.kMinOutput);
         SmartDashboard.putNumber("Set Rotations", 0);
-
        
         resetEncoders(); 
         
