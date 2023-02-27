@@ -2,7 +2,7 @@ package frc.robot.subsystems;
 
 
 
-import com.revrobotics.CANEncoder;
+
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -18,12 +18,13 @@ public class Intake extends SubsystemBase {
    // private final CANSparkMax wristMotor;
     private final CANSparkMax intakeMotor; 
     private final RelativeEncoder outtakEncoder; 
-    
+    private final CANSparkMax wristMotor; 
+    private double currentPosition; 
 
     public Intake(){
         intakeMotor = new CANSparkMax(Constants.IntakeConstants.intakeMotorId, MotorType.kBrushless); 
-      //  wristMotor = new CANSparkMax(Constants.IntakeConstants.wristMotorId, MotorType.kBrushless);
-        // pdm = new PowerDistribution(1, PowerDistribution.ModuleType.kRev); 
+        wristMotor = new CANSparkMax(Constants.Wrist.wristMotorId, MotorType.kBrushless);
+       
         outtakEncoder = intakeMotor.getEncoder(); 
         
         outtakEncoder.setPositionConversionFactor(IntakeConstants.kDriveEncoderRot2Meter); 
@@ -45,10 +46,20 @@ public class Intake extends SubsystemBase {
         // double intakeCurrent = pdm.getCurrent(Constants.IntakeConstants.pdpChannel); 
         double intakeCurrent = intakeMotor.getOutputCurrent();  
         SmartDashboard.putNumber("Intake Current", intakeCurrent); 
+        SmartDashboard.putNumber("Wist Motor move", -wristMotor.getEncoder().getPosition());
     }  
     public void resetEncoders(){
         outtakEncoder.setPosition(0); 
         
     }
+    public void resetEncoder(){
+        wristMotor.getEncoder().setPosition(0);
+       
+    }
+    public void move(double speed){
+        wristMotor.set(speed*Constants.Wrist.maxMotorSpeed); 
+    }
+    
+    
     
 }

@@ -18,6 +18,6 @@ public class TeleopElevator extends CommandBase{
     }
 
     public void execute(){
-        s_Elevator.move(MathUtil.clamp(moveVal.getAsDouble(), -.6, 6));
+        s_Elevator.move(MathUtil.clamp(moveVal.getAsDouble(), -0.6, 0.6));
     }
 }

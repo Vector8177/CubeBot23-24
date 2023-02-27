@@ -239,8 +239,10 @@ public final class Constants {
     }
     
   }
-  public static final class WristConstants{
+  public static final class Wrist{
     public static final int wristMotorId = 61;
+    public static final double maxMotorSpeed = .5; 
+
   }
   public static final class IntakeConstants{
     
