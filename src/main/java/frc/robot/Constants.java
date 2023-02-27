@@ -256,10 +256,7 @@ public final class Constants {
     
   }
 
-<<<<<<< Updated upstream
  
-=======
->>>>>>> Stashed changes
   public static final class IntakeConstants{
 
     public static final int wristMotorId = 61; 

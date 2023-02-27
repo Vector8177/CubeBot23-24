@@ -27,13 +27,6 @@ public class RobotContainer {
   private static final int strafeAxis = XboxController.Axis.kLeftX.value;
   private static final int rotationAxis = XboxController.Axis.kRightX.value;
   private static final int motorComtrol = XboxController.Axis.kLeftTrigger.value;
-<<<<<<< Updated upstream
-
-  /* Subsystems */
-  private final Swerve s_Swerve = new Swerve();
-  private final PhotonVisionWrapper s_PhotonVisionWrapper;
-  private final Intake intakeSubsystem= new Intake();
-=======
   /* Operator Controls */
   private static final int elevatorAxis = XboxController.Axis.kLeftY.value;
   private static final int wristAxis = XboxController.Axis.kRightY.value;
@@ -44,7 +37,6 @@ public class RobotContainer {
   private final Elevator s_Elevator = new Elevator();
   private final PhotonVisionWrapper s_PhotonVisionWrapper = s_Swerve.getCamera();
   //private final Intake s_Intake= new Intake();
->>>>>>> Stashed changes
 
   /* Autonomous Mode Chooser */
   private final SendableChooser<PathPlannerTrajectory> autoChooser = new SendableChooser<>();
@@ -68,15 +60,11 @@ public class RobotContainer {
             () -> -driver.getRawAxis(rotationAxis),
             () -> driver.povDown().getAsBoolean(),
             () -> driver.leftBumper().getAsBoolean()));
-<<<<<<< Updated upstream
-    s_PhotonVisionWrapper = s_Swerve.getCamera();
-=======
             
     s_Elevator.setDefaultCommand(
       new TeleopElevator(
         s_Elevator, 
         () -> operator.getRawAxis(elevatorAxis)));
->>>>>>> Stashed changes
 
     s_Intake.setDefaultCommand(
       new TeleopTestIntake(
@@ -116,19 +104,11 @@ public class RobotContainer {
     driver.povLeft().onTrue(new OuttakeConeCmd(s_Intake));
     driver.povRight().onTrue(new OuttakeCubeCmd(s_Intake));
     */
-<<<<<<< Updated upstream
-    driver.povUp().onTrue(new IntakeCmd(intakeSubsystem, .3, true, true, false)); 
-    driver.povDown().onTrue(new IntakeCmd(intakeSubsystem, .3,true, false,false)); 
-    
-    driver.povLeft().onTrue(new IntakeCmd(intakeSubsystem, .3, false, true,false));
-    driver.povRight().onTrue(new IntakeCmd(intakeSubsystem, .3,false, false, false));
-=======
     operator.povUp().onTrue(new IntakeCmd(s_Intake, .3, true, true, false)); 
     operator.povDown().onTrue(new IntakeCmd(s_Intake, .3, false, true,false));
     
     operator.povLeft().onTrue(new IntakeCmd(s_Intake, .3,true, false,false)); 
     operator.povRight().onTrue(new IntakeCmd(s_Intake, .3,false, false, false));
->>>>>>> Stashed changes
   }
   
   private void configureSmartDashboard() {
