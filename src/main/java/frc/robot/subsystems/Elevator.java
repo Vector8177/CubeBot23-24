@@ -72,7 +72,7 @@ public class Elevator extends SubsystemBase {
     }
 
     private void updatePosition(){
-       // currentPosition += (elevatorLeftController.getPosition() + elevatorRightController.getPosition())/2;
+       //currentPosition = (elevatorLeftController.getPosition() + elevatorRightController.getPosition())/2;
     }
 
     public void score(int level, boolean cone){
