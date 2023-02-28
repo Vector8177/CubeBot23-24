@@ -43,7 +43,6 @@ public class IntakeCmd extends CommandBase {
         }
         if(!cone && intake){
             intakeSubsystem.setMotor(Constants.IntakeConstants.cubeIntakeSpeed);
-            
         }
         if(cone && !intake){
             intakeSubsystem.setMotor(-Constants.IntakeConstants.coneIntakeSpeed);
@@ -57,9 +56,8 @@ public class IntakeCmd extends CommandBase {
    
     @Override
     public void end(boolean interrupted){
-        
-            timer.stop();
-            timer.reset();
+        timer.stop();
+        timer.reset();
         
         intakeSubsystem.setMotor(0);
         System.out.println("IntakeCmd ended"); 
