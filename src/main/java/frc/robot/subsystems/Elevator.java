@@ -65,15 +65,30 @@ public class Elevator extends SubsystemBase {
         this.move(MathUtil.clamp(pidController.calculate(distance), -Constants.Elevator.maxMotorSpeed, Constants.Elevator.maxMotorSpeed));
     }
     public void move(double speed){
-        elevatorMotorRight.set(speed*Constants.Elevator.maxMotorSpeed);
-        elevatorMotorLeft.set(speed*Constants.Elevator.maxMotorSpeed);
+        if(currentPosition <= 0 && speed >= 0){
+            elevatorMotorRight.set(speed*Constants.Elevator.maxMotorSpeed);
+            elevatorMotorLeft.set(speed*Constants.Elevator.maxMotorSpeed);
+        }
+        else if(currentPosition >= 35.2 && speed <= 0){
+            elevatorMotorRight.set(speed*Constants.Elevator.maxMotorSpeed);
+            elevatorMotorLeft.set(speed*Constants.Elevator.maxMotorSpeed);
+        }
+        else if(currentPosition >= 0 && currentPosition <= 35.2){
+            elevatorMotorRight.set(speed*Constants.Elevator.maxMotorSpeed);
+            elevatorMotorLeft.set(speed*Constants.Elevator.maxMotorSpeed);
+        }
+        else{
+            elevatorMotorRight.set(0);
+            elevatorMotorLeft.set(0);
+        }
+        updatePosition();
     }
     public boolean reachedSetpoint(double distance){
         return pidController.getPositionTolerance() <= Math.abs(currentPosition - distance);
     }
 
     private void updatePosition(){
-       currentPosition = (-elevatorMotorLeft.getEncoder().getPosition() + elevatorMotorRight.getEncoder().getPosition())/2;
+       currentPosition = (elevatorMotorLeft.getEncoder().getPosition() + elevatorMotorRight.getEncoder().getPosition())/2;
     }
 
     public void score(int level, boolean cone){
@@ -83,5 +98,6 @@ public class Elevator extends SubsystemBase {
     public void periodic(){
         SmartDashboard.putNumber("Left Elevator Motor", -elevatorMotorLeft.getEncoder().getPosition());
         SmartDashboard.putNumber("Right Elevator Motor", elevatorMotorRight.getEncoder().getPosition());
+        SmartDashboard.putNumber("Current Position", currentPosition);
     }
 }

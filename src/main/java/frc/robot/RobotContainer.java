@@ -63,7 +63,7 @@ public class RobotContainer {
     s_Elevator.setDefaultCommand(
       new TeleopElevator(
         s_Elevator, 
-        () -> operator.getRawAxis(elevatorAxis)));
+        () -> -operator.getRawAxis(elevatorAxis)));
 
     // Configure the button bindings
     configureButtonBindings();

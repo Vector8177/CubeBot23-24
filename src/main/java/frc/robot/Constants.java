@@ -102,7 +102,7 @@ public final class Constants {
       public static final int driveMotorID = 20;
       public static final int angleMotorID = 10;
       public static final int canCoderID = 30;
-      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(52.6464);
+      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(-121.8164);
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
           canCoderID, angleOffset);
     }
@@ -112,7 +112,7 @@ public final class Constants {
       public static final int driveMotorID = 21;
       public static final int angleMotorID = 11;
       public static final int canCoderID = 31;
-      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(60.8203);
+      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(111.09);
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
           canCoderID, angleOffset);
     }
@@ -122,7 +122,7 @@ public final class Constants {
       public static final int driveMotorID = 22;
       public static final int angleMotorID = 12;
       public static final int canCoderID = 32;
-      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(-69.1699);
+      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(52.734);
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
           canCoderID, angleOffset);
     }
@@ -132,7 +132,7 @@ public final class Constants {
       public static final int driveMotorID = 23;
       public static final int angleMotorID = 13;
       public static final int canCoderID = 33;
-      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(-119.8828);
+      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(60.82);
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
           canCoderID, angleOffset);
     }
@@ -207,12 +207,19 @@ public final class Constants {
   }
 
   public enum SEGMENT { // Numbers in order of segment from left to right (driver station POV)
-    CONE_1(0), CONE_2(1), CONE_3(3), CONE_4(-1), CONE_5(-1), CONE_6(-1),
-    CUBE_1(0), CUBE_2(1), CUBE_3(3);
+    CONE_1(0), CONE_2(31.8), CONE_3(35.2), CONE_4(-1), CONE_5(-1), CONE_6(-1),
+    CUBE_1(0), CUBE_2(20.6), CUBE_3(35.2);
 
-    private int level;
+    //intake Ground Cube: 0
+    //intake Cone Upright: 12
+    //intake Cone Tipped: 0
 
-    private SEGMENT(int level){
+    //intake Cone Single HP: 8.9
+    //intake Cube Single HP: 11.8
+
+    private double level;
+
+    private SEGMENT(double level){
       this.level = level;
     }
 
@@ -234,7 +241,7 @@ public final class Constants {
       return null;
     }
 
-    public int getValue(){
+    public double getValue(){
       return level;
     }
     
