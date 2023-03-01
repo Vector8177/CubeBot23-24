@@ -250,6 +250,10 @@ public final class Constants {
     public static final int wristMotorId = 61;
     public static final double maxMotorSpeed = .5; 
 
+    public enum Positions 
+    {
+      
+    }
   }
   public static final class IntakeConstants{
     
