@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
@@ -16,13 +15,12 @@ public class TeleopWrist extends CommandBase{
 
         this.addRequirements(s_Intake);
     }
-
     @Override
     public void initialize() {
         // System.out.println("Teleop Wrist Started");
     }
     @Override
-    public void execute(){
+    public void execute() {
         // System.out.println("Teleop Wrist Running");
         s_Intake.move(MathUtil.clamp(moveVal.getAsDouble(), -0.6, 0.6));
     }

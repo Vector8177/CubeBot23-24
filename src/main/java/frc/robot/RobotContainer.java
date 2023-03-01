@@ -105,10 +105,14 @@ public class RobotContainer {
     operator.povLeft().onTrue(new IntakeCmd(intakeSubsystem, .3,true, false,false)); 
     operator.povRight().onTrue(new IntakeCmd(intakeSubsystem, .3,false, false, false));
 
+<<<<<<< Updated upstream
     operator.leftTrigger().whileTrue(new TeleopWrist(intakeSubsystem, () -> -0.2));
     operator.rightTrigger().whileTrue(new TeleopWrist(intakeSubsystem, () -> 0.2));
     operator.b().onTrue(t_TeleopWrist); 
    
+=======
+    operator.leftTrigger().onTrue(new TeleopWrist(intakeSubsystem, () -> -0.1));
+>>>>>>> Stashed changes
   }
   
   private void configureSmartDashboard() {
