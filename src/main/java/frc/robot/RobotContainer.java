@@ -98,11 +98,11 @@ public class RobotContainer {
     driver.povLeft().onTrue(new OuttakeConeCmd(intakeSubsystem));
     driver.povRight().onTrue(new OuttakeCubeCmd(intakeSubsystem));
     */
-    operator.povUp().onTrue(new IntakeCmd(intakeSubsystem, .3, true, true, false)); 
-    operator.povDown().onTrue(new IntakeCmd(intakeSubsystem, .3, false, true,false));
+    operator.povUp().onTrue(new TeleopIntake(intakeSubsystem, .3, true, true, false)); 
+    operator.povDown().onTrue(new TeleopIntake(intakeSubsystem, .3, false, true,false));
     
-    operator.povLeft().onTrue(new IntakeCmd(intakeSubsystem, .3,true, false,false)); 
-    operator.povRight().onTrue(new IntakeCmd(intakeSubsystem, .3,false, false, false));
+    operator.povLeft().onTrue(new TeleopIntake(intakeSubsystem, .3,true, false,false)); 
+    operator.povRight().onTrue(new TeleopIntake(intakeSubsystem, .3,false, false, false));
   }
   
   private void configureSmartDashboard() {

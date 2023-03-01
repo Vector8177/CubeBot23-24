@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Intake;
 
-public class IntakeCmd extends CommandBase {
+public class TeleopIntake extends CommandBase {
     
     private boolean intake; 
     private boolean cone; 
@@ -16,7 +16,7 @@ public class IntakeCmd extends CommandBase {
    
     
     
-    public IntakeCmd(Intake intakeSubsystem, double time, boolean intake, boolean cone, boolean wrist){
+    public TeleopIntake(Intake intakeSubsystem, double time, boolean intake, boolean cone, boolean wrist){
         this.time = time; 
         this.intake = intake; 
         this.cone = cone; 
