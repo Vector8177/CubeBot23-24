@@ -5,7 +5,6 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.autos.*;
 import frc.robot.subsystems.Swerve;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
@@ -15,7 +14,6 @@ public class TeleopSwerve extends CommandBase {
   private DoubleSupplier translationSup;
   private DoubleSupplier strafeSup;
   private DoubleSupplier rotationSup;
-  private BooleanSupplier autoCenter;
   private BooleanSupplier robotCentricSup;
 
   private SlewRateLimiter translationLimiter = new SlewRateLimiter(3.0);
@@ -23,7 +21,8 @@ public class TeleopSwerve extends CommandBase {
   private SlewRateLimiter rotationLimiter = new SlewRateLimiter(3.0);
 
   /**
-   * The constructor initializes the class variables. 
+   * The constructor initializes the class variables.
+   * 
    * @param s_Swerve
    * @param translationSup
    * @param strafeSup
@@ -36,7 +35,6 @@ public class TeleopSwerve extends CommandBase {
       DoubleSupplier translationSup,
       DoubleSupplier strafeSup,
       DoubleSupplier rotationSup,
-      BooleanSupplier autoCenter,
       BooleanSupplier robotCentricSup) {
     this.s_Swerve = s_Swerve;
     addRequirements(s_Swerve);
@@ -44,9 +42,9 @@ public class TeleopSwerve extends CommandBase {
     this.translationSup = translationSup;
     this.strafeSup = strafeSup;
     this.rotationSup = rotationSup;
-    this.autoCenter = autoCenter;
     this.robotCentricSup = robotCentricSup;
   }
+
   /**
    * TODO
    */
