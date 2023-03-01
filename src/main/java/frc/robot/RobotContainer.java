@@ -66,10 +66,7 @@ public class RobotContainer {
         s_Elevator, 
         () -> operator.getRawAxis(elevatorAxis)));
 
-    s_Intake.setDefaultCommand(
-      new TeleopTestIntake(
-        s_Intake,
-        () -> operator.getRawAxis(wristAxis)));
+   
 
     // Configure the button bindings
     configureButtonBindings();
@@ -107,8 +104,9 @@ public class RobotContainer {
     operator.povUp().onTrue(new IntakeCmd(s_Intake, .3, true, true, false)); 
     operator.povDown().onTrue(new IntakeCmd(s_Intake, .3, false, true,false));
     
-    operator.povLeft().onTrue(new IntakeCmd(s_Intake, .3,true, false,false)); 
-    operator.povRight().onTrue(new IntakeCmd(s_Intake, .3,false, false, false));
+    operator.povLeft().onTrue(new IntakeCmd(intakeSubsystem, .3,true, false,false)); 
+    operator.povRight().onTrue(new IntakeCmd(intakeSubsystem, .3,false, false, false));
+    operator.leftTrigger().onTrue(new TeleopWrist(intakeSubsystem,  operator.getLeftTriggerAxis()));
   }
   
   private void configureSmartDashboard() {

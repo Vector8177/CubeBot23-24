@@ -99,5 +99,8 @@ public class Intake extends SubsystemBase {
         //outtakEncoder.setPosition(0); 
         
     }
+   public void setWristMotor(double speed){
+    wristMotor.set(speed * Constants.IntakeConstants.wristMaxSpeed); 
+   }
     
 }

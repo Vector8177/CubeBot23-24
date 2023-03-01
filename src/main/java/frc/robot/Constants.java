@@ -262,14 +262,14 @@ public final class Constants {
     public static final int wristMotorId = 61; 
     
     public static final int intakeMotorId = 60; 
-    public static final int wristMotorId = 61;
+    
 
     public static final int pdpChannel = 2; //update number later
 
     public static final double coneIntakeSpeed = .5; 
     public static final double cubeIntakeSpeed = .5; 
 
-    public static final double wristSpeed = .5;
+    public static final double wristMaxSpeed = 1;
 
     public static final double outtakeSpeed = .5; 
 
