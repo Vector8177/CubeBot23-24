@@ -37,7 +37,7 @@ public class RobotContainer {
   private final Elevator s_Elevator = new Elevator();
   private final PhotonVisionWrapper s_PhotonVisionWrapper = s_Swerve.getCamera();
   //private final Intake intakeSubsystem= new Intake();
-
+  private final TeleopWrist t_TeleopWrist = new TeleopWrist(intakeSubsystem, () -> 0); 
   /* Autonomous Mode Chooser */
   private final SendableChooser<PathPlannerTrajectory> autoChooser = new SendableChooser<>();
 
@@ -64,6 +64,7 @@ public class RobotContainer {
       new TeleopElevator(
         s_Elevator, 
         () -> -operator.getRawAxis(elevatorAxis)));
+        
 
     // Configure the button bindings
     configureButtonBindings();
@@ -104,7 +105,10 @@ public class RobotContainer {
     operator.povLeft().onTrue(new IntakeCmd(intakeSubsystem, .3,true, false,false)); 
     operator.povRight().onTrue(new IntakeCmd(intakeSubsystem, .3,false, false, false));
 
-    operator.leftTrigger().onTrue(new TeleopWrist(intakeSubsystem, () -> -0.01));
+    operator.leftTrigger().whileTrue(new TeleopWrist(intakeSubsystem, () -> -0.2));
+    operator.rightTrigger().whileTrue(new TeleopWrist(intakeSubsystem, () -> 0.2));
+    operator.b().onTrue(t_TeleopWrist); 
+   
   }
   
   private void configureSmartDashboard() {

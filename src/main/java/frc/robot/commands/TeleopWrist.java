@@ -14,7 +14,7 @@ public class TeleopWrist extends CommandBase{
         this.s_Intake = s_Intake; 
         this.moveVal = moveVal;
 
-        addRequirements(s_Intake);
+        this.addRequirements(s_Intake);
     }
 
     @Override
