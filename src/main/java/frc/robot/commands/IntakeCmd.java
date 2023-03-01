@@ -68,6 +68,7 @@ public class IntakeCmd extends CommandBase {
     @Override
     public boolean isFinished(){
         if(!intake){
+           
             return timer.get() >.5;
         }
 

@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.SEGMENT;
+import frc.robot.Constants.Wrist;
 import frc.robot.autos.*;
 import frc.robot.commands.*; 
 import frc.robot.subsystems.*;
@@ -27,15 +29,16 @@ public class RobotContainer {
   private static final int translationAxis = XboxController.Axis.kLeftY.value;
   private static final int strafeAxis = XboxController.Axis.kLeftX.value;
   private static final int rotationAxis = XboxController.Axis.kRightX.value;
-  private static final int motorComtrol = XboxController.Axis.kLeftTrigger.value;
+  private static final int motorControl = XboxController.Axis.kLeftTrigger.value;
   /* Operator Controls */
   private static final int elevatorAxis = XboxController.Axis.kLeftY.value;
-
+  private static final int wristAxis = XboxController.Axis.kRightY.value;
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
-  private final Intake intakeSubsystem = new Intake();
+  private final Intake s_Intake = new Intake();
   private final Elevator s_Elevator = new Elevator();
   private final PhotonVisionWrapper s_PhotonVisionWrapper = s_Swerve.getCamera();
+
   //private final Intake intakeSubsystem= new Intake();
 
   /* Autonomous Mode Chooser */
@@ -64,6 +67,7 @@ public class RobotContainer {
       new TeleopElevator(
         s_Elevator, 
         () -> -operator.getRawAxis(elevatorAxis)));
+    
 
     // Configure the button bindings
     configureButtonBindings();
@@ -87,6 +91,7 @@ public class RobotContainer {
     /* Driver Buttons */
     // driver.x().onTrue(new AutoBalancing(s_Swerve));
     driver.y().onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
+    operator.a().onTrue(new ElevatorTest(s_Elevator, () -> 20.6));
     // driver.povDown().onTrue(new segmentLineUp(s_Swerve, Constants.SEGMENT.CUBE_3, () -> s_Swerve.getPoint()));
     // driver.povDown().onTrue(new segmentLineUp(s_Swerve, segmentLineUp.SEGMENT.CUBE_3, () -> s_Swerve.getPoint()));
 
@@ -98,11 +103,12 @@ public class RobotContainer {
     driver.povLeft().onTrue(new OuttakeConeCmd(intakeSubsystem));
     driver.povRight().onTrue(new OuttakeCubeCmd(intakeSubsystem));
     */
-    operator.povUp().onTrue(new IntakeCmd(intakeSubsystem, .3, true, true, false)); 
-    operator.povDown().onTrue(new IntakeCmd(intakeSubsystem, .3, false, true,false));
+    operator.povUp().onTrue(new IntakeCmd(s_Intake, .3, true, true, false)); 
+    operator.povDown().onTrue(new IntakeCmd(s_Intake, .3, false, true,false));
     
-    operator.povLeft().onTrue(new IntakeCmd(intakeSubsystem, .3,true, false,false)); 
-    operator.povRight().onTrue(new IntakeCmd(intakeSubsystem, .3,false, false, false));
+    operator.povLeft().onTrue(new IntakeCmd(s_Intake, .3,true, false,false)); 
+    operator.povRight().onTrue(new IntakeCmd(s_Intake, .3,false, false, false));
+    
   }
   
   private void configureSmartDashboard() {

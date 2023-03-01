@@ -189,10 +189,9 @@ public final class Constants {
 
     public static final int motorRightId = 51;
 
-    public static final double elevatorKP = .01;
-    public static final double elevatorKI = .01;
-    public static final double elevatorKD = .01;
-    public static final double elevatorKF = .01;
+    public static final double elevatorKP = .1;
+    public static final double elevatorKI = .0;
+    public static final double elevatorKD = .0;
 
     public static final double cone1 = 0;
     public static final double cone2 = 1;
@@ -202,7 +201,7 @@ public final class Constants {
     public static final double cube2 = 1;
     public static final double cube3 = 2;
 
-    public static final double maxMotorSpeed = .5;
+    public static final double maxMotorSpeed = .35;
 
   }
 

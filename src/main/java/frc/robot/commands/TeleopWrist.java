@@ -23,7 +23,6 @@ public class TeleopWrist extends CommandBase{
     }
     @Override
     public void execute(){
-        System.out.println("Teleop Wrist Running");
         s_Intake.move(MathUtil.clamp(moveVal.getAsDouble(), -0.6, 0.6));
     }
 }

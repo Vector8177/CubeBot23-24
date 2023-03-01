@@ -8,7 +8,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.commands.ScoreGamePiece;
 
 public class Elevator extends SubsystemBase {
 
@@ -49,7 +48,7 @@ public class Elevator extends SubsystemBase {
         //initialize pidContoller
         pidController = new PIDController(Constants.Elevator.elevatorKP, Constants.Elevator.elevatorKI, Constants.Elevator.elevatorKD);
         pidController.setSetpoint(0);
-        pidController.setTolerance(.1);
+        pidController.setTolerance(.5);
 
         
     }
@@ -59,11 +58,11 @@ public class Elevator extends SubsystemBase {
         elevatorMotorRight.getEncoder().setPosition(0);
     }
 
+    //FIX later change to something else
     public void raise(double distance){
-        updatePosition();
-        distance -= currentPosition;
-        this.move(MathUtil.clamp(pidController.calculate(distance), -Constants.Elevator.maxMotorSpeed, Constants.Elevator.maxMotorSpeed));
+        this.move(MathUtil.clamp(pidController.calculate(currentPosition-distance), -Constants.Elevator.maxMotorSpeed, Constants.Elevator.maxMotorSpeed));
     }
+
     public void move(double speed){
         if(currentPosition <= 0 && speed >= 0){
             elevatorMotorRight.set(speed*Constants.Elevator.maxMotorSpeed);
@@ -84,15 +83,11 @@ public class Elevator extends SubsystemBase {
         updatePosition();
     }
     public boolean reachedSetpoint(double distance){
-        return pidController.getPositionTolerance() <= Math.abs(currentPosition - distance);
+        return pidController.getPositionTolerance() >= Math.abs(currentPosition - distance);
     }
 
     private void updatePosition(){
        currentPosition = (elevatorMotorLeft.getEncoder().getPosition() + elevatorMotorRight.getEncoder().getPosition())/2;
-    }
-
-    public void score(int level, boolean cone){
-        new ScoreGamePiece(this, level, cone);
     }
 
     public void periodic(){
