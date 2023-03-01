@@ -8,18 +8,19 @@ public class ScoreGamePiece extends CommandBase {
     private Elevator s_Elevator;
     private Constants.SEGMENT position;
 
-    public ScoreGamePiece(Elevator s_Elevator, int level, boolean coneMode){
+    public ScoreGamePiece(Elevator s_Elevator, int level, boolean coneMode) {
         this.s_Elevator = s_Elevator;
 
         position = Constants.SEGMENT.getSegment(level, coneMode);
-        
+
         addRequirements(s_Elevator);
     }
 
-    public void execute(){
+    @Override
+    public void execute() {
         s_Elevator.raise(position.getValue());
-        if(s_Elevator.reachedSetpoint(position.getValue())){
-            
+        if (s_Elevator.reachedSetpoint(position.getValue())) {
+
         }
     }
 }
