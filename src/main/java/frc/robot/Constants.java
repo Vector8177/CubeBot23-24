@@ -265,7 +265,7 @@ public final class Constants {
     public static final double coneIntakeSpeed = .5; 
     public static final double cubeIntakeSpeed = .5; 
 
-    public static final double wristMaxSpeed = 1;
+    public static final double wristMaxSpeed = 0.2;
 
     public static final double outtakeSpeed = .5; 
 

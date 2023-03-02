@@ -19,7 +19,7 @@ public class TeleopTestIntake extends CommandBase {
 
       this.wristAxis = wristAxis;
     }
-
+   
     @Override
   public void execute() {
     s_Intake.setWristMotor(wristAxis.getAsDouble() * Constants.IntakeConstants.wristMaxSpeed);

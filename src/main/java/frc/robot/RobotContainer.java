@@ -33,11 +33,11 @@ public class RobotContainer {
 
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
-  private final Intake intakeSubsystem = new Intake();
+  private final Intake s_Intake = new Intake();
   private final Elevator s_Elevator = new Elevator();
   private final PhotonVisionWrapper s_PhotonVisionWrapper = s_Swerve.getCamera();
   //private final Intake intakeSubsystem= new Intake();
-  private final TeleopWrist t_TeleopWrist = new TeleopWrist(intakeSubsystem, () -> 0); 
+  private final TeleopWrist t_TeleopWrist = new TeleopWrist(s_Intake, () -> 0); 
   /* Autonomous Mode Chooser */
   private final SendableChooser<PathPlannerTrajectory> autoChooser = new SendableChooser<>();
 
@@ -104,17 +104,18 @@ public class RobotContainer {
     
     operator.povLeft().onTrue(new IntakeCmd(s_Intake, .3,true, false,false)); 
     operator.povRight().onTrue(new IntakeCmd(s_Intake, .3,false, false, false));
-    operator.leftTrigger().onTrue(new TeleopWrist(s_Intake,  operator.getLeftTriggerAxis()));
 
-    operator.povUp().onTrue(new IntakeCmd(intakeSubsystem, .3, true, true, false)); 
-    operator.povDown().onTrue(new IntakeCmd(intakeSubsystem, .3, false, true,false));
+
+    operator.leftBumper().whileTrue(new TeleopWrist(s_Intake,  () -> operator.getLeftTriggerAxis() - operator.getRightTriggerAxis()));
+
+    operator.povUp().onTrue(new IntakeCmd(s_Intake, .3, true, true, false)); 
+    operator.povDown().onTrue(new IntakeCmd(s_Intake, .3, false, true,false));
     
-    operator.povLeft().onTrue(new IntakeCmd(intakeSubsystem, .3,true, false,false)); 
-    operator.povRight().onTrue(new IntakeCmd(intakeSubsystem, .3,false, false, false));
+    operator.povLeft().onTrue(new IntakeCmd(s_Intake, .3,true, false,false)); 
+    operator.povRight().onTrue(new IntakeCmd(s_Intake, .3,false, false, false));
 
-    operator.leftTrigger().whileTrue(new TeleopWrist(intakeSubsystem, () -> -0.2));
-    operator.rightTrigger().whileTrue(new TeleopWrist(intakeSubsystem, () -> 0.2));
-    operator.b().onTrue(t_TeleopWrist); 
+  
+
    
 
   }

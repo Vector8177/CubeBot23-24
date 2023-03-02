@@ -21,7 +21,6 @@ public class Intake extends SubsystemBase {
     private final CANSparkMax wristMotor;
     private final CANSparkMax intakeMotor; 
     private final RelativeEncoder outtakEncoder; 
-    private final CANSparkMax wristMotor; 
     private double currentPosition; 
     private final PIDController wristController;
 
@@ -34,7 +33,7 @@ public class Intake extends SubsystemBase {
         outtakEncoder.setPositionConversionFactor(IntakeConstants.kDriveEncoderRot2Meter); 
         outtakEncoder.setVelocityConversionFactor(IntakeConstants.kDriveEncoderRPM2MeterPerSec); 
         
-        resetEncoders();
+       
 
         wristController = new PIDController(.2, 0, 0);
     }
@@ -54,15 +53,15 @@ public class Intake extends SubsystemBase {
         SmartDashboard.putNumber("Intake Current", intakeCurrent); 
         SmartDashboard.putNumber("Wist Motor move", -wristMotor.getEncoder().getPosition());
     }  
-    public void resetEncoders(){
-        //outtakEncoder.setPosition(0); 
+    public void resetIntakeEncoder(){
+        outtakEncoder.setPosition(0); 
         
     }
-    public void resetEncoder(){
+    public void resetWristEncoder(){
         wristMotor.getEncoder().setPosition(0);
        
     }
-    public void move(double speed){
+    public void setWristMotor(double speed){
         wristMotor.set(speed*Constants.Wrist.maxMotorSpeed); 
     }
     
