@@ -21,6 +21,7 @@ import frc.robot.subsystems.*;
 public class RobotContainer {
   /* Controllers */
   public final CommandXboxController driver = new CommandXboxController(0);
+  public final CommandXboxController operator = new CommandXboxController(1);
 
   /* Drive Controls */
   private static final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -104,9 +105,9 @@ public class RobotContainer {
     operator.povUp().onTrue(new IntakeCmd(s_Intake, .3, true, true, false)); 
     operator.povDown().onTrue(new IntakeCmd(s_Intake, .3, false, true,false));
     
-    operator.povLeft().onTrue(new IntakeCmd(intakeSubsystem, .3,true, false,false)); 
-    operator.povRight().onTrue(new IntakeCmd(intakeSubsystem, .3,false, false, false));
-    operator.leftTrigger().onTrue(new TeleopWrist(intakeSubsystem,  operator.getLeftTriggerAxis()));
+    operator.povLeft().onTrue(new IntakeCmd(s_Intake, .3,true, false,false)); 
+    operator.povRight().onTrue(new IntakeCmd(s_Intake, .3,false, false, false));
+    operator.leftTrigger().onTrue(new TeleopWrist(s_Intake,  operator.getLeftTriggerAxis()));
   }
   
   private void configureSmartDashboard() {
@@ -118,7 +119,7 @@ public class RobotContainer {
   }
 
   /**
-   * TODO
+   * TODOs
    */
   public void disabledInit() {
     s_Swerve.resetToAbsolute();
