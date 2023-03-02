@@ -23,4 +23,7 @@ public class TeleopElevator extends CommandBase {
     public void execute() {
         s_Elevator.move(ramp.calculate(MathUtil.clamp(moveVal.getAsDouble(), -.6, 6)));
     }
+    // test
+    int x = 5;
+    int y = 234;
 }
