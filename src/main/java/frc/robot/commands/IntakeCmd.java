@@ -45,10 +45,10 @@ public class IntakeCmd extends CommandBase {
             intakeSubsystem.setMotor(Constants.IntakeConstants.cubeIntakeSpeed);
         }
         if(cone && !intake){
-            intakeSubsystem.setMotor(-Constants.IntakeConstants.coneIntakeSpeed);
+            intakeSubsystem.setMotor(Constants.IntakeConstants.coneIntakeSpeed);
         }
         if(!cone && !intake){
-            intakeSubsystem.setMotor(Constants.IntakeConstants.cubeIntakeSpeed);
+            intakeSubsystem.setMotor(-Constants.IntakeConstants.cubeIntakeSpeed);
             
         }
         
@@ -65,15 +65,17 @@ public class IntakeCmd extends CommandBase {
     
     @Override
     public boolean isFinished(){
+        if(!intake){
+            return timer.get() >.5;
+        }
+
         if(cone && intakeSubsystem.getPDMCurrent() >= Constants.IntakeConstants.maxCurrentIntake && timer.hasElapsed(.3)){
             return true;
         }
         if(!cone && intakeSubsystem.getPDMCurrent() >= Constants.IntakeConstants.maxCurrentIntake  && timer.hasElapsed(.3) ){
             return true; 
         }
-        if(!intake){
-            return timer.hasElapsed(.5); 
-        }
+        
         return false; 
     }
 }

@@ -30,15 +30,14 @@ public class RobotContainer {
   private static final int motorComtrol = XboxController.Axis.kLeftTrigger.value;
   /* Operator Controls */
   private static final int elevatorAxis = XboxController.Axis.kLeftY.value;
-  private static final int wristAxis = XboxController.Axis.kRightY.value;
 
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
-  private final Intake s_Intake = new Intake();
+  private final Intake intakeSubsystem = new Intake();
   private final Elevator s_Elevator = new Elevator();
   private final PhotonVisionWrapper s_PhotonVisionWrapper = s_Swerve.getCamera();
-  //private final Intake s_Intake= new Intake();
-
+  //private final Intake intakeSubsystem= new Intake();
+  private final TeleopWrist t_TeleopWrist = new TeleopWrist(intakeSubsystem, () -> 0); 
   /* Autonomous Mode Chooser */
   private final SendableChooser<PathPlannerTrajectory> autoChooser = new SendableChooser<>();
 
@@ -61,13 +60,11 @@ public class RobotContainer {
             () -> -driver.getRawAxis(rotationAxis),
             () -> driver.povDown().getAsBoolean(),
             () -> driver.leftBumper().getAsBoolean()));
-            
     s_Elevator.setDefaultCommand(
       new TeleopElevator(
         s_Elevator, 
-        () -> operator.getRawAxis(elevatorAxis)));
-
-   
+        () -> -operator.getRawAxis(elevatorAxis)));
+        
 
     // Configure the button bindings
     configureButtonBindings();
@@ -108,6 +105,18 @@ public class RobotContainer {
     operator.povLeft().onTrue(new IntakeCmd(s_Intake, .3,true, false,false)); 
     operator.povRight().onTrue(new IntakeCmd(s_Intake, .3,false, false, false));
     operator.leftTrigger().onTrue(new TeleopWrist(s_Intake,  operator.getLeftTriggerAxis()));
+
+    operator.povUp().onTrue(new IntakeCmd(intakeSubsystem, .3, true, true, false)); 
+    operator.povDown().onTrue(new IntakeCmd(intakeSubsystem, .3, false, true,false));
+    
+    operator.povLeft().onTrue(new IntakeCmd(intakeSubsystem, .3,true, false,false)); 
+    operator.povRight().onTrue(new IntakeCmd(intakeSubsystem, .3,false, false, false));
+
+    operator.leftTrigger().whileTrue(new TeleopWrist(intakeSubsystem, () -> -0.2));
+    operator.rightTrigger().whileTrue(new TeleopWrist(intakeSubsystem, () -> 0.2));
+    operator.b().onTrue(t_TeleopWrist); 
+   
+
   }
   
   private void configureSmartDashboard() {
