@@ -46,7 +46,7 @@ public final class Constants {
 
     /* Swerve Current Limiting */
     public static final int angleContinuousCurrentLimit = 20;
-    public static final int driveContinuousCurrentLimit = 80;
+    public static final int driveContinuousCurrentLimit = 30;
 
     public static final double pitchSetPoint = 0.0;
 
@@ -267,20 +267,23 @@ public final class Constants {
 
     public static final double wristMaxSpeed = 0.2;
 
-    public static final double outtakeSpeed = .5; 
+    public static final double outtakeSpeed = .25; 
 
     public static final double maxCurrentIntake = 80; 
 
     //wheel diameter, gear ratio, encoder constants
         //will need to change depending on the robot/swerve
         //the below value will need to be change not accurate for our robot 
+        //wrist 32/1
         public static final double kWheelDiameterMeters = Units.inchesToMeters(4);
         public static final double kDriveMotorGearRatio = 1 / 5.8462;
         public static final double kTurningMotorGearRatio = 1 / 18.0;
+        public static final double kWristMotorGearRatio = 1 / 32;
         public static final double kDriveEncoderRot2Meter = kDriveMotorGearRatio * Math.PI * kWheelDiameterMeters;
         public static final double kTurningEncoderRot2Rad = kTurningMotorGearRatio * 2 * Math.PI;
         public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter / 60;
         public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 60;
+        
         public static final double kPTurning = 0.5;
 
         //PID coefficeints for wrist 

@@ -30,6 +30,7 @@ public class RobotContainer {
   private static final int motorControl = XboxController.Axis.kLeftTrigger.value;
   /* Operator Controls */
   private static final int elevatorAxis = XboxController.Axis.kLeftY.value;
+  private static final int wristAxis = XboxController.Axis.kRightY.value;
 
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
@@ -37,8 +38,7 @@ public class RobotContainer {
   private final Elevator s_Elevator = new Elevator();
   private final Wrist s_Wrist = new Wrist(); 
   private final PhotonVisionWrapper s_PhotonVisionWrapper = s_Swerve.getCamera();
-  //private final Intake intakeSubsystem= new Intake();
-  private final TeleopWrist t_TeleopWrist = new TeleopWrist(s_Wrist, () -> 0); 
+
   /* Autonomous Mode Chooser */
   private final SendableChooser<PathPlannerTrajectory> autoChooser = new SendableChooser<>();
 
@@ -53,6 +53,7 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+
     s_Swerve.setDefaultCommand(
         new TeleopSwerve(
             s_Swerve,
@@ -65,7 +66,11 @@ public class RobotContainer {
       new TeleopElevator(
         s_Elevator, 
         () -> -operator.getRawAxis(elevatorAxis)));
-        
+      
+    s_Wrist.setDefaultCommand(
+      new TeleopWrist(
+        s_Wrist, 
+        () -> operator.getRawAxis(wristAxis)));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -105,9 +110,6 @@ public class RobotContainer {
     
     operator.povLeft().onTrue(new IntakeCmd(s_Intake, .3,true, false,false)); 
     operator.povRight().onTrue(new IntakeCmd(s_Intake, .3,false, false, false));
-
-
-    operator.leftBumper().whileTrue(new TeleopWrist(s_Wrist,  () -> operator.getLeftTriggerAxis() - operator.getRightTriggerAxis()));
 
     operator.povUp().onTrue(new IntakeCmd(s_Intake, .3, true, true, false)); 
     operator.povDown().onTrue(new IntakeCmd(s_Intake, .3, false, true,false));

@@ -14,6 +14,8 @@ import com.revrobotics.SparkMaxAbsoluteEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.IntakeConstants;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard; 
 import com.revrobotics.AbsoluteEncoder;
@@ -24,26 +26,26 @@ import com.revrobotics.AbsoluteEncoder;
 public class Intake extends SubsystemBase {
   
     private final CANSparkMax intakeMotor; 
-    
-    private final RelativeEncoder relativeEncoder; 
-    private double currentPosition; 
+    private final RelativeEncoder intakeEncoder; 
+
    
 
+
     /**
-     * Intake 
+     * Constructor for intake subsystem. 
      */
     public Intake(){
         intakeMotor = new CANSparkMax(Constants.IntakeConstants.intakeMotorId, MotorType.kBrushless); 
        
-       
-        relativeEncoder = intakeMotor.getEncoder(); 
-        
-        relativeEncoder.setPositionConversionFactor(IntakeConstants.kDriveEncoderRot2Meter); 
-        relativeEncoder.setVelocityConversionFactor(IntakeConstants.kDriveEncoderRPM2MeterPerSec); 
-        
-       
+        intakeEncoder = intakeMotor.getEncoder(); 
+      
 
       
+        intakeEncoder.setPositionConversionFactor(IntakeConstants.kDriveEncoderRot2Meter); 
+
+        intakeEncoder.setVelocityConversionFactor(IntakeConstants.kDriveEncoderRPM2MeterPerSec); 
+        
+        
     }
     
     public void setIntakeMotor(double speed){
@@ -60,13 +62,13 @@ public class Intake extends SubsystemBase {
         double intakeCurrent = intakeMotor.getOutputCurrent();  
         SmartDashboard.putNumber("Intake Current", intakeCurrent); 
         
+
     }  
     public void resetIntakeEncoder(){
-        relativeEncoder.setPosition(0); 
+        intakeEncoder.setPosition(0); 
         
     }
-    
-    
+   
     
     
 }

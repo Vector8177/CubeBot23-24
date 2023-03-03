@@ -22,6 +22,7 @@ public class TeleopWrist extends CommandBase{
     @Override
     public void execute() {
         // System.out.println("Teleop Wrist Running");
-        s_Wrist.setWristMotor(MathUtil.clamp(moveVal.getAsDouble(), -0.6, 0.6));
+        double deadbandController = Math.abs(moveVal.getAsDouble()) > .1 ? -moveVal.getAsDouble() : 0;
+        s_Wrist.setWristPosition(s_Wrist.getWristPosition() + deadbandController*.1);
     }
 }
