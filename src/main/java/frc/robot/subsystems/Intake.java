@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder;
 
@@ -17,28 +18,35 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard; 
 import com.revrobotics.AbsoluteEncoder;
 
+/**
+ * The intake subsysatem will be used to set up the motors and encoders for the intake. 
+ */
 public class Intake extends SubsystemBase {
-    private final CANSparkMax wristMotor;
+  
     private final CANSparkMax intakeMotor; 
-    private final RelativeEncoder outtakEncoder; 
+    
+    private final RelativeEncoder relativeEncoder; 
     private double currentPosition; 
-    private final PIDController wristController;
+   
 
+    /**
+     * Intake 
+     */
     public Intake(){
         intakeMotor = new CANSparkMax(Constants.IntakeConstants.intakeMotorId, MotorType.kBrushless); 
-        wristMotor = new CANSparkMax(Constants.Wrist.wristMotorId, MotorType.kBrushless);
        
-        outtakEncoder = intakeMotor.getEncoder(); 
+       
+        relativeEncoder = intakeMotor.getEncoder(); 
         
-        outtakEncoder.setPositionConversionFactor(IntakeConstants.kDriveEncoderRot2Meter); 
-        outtakEncoder.setVelocityConversionFactor(IntakeConstants.kDriveEncoderRPM2MeterPerSec); 
+        relativeEncoder.setPositionConversionFactor(IntakeConstants.kDriveEncoderRot2Meter); 
+        relativeEncoder.setVelocityConversionFactor(IntakeConstants.kDriveEncoderRPM2MeterPerSec); 
         
        
 
-        wristController = new PIDController(.2, 0, 0);
+      
     }
     
-    public void setMotor(double speed){
+    public void setIntakeMotor(double speed){
         intakeMotor.set(speed); 
     }
     
@@ -51,19 +59,13 @@ public class Intake extends SubsystemBase {
         // double intakeCurrent = pdm.getCurrent(Constants.IntakeConstants.pdpChannel); 
         double intakeCurrent = intakeMotor.getOutputCurrent();  
         SmartDashboard.putNumber("Intake Current", intakeCurrent); 
-        SmartDashboard.putNumber("Wist Motor move", -wristMotor.getEncoder().getPosition());
+        
     }  
     public void resetIntakeEncoder(){
-        outtakEncoder.setPosition(0); 
+        relativeEncoder.setPosition(0); 
         
     }
-    public void resetWristEncoder(){
-        wristMotor.getEncoder().setPosition(0);
-       
-    }
-    public void setWristMotor(double speed){
-        wristMotor.set(speed*Constants.Wrist.maxMotorSpeed); 
-    }
+    
     
     
     

@@ -27,7 +27,7 @@ public class RobotContainer {
   private static final int translationAxis = XboxController.Axis.kLeftY.value;
   private static final int strafeAxis = XboxController.Axis.kLeftX.value;
   private static final int rotationAxis = XboxController.Axis.kRightX.value;
-  private static final int motorComtrol = XboxController.Axis.kLeftTrigger.value;
+  private static final int motorControl = XboxController.Axis.kLeftTrigger.value;
   /* Operator Controls */
   private static final int elevatorAxis = XboxController.Axis.kLeftY.value;
 
@@ -35,9 +35,10 @@ public class RobotContainer {
   private final Swerve s_Swerve = new Swerve();
   private final Intake s_Intake = new Intake();
   private final Elevator s_Elevator = new Elevator();
+  private final Wrist s_Wrist = new Wrist(); 
   private final PhotonVisionWrapper s_PhotonVisionWrapper = s_Swerve.getCamera();
   //private final Intake intakeSubsystem= new Intake();
-  private final TeleopWrist t_TeleopWrist = new TeleopWrist(s_Intake, () -> 0); 
+  private final TeleopWrist t_TeleopWrist = new TeleopWrist(s_Wrist, () -> 0); 
   /* Autonomous Mode Chooser */
   private final SendableChooser<PathPlannerTrajectory> autoChooser = new SendableChooser<>();
 
@@ -106,7 +107,7 @@ public class RobotContainer {
     operator.povRight().onTrue(new IntakeCmd(s_Intake, .3,false, false, false));
 
 
-    operator.leftBumper().whileTrue(new TeleopWrist(s_Intake,  () -> operator.getLeftTriggerAxis() - operator.getRightTriggerAxis()));
+    operator.leftBumper().whileTrue(new TeleopWrist(s_Wrist,  () -> operator.getLeftTriggerAxis() - operator.getRightTriggerAxis()));
 
     operator.povUp().onTrue(new IntakeCmd(s_Intake, .3, true, true, false)); 
     operator.povDown().onTrue(new IntakeCmd(s_Intake, .3, false, true,false));
