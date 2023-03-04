@@ -265,7 +265,14 @@ public final class Constants {
   }
 
   public static final class IntakeConstants{
-    
+  
+    public enum GamePiece{
+      CUBEINTAKE,
+      CONEINTAKE,
+      CUBEOUTTAKE,
+      CONEOUTTAKE
+      
+    }
     public static final int intakeMotorId = 60; 
     
 
