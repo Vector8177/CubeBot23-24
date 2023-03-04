@@ -254,6 +254,16 @@ public final class Constants {
       
     }
   }
+
+  public static enum Position{
+    CONE2,
+    CONE3,
+    CUBE2,
+    CUBE3,
+    BOTTOM,
+    STANDBY
+  }
+
   public static final class IntakeConstants{
     
     public static final int intakeMotorId = 60; 
