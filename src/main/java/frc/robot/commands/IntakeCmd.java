@@ -11,22 +11,22 @@ public class IntakeCmd extends CommandBase {
     private boolean cone; 
     private boolean wrist; 
     private double time; 
-    private final Intake intakeSubsystem; 
+    private final Intake s_Intake; 
     private Timer timer;
    
     
     
-    public IntakeCmd(Intake intakeSubsystem, double time, boolean intake, boolean cone, boolean wrist){
+    public IntakeCmd(Intake s_Intake, double time, boolean intake, boolean cone, boolean wrist){
         this.time = time; 
         this.intake = intake; 
         this.cone = cone; 
         this.wrist = wrist;  
-        this.intakeSubsystem = intakeSubsystem; 
+        this.s_Intake = s_Intake; 
         
         this.timer = new Timer();
         
         
-        addRequirements(intakeSubsystem);
+        addRequirements(s_Intake);
     }
     @Override
     public void initialize(){
@@ -39,17 +39,16 @@ public class IntakeCmd extends CommandBase {
     @Override
     public void execute(){
         if(cone && intake){
-            intakeSubsystem.setMotor(-Constants.IntakeConstants.coneIntakeSpeed);
+            s_Intake.setMotor(-Constants.IntakeConstants.coneIntakeSpeed);
         }
         if(!cone && intake){
-            intakeSubsystem.setMotor(Constants.IntakeConstants.cubeIntakeSpeed);
-            
+            s_Intake.setMotor(Constants.IntakeConstants.cubeIntakeSpeed);
         }
         if(cone && !intake){
-            intakeSubsystem.setMotor(Constants.IntakeConstants.coneIntakeSpeed);
+            s_Intake.setMotor(Constants.IntakeConstants.coneIntakeSpeed);
         }
         if(!cone && !intake){
-            intakeSubsystem.setMotor(-Constants.IntakeConstants.cubeIntakeSpeed);
+            s_Intake.setMotor(-Constants.IntakeConstants.cubeIntakeSpeed);
             
         }
         
@@ -57,11 +56,10 @@ public class IntakeCmd extends CommandBase {
    
     @Override
     public void end(boolean interrupted){
+        timer.stop();
+        timer.reset();
         
-            timer.stop();
-            timer.reset();
-        
-        intakeSubsystem.setMotor(0);
+        s_Intake.setMotor(0);
         System.out.println("IntakeCmd ended"); 
     }
     
@@ -72,10 +70,10 @@ public class IntakeCmd extends CommandBase {
             return timer.get() >.5;
         }
 
-        if(cone && intakeSubsystem.getPDMCurrent() >= Constants.IntakeConstants.maxCurrentIntake && timer.hasElapsed(.3)){
+        if(cone && s_Intake.getPDMCurrent() >= Constants.IntakeConstants.maxCurrentIntake && timer.hasElapsed(.3)){
             return true;
         }
-        if(!cone && intakeSubsystem.getPDMCurrent() >= Constants.IntakeConstants.maxCurrentIntake  && timer.hasElapsed(.3) ){
+        if(!cone && s_Intake.getPDMCurrent() >= Constants.IntakeConstants.maxCurrentIntake  && timer.hasElapsed(.3) ){
             return true; 
         }
         
