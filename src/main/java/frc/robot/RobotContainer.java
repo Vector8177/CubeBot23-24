@@ -49,6 +49,8 @@ public class RobotContainer {
       Constants.AutoConstants.kMaxSpeedMetersPerSecond, Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared);
   PathPlannerTrajectory sussy = PathPlanner.loadPath("sussy",
       Constants.AutoConstants.kMaxSpeedMetersPerSecond, Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared);
+  PathPlannerTrajectory autobalance = PathPlanner.loadPath("Autobalance :)", 
+    Constants.AutoConstants.kMaxSpeedMetersPerSecond, Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared); 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -127,6 +129,7 @@ public class RobotContainer {
     autoChooser.setDefaultOption("Move forward", moveForward);
     autoChooser.addOption("S curve", sCurve);
     autoChooser.addOption("SUSSY - CADEN", sussy);
+    autoChooser.addOption("Autobalance :)", autobalance); 
 
     SmartDashboard.putData(autoChooser);
   }
