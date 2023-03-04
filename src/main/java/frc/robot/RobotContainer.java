@@ -61,11 +61,12 @@ public class RobotContainer {
             () -> -driver.getRawAxis(strafeAxis),
             () -> -driver.getRawAxis(rotationAxis),
             () -> driver.povDown().getAsBoolean()));
+            /* 
     s_Elevator.setDefaultCommand(
       new TeleopElevator(
         s_Elevator, 
         () -> -operator.getRawAxis(elevatorAxis)));
-
+*/
     s_Wrist.setDefaultCommand(
       new TeleopWrist(
         s_Wrist, 
