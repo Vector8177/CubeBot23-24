@@ -8,6 +8,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.Position;
 
 public class Elevator extends SubsystemBase {
 
@@ -50,6 +51,7 @@ public class Elevator extends SubsystemBase {
         pidController.setSetpoint(0);
         pidController.setTolerance(.5);
 
+
         
     }
 
@@ -63,6 +65,11 @@ public class Elevator extends SubsystemBase {
         this.move(MathUtil.clamp(pidController.calculate(currentPosition-distance), -Constants.Elevator.maxMotorSpeed, Constants.Elevator.maxMotorSpeed));
     }
 
+    public void setPosition(double position){
+        currentPosition = position;
+    }
+
+    
     public void move(double speed){
         if(currentPosition <= 0 && speed >= 0){
             elevatorMotorRight.set(speed*Constants.Elevator.maxMotorSpeed);
@@ -80,19 +87,27 @@ public class Elevator extends SubsystemBase {
             elevatorMotorRight.set(0);
             elevatorMotorLeft.set(0);
         }
-        updatePosition();
+        //updatePosition();
     }
+    
+
     public boolean reachedSetpoint(double distance){
         return pidController.getPositionTolerance() >= Math.abs(currentPosition - distance);
     }
 
-    private void updatePosition(){
-       currentPosition = (elevatorMotorLeft.getEncoder().getPosition() + elevatorMotorRight.getEncoder().getPosition())/2;
+    private double getEncoderPosition(){
+       return (elevatorMotorLeft.getEncoder().getPosition() + elevatorMotorRight.getEncoder().getPosition())/2;
     }
 
     public void periodic(){
         SmartDashboard.putNumber("Left Elevator Motor", -elevatorMotorLeft.getEncoder().getPosition());
         SmartDashboard.putNumber("Right Elevator Motor", elevatorMotorRight.getEncoder().getPosition());
         SmartDashboard.putNumber("Current Position", currentPosition);
+
+        move(
+            MathUtil.clamp(
+                pidController.calculate(getEncoderPosition(), currentPosition), 
+                -Constants.Elevator.maxMotorSpeed, 
+                Constants.Elevator.maxMotorSpeed));
     }
 }

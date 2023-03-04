@@ -63,11 +63,12 @@ public class RobotContainer {
             () -> -driver.getRawAxis(strafeAxis),
             () -> -driver.getRawAxis(rotationAxis),
             () -> driver.povDown().getAsBoolean()));
+            /* 
     s_Elevator.setDefaultCommand(
       new TeleopElevator(
         s_Elevator, 
         () -> -operator.getRawAxis(elevatorAxis)));
-
+*/
     s_Wrist.setDefaultCommand(
       new TeleopWrist(
         s_Wrist, 
@@ -107,17 +108,13 @@ public class RobotContainer {
     driver.povLeft().onTrue(new OuttakeConeCmd(s_Intake));
     driver.povRight().onTrue(new OuttakeCubeCmd(s_Intake));
     */
-    operator.povUp().onTrue(new IntakeCmd(s_Intake, .3, true, true, false)); 
-    operator.povDown().onTrue(new IntakeCmd(s_Intake, .3, false, true,false));
+    operator.povUp().onTrue(new IntakePiece(s_Intake, .3, true, true, false)); 
+    operator.povDown().onTrue(new IntakePiece(s_Intake, .3, false, true,false));
     
-    operator.povLeft().onTrue(new IntakeCmd(s_Intake, .3,true, false,false)); 
-    operator.povRight().onTrue(new IntakeCmd(s_Intake, .3,false, false, false));
+    operator.povLeft().onTrue(new IntakePiece(s_Intake, .3,true, false,false)); 
+    operator.povRight().onTrue(new IntakePiece(s_Intake, .3,false, false, false));
 
-    operator.povUp().onTrue(new IntakeCmd(s_Intake, .3, true, true, false)); 
-    operator.povDown().onTrue(new IntakeCmd(s_Intake, .3, false, true,false));
-    
-    operator.povLeft().onTrue(new IntakeCmd(s_Intake, .3,true, false,false)); 
-    operator.povRight().onTrue(new IntakeCmd(s_Intake, .3,false, false, false));
+   
 
   
 
