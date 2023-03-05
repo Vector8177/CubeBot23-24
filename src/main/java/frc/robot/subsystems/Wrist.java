@@ -76,27 +76,27 @@ public class Wrist extends SubsystemBase {
 
         double pidMotorSpeed = pidController.calculate(absoluteEncoder.getPosition(), currentPosition);
 
-        setWristMotor(
+        setMotor(
                 MathUtil.clamp(
                         (pidMotorSpeed) + feedForward.calculate(currentPosition, 0),
                         -Constants.Wrist.maxMotorVoltage,
                         Constants.Wrist.maxMotorVoltage));
     }
 
-    public void resetWristEncoder() {
+    public void resetEncoder() {
         wristMotor.getEncoder().setPosition(0);
 
     }
 
-    public void setWristMotor(double voltage) {
+    public void setMotor(double voltage) {
         wristMotor.setVoltage(voltage);
     }
 
-    public void setWristPosition(double position) {
+    public void setPosition(double position) {
         currentPosition = position;
     }
 
-    public double getWristPosition() {
+    public double getPosition() {
         return currentPosition;
     }
 
