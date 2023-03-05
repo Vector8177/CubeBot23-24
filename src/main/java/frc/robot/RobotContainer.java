@@ -49,7 +49,7 @@ public class RobotContainer {
       Constants.AutoConstants.kMaxSpeedMetersPerSecond, Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared);
   PathPlannerTrajectory sussy = PathPlanner.loadPath("sussy",
       Constants.AutoConstants.kMaxSpeedMetersPerSecond, Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared);
-  PathPlannerTrajectory autobalance = PathPlanner.loadPath("Autobalance :)", 
+  PathPlannerTrajectory autobalance = PathPlanner.loadPath("Autobalance", 
     Constants.AutoConstants.kMaxSpeedMetersPerSecond, Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared); 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -108,14 +108,14 @@ public class RobotContainer {
     driver.povLeft().onTrue(new OuttakeConeCmd(s_Intake));
     driver.povRight().onTrue(new OuttakeCubeCmd(s_Intake));
     */
-    operator.povUp().onTrue(new IntakePiece(s_Intake, .3, true, true, false)); 
+   /* operator.povUp().onTrue(new IntakePiece(s_Intake, .3, true, true, false)); 
     operator.povDown().onTrue(new IntakePiece(s_Intake, .3, false, true,false));
     
     operator.povLeft().onTrue(new IntakePiece(s_Intake, .3,true, false,false)); 
     operator.povRight().onTrue(new IntakePiece(s_Intake, .3,false, false, false));
 
    
-
+*/
   
 
    
