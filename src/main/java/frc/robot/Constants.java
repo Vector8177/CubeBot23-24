@@ -251,12 +251,26 @@ public final class Constants {
     HIGH,
     MID,
     LOW,
-    STANDBY
+    STANDBY,
+    CUBEINTAKE,
+    TIPPEDCONEINTAKE,
+    STANDINGCONEINTAKE,
+    HUMANPLAYERINTAKE
   }
 
   public static enum GamePiece{
-    CUBE,
-    CONE
+    CUBE(1),
+    CONE(-1);
+
+    private double direction;
+
+    private GamePiece(double value){
+      direction = value;
+    }
+
+    public double getDirection(){
+      return direction;
+    }
     
   }
 
@@ -266,8 +280,7 @@ public final class Constants {
 
     public static final int pdpChannel = 2; //update number later
     
-    public static final double coneIntakeSpeed = .5; 
-    public static final double cubeIntakeSpeed = .5; 
+    public static final double intakeSpeed = .7; 
 
     public static final double wristMaxSpeed = 0.2;
 

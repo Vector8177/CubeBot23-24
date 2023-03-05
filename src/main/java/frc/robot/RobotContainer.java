@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.function.Supplier;
+
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 
@@ -13,6 +15,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.Position;
 import frc.robot.Constants.SEGMENT;
@@ -34,6 +39,7 @@ public class RobotContainer {
   /* Operator Controls */
   private static final int elevatorAxis = XboxController.Axis.kLeftY.value;
   private static final int wristAxis = XboxController.Axis.kRightY.value;
+  private static final int intakeTrigger = XboxController.Axis.kRightTrigger.value;
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
   private final Intake s_Intake = new Intake();
@@ -45,7 +51,7 @@ public class RobotContainer {
   private final SendableChooser<PathPlannerTrajectory> autoChooser = new SendableChooser<>();
 
   /* Robot State */
-  private static GamePiece gamePiece = GamePiece.CUBE;
+  public static GamePiece gamePiece = GamePiece.CUBE;
 
   /* Autonomous Modes */
   PathPlannerTrajectory moveForward = PathPlanner.loadPath("Move Forward",
@@ -78,6 +84,9 @@ public class RobotContainer {
       new TeleopWrist(
         s_Wrist, 
         () -> operator.getRawAxis(wristAxis)));
+    s_Intake.setDefaultCommand(
+      new TeleopIntake(s_Intake,  
+      () -> operator.getRawAxis(intakeTrigger)));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -103,19 +112,37 @@ public class RobotContainer {
     driver.y().onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
     // driver.povDown().onTrue(new segmentLineUp(s_Swerve, Constants.SEGMENT.CUBE_3, () -> s_Swerve.getPoint()));
     // driver.povDown().onTrue(new segmentLineUp(s_Swerve, segmentLineUp.SEGMENT.CUBE_3, () -> s_Swerve.getPoint()));
-
     
-  
-    operator.povUp().onTrue(new IntakePiece(s_Intake, .3, GamePiece.CONE, true));
-    operator.povDown().onTrue(new IntakePiece(s_Intake, .3, GamePiece.CONE, false));
+    operator.povUp().onTrue(
+      new SequentialCommandGroup(
+        new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
+        new SetPosition(s_Wrist, s_Elevator,  Position.STANDINGCONEINTAKE, () -> gamePiece)
+        ));
+
+    operator.povLeft().onTrue(
+      new SequentialCommandGroup(
+        new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
+        new SetPosition(s_Wrist, s_Elevator, Position.CUBEINTAKE, () -> gamePiece)
+        ));
     
-    operator.povLeft().onTrue(new IntakePiece(s_Intake, .3, GamePiece.CUBE, true));
-    operator.povRight().onTrue(new IntakePiece(s_Intake, .3, GamePiece.CUBE, false));
+    operator.povDown().onTrue(
+      new SequentialCommandGroup(
+        new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
+        new SetPosition(s_Wrist, s_Elevator, Position.TIPPEDCONEINTAKE, () -> gamePiece)
+        ));
+    
+    operator.povRight().onTrue(
+      new SequentialCommandGroup(
+        new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
+        new SetPosition(s_Wrist, s_Elevator, Position.HUMANPLAYERINTAKE, () -> gamePiece)
+        ));
+
+    operator.leftTrigger().onTrue(new IntakePiece(s_Intake, elevatorAxis, () -> gamePiece,  false));
   
 
-    operator.y().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.HIGH, gamePiece));
-    operator.b().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.MID, gamePiece));
-    operator.a().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.LOW, gamePiece));
+    operator.y().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.HIGH, () -> gamePiece));
+    operator.b().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.MID, () -> gamePiece));
+    operator.a().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.LOW, () -> gamePiece));
    
 
   

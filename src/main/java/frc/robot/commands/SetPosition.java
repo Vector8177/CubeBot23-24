@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import java.util.function.Supplier;
+
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.Position;
@@ -11,35 +13,33 @@ public class SetPosition extends CommandBase{
     Wrist s_Wrist;
     Elevator s_Elevator;
     Position position;
-    GamePiece gamePiece;
+    Supplier<GamePiece>  gamePiece;
 
-    public SetPosition(Wrist s_Wrist, Elevator s_Elevator, Position position, GamePiece gamePiece){
+    public SetPosition(Wrist s_Wrist, Elevator s_Elevator, Position position,Supplier<GamePiece> gamePiece){
         this.s_Wrist = s_Wrist;
         this.s_Elevator = s_Elevator;
         this.position = position;
         this.gamePiece = gamePiece;
-
-        addRequirements(s_Elevator, s_Wrist);
         }
 
         @Override
         public void execute(){
             switch(position){
                 case HIGH:
-                    if(gamePiece == GamePiece.CONE){
-                        s_Wrist.setWristPosition(0);
+                    if(gamePiece.get() == GamePiece.CONE){
+                        s_Wrist.setWristPosition(.104327);
                         s_Elevator.setPosition(35);
-                    } else if(gamePiece == GamePiece.CUBE){
+                    } else if(gamePiece.get() == GamePiece.CUBE){
                         s_Wrist.setWristPosition(1.55);
                         s_Elevator.setPosition(35.1);
                     }
                     break;
     
                 case MID:
-                    if(gamePiece == GamePiece.CONE){
+                    if(gamePiece.get() == GamePiece.CONE){
                         s_Wrist.setWristPosition(0);
                         s_Elevator.setPosition(23);
-                    } else if(gamePiece == GamePiece.CUBE){
+                    } else if(gamePiece.get() == GamePiece.CUBE){
                         s_Wrist.setWristPosition(1.427);
                         s_Elevator.setPosition(16.5);
                     }
@@ -53,6 +53,26 @@ public class SetPosition extends CommandBase{
                 case STANDBY:
                     s_Wrist.setWristPosition(1.3963);
                     s_Elevator.setPosition(0);
+                    break;
+
+                case CUBEINTAKE:
+                    s_Wrist.setWristPosition(0);
+                    s_Elevator.setPosition(0);
+                    break;
+
+                case STANDINGCONEINTAKE:
+                    s_Wrist.setWristPosition(5.106);
+                    s_Elevator.setPosition(14.380);
+                    break;
+
+                case TIPPEDCONEINTAKE:
+                    s_Wrist.setWristPosition(5.572);
+                    s_Elevator.setPosition(1.333);
+                    break;
+
+                case HUMANPLAYERINTAKE:
+                    s_Wrist.setWristPosition(.8763);
+                    s_Elevator.setPosition(3.5472);
                     break;
         }
 

@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import java.util.function.Supplier;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
@@ -16,10 +18,10 @@ public class IntakePiece extends CommandBase {
     private Timer timer;
     private boolean intaking;
 
-    private GamePiece gamePiece;
+    private Supplier<GamePiece> gamePiece;
 
 
-    public IntakePiece(Intake intakeSubsystem, double time, GamePiece gamePiece, boolean intaking) {
+    public IntakePiece(Intake intakeSubsystem, double time, Supplier<GamePiece> gamePiece, boolean intaking) {
         this.time = time;
         this.gamePiece = gamePiece; 
         this.intaking = intaking;
@@ -42,17 +44,17 @@ public class IntakePiece extends CommandBase {
 
     @Override
     public void execute() {
-        switch(gamePiece){
+        switch(gamePiece.get()){
             case CONE:
                 if(intaking){
-            intakeSubsystem.setMotor(-Constants.IntakeConstants.coneIntakeSpeed);
+            intakeSubsystem.setMotor(-Constants.IntakeConstants.intakeSpeed);
                 }else{
              intakeSubsystem.setMotor(Constants.IntakeConstants.coneOuttakeSpeed);
                 }
                 break;
             case CUBE:
             if(intaking){
-            intakeSubsystem.setMotor(Constants.IntakeConstants.cubeIntakeSpeed);
+            intakeSubsystem.setMotor(Constants.IntakeConstants.intakeSpeed);
         }else{
             intakeSubsystem.setMotor(-Constants.IntakeConstants.cubeOuttakeSpeed);
         }
