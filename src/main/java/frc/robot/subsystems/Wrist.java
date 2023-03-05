@@ -7,7 +7,6 @@ import com.revrobotics.SparkMaxAbsoluteEncoder;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Constants.IntakeConstants;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
@@ -46,16 +45,17 @@ public class Wrist extends SubsystemBase {
         absoluteEncoder = wristMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
         absoluteEncoder.setInverted(true);
 
-        pidController = new PIDController(5, 2.5, .1);
+        pidController = new PIDController(Constants.Wrist.kP, Constants.Wrist.kI, Constants.Wrist.kD);
         pidController.enableContinuousInput(0, Math.PI * 2);
 
         relativeEncoder = wristMotor.getEncoder();
 
         absoluteEncoder.setPositionConversionFactor(2 * Math.PI);
-        absoluteEncoder.setZeroOffset(5.412927);
-        relativeEncoder.setPositionConversionFactor(IntakeConstants.kWristMotorGearRatio * 2 * Math.PI);
+        absoluteEncoder.setZeroOffset(Constants.Wrist.absoluteEncoderOffset);
+        relativeEncoder.setPositionConversionFactor(Constants.Wrist.motorGearRatio * 2 * Math.PI);
 
-        feedForward = new ArmFeedforward(0.11237, .56416, .56387, .041488);
+        feedForward = new ArmFeedforward(Constants.Wrist.kS, Constants.Wrist.kG, Constants.Wrist.kV,
+                Constants.Wrist.kA);
 
         relativeEncoder.setPosition(absoluteEncoder.getPosition());
 
@@ -69,18 +69,18 @@ public class Wrist extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Wrist Relative Encoder", relativeEncoder.getPosition());
-        SmartDashboard.putNumber("Wrist Absolute Encoder", absoluteEncoder.getPosition());
-        SmartDashboard.putNumber("Goal wrist position", currentPosition);
+        // SmartDashboard.putNumber("Wrist Relative Encoder",
+        // relativeEncoder.getPosition());
+        SmartDashboard.putNumber("Wrist Absolute Position", absoluteEncoder.getPosition());
+        SmartDashboard.putNumber("Wrist Goal position", currentPosition);
 
         double pidMotorSpeed = pidController.calculate(absoluteEncoder.getPosition(), currentPosition);
 
-        SmartDashboard.putNumber("motor power wrist", pidMotorSpeed);
         setWristMotor(
                 MathUtil.clamp(
                         (pidMotorSpeed) + feedForward.calculate(currentPosition, 0),
-                        -3,
-                        3));
+                        -Constants.Wrist.maxMotorVoltage,
+                        Constants.Wrist.maxMotorVoltage));
     }
 
     public void resetWristEncoder() {
@@ -89,7 +89,7 @@ public class Wrist extends SubsystemBase {
     }
 
     public void setWristMotor(double voltage) {
-        wristMotor.setVoltage(voltage * Constants.Wrist.maxMotorSpeed);
+        wristMotor.setVoltage(voltage);
     }
 
     public void setWristPosition(double position) {

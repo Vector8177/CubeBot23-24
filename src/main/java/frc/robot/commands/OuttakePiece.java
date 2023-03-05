@@ -36,10 +36,10 @@ public class OuttakePiece extends CommandBase {
     public void execute() {
         switch (gamePiece.get()) {
             case CONE:
-                intakeSubsystem.setMotor(Constants.IntakeConstants.coneOuttakeSpeed);
+                intakeSubsystem.setMotor(Constants.Intake.coneOuttakeSpeed);
                 break;
             case CUBE:
-                intakeSubsystem.setMotor(-Constants.IntakeConstants.cubeOuttakeSpeed);
+                intakeSubsystem.setMotor(-Constants.Intake.cubeOuttakeSpeed);
                 break;
 
         }

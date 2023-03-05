@@ -50,13 +50,13 @@ public class RobotContainer {
 
   /* Autonomous Modes */
   PathPlannerTrajectory moveForward = PathPlanner.loadPath("Move Forward",
-      Constants.AutoConstants.kMaxSpeedMetersPerSecond, Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared);
+      Constants.Autonomous.kMaxSpeedMetersPerSecond, Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
   PathPlannerTrajectory sCurve = PathPlanner.loadPath("S Curve",
-      Constants.AutoConstants.kMaxSpeedMetersPerSecond, Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared);
+      Constants.Autonomous.kMaxSpeedMetersPerSecond, Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
   PathPlannerTrajectory sussy = PathPlanner.loadPath("sussy",
-      Constants.AutoConstants.kMaxSpeedMetersPerSecond, Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared);
+      Constants.Autonomous.kMaxSpeedMetersPerSecond, Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
   PathPlannerTrajectory autobalance = PathPlanner.loadPath("Autobalance",
-      Constants.AutoConstants.kMaxSpeedMetersPerSecond, Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared);
+      Constants.Autonomous.kMaxSpeedMetersPerSecond, Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.

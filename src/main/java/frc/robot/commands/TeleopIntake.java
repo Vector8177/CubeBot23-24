@@ -21,7 +21,7 @@ public class TeleopIntake extends CommandBase {
 
     @Override
     public void execute() {
-        s_Intake.setMotor(MathUtil.clamp(moveVal.getAsDouble(), 0, Constants.IntakeConstants.intakeSpeed)
+        s_Intake.setMotor(MathUtil.clamp(moveVal.getAsDouble(), 0, Constants.Intake.intakeSpeed)
                 * RobotContainer.gamePiece.getDirection());
     }
 }

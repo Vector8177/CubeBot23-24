@@ -76,14 +76,13 @@ public class Elevator extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Left Elevator Motor", -elevatorMotorLeft.getEncoder().getPosition());
-        SmartDashboard.putNumber("Right Elevator Motor", elevatorMotorRight.getEncoder().getPosition());
-        SmartDashboard.putNumber("Current Position", currentPosition);
+        SmartDashboard.putNumber("Elevator Position", getEncoderPosition());
+        SmartDashboard.putNumber("Elevator Goal Position", currentPosition);
 
         move(
                 MathUtil.clamp(
                         pidController.calculate(getEncoderPosition(), currentPosition),
-                        -Constants.Elevator.maxMotorSpeed,
-                        Constants.Elevator.maxMotorSpeed));
+                        -Constants.Elevator.maxMotorVoltage,
+                        Constants.Elevator.maxMotorVoltage));
     }
 }

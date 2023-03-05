@@ -6,7 +6,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Constants.IntakeConstants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -22,13 +21,13 @@ public class Intake extends SubsystemBase {
      * Constructor for intake subsystem.
      */
     public Intake() {
-        intakeMotor = new CANSparkMax(Constants.IntakeConstants.intakeMotorId, MotorType.kBrushless);
+        intakeMotor = new CANSparkMax(Constants.Intake.motorId, MotorType.kBrushless);
 
         intakeEncoder = intakeMotor.getEncoder();
 
-        intakeEncoder.setPositionConversionFactor(IntakeConstants.kDriveEncoderRot2Meter);
+        intakeEncoder.setPositionConversionFactor(Constants.Intake.kDriveEncoderRot2Meter);
 
-        intakeEncoder.setVelocityConversionFactor(IntakeConstants.kDriveEncoderRPM2MeterPerSec);
+        intakeEncoder.setVelocityConversionFactor(Constants.Intake.kDriveEncoderRPM2MeterPerSec);
 
     }
 
