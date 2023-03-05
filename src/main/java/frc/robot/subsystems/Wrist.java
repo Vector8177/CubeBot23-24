@@ -49,7 +49,7 @@ public class Wrist extends SubsystemBase {
        absoluteEncoder = wristMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle); 
        absoluteEncoder.setInverted(true);
 
-        pidController = new PIDController(5, .3, .1);
+        pidController = new PIDController(5, 2.5, .1);
         pidController.enableContinuousInput(0, Math.PI*2);
 
         relativeEncoder = wristMotor.getEncoder();
@@ -58,7 +58,7 @@ public class Wrist extends SubsystemBase {
         absoluteEncoder.setZeroOffset(5.412927);
         relativeEncoder.setPositionConversionFactor(IntakeConstants.kWristMotorGearRatio * 2*Math.PI); 
         
-        feedForward = new ArmFeedforward(0.6,1.36,.62,0); 
+        feedForward = new ArmFeedforward(0.11237,.56416,.56387,.041488); 
 
         relativeEncoder.setPosition(absoluteEncoder.getPosition());
 
@@ -84,7 +84,7 @@ public class Wrist extends SubsystemBase {
     SmartDashboard.putNumber("motor power wrist", pidMotorSpeed);
     setWristMotor(
         MathUtil.clamp(
-            (pidMotorSpeed),
+            (pidMotorSpeed) + feedForward.calculate(currentPosition, 0),
             -3,
             3));
 }  

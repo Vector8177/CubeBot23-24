@@ -14,7 +14,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.Position;
 import frc.robot.Constants.SEGMENT;
+import frc.robot.Constants.GamePiece;
 import frc.robot.autos.*;
 import frc.robot.commands.*; 
 import frc.robot.subsystems.*;
@@ -42,6 +44,9 @@ public class RobotContainer {
   /* Autonomous Mode Chooser */
   private final SendableChooser<PathPlannerTrajectory> autoChooser = new SendableChooser<>();
 
+  /* Robot State */
+  private static GamePiece gamePiece = GamePiece.CUBE;
+
   /* Autonomous Modes */
   PathPlannerTrajectory moveForward = PathPlanner.loadPath("Move Forward",
       Constants.AutoConstants.kMaxSpeedMetersPerSecond, Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared);
@@ -61,12 +66,12 @@ public class RobotContainer {
             () -> -driver.getRawAxis(strafeAxis),
             () -> -driver.getRawAxis(rotationAxis),
             () -> driver.povDown().getAsBoolean()));
-            /* 
+            
     s_Elevator.setDefaultCommand(
       new TeleopElevator(
         s_Elevator, 
-        () -> -operator.getRawAxis(elevatorAxis)));
-*/
+        () -> operator.getRawAxis(elevatorAxis)));
+
     s_Wrist.setDefaultCommand(
       new TeleopWrist(
         s_Wrist, 
@@ -94,24 +99,21 @@ public class RobotContainer {
     /* Driver Buttons */
     // driver.x().onTrue(new AutoBalancing(s_Swerve));
     driver.y().onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
-    operator.a().onTrue(new ElevatorTest(s_Elevator, () -> 20.6));
     // driver.povDown().onTrue(new segmentLineUp(s_Swerve, Constants.SEGMENT.CUBE_3, () -> s_Swerve.getPoint()));
     // driver.povDown().onTrue(new segmentLineUp(s_Swerve, segmentLineUp.SEGMENT.CUBE_3, () -> s_Swerve.getPoint()));
 
     
-  /* 
-    driver.povUp().onTrue(new IntakeConeCmd(s_Intake)); 
-    driver.povDown().onTrue(new IntakeCubeCmd(s_Intake));
-
-    driver.povLeft().onTrue(new OuttakeConeCmd(s_Intake));
-    driver.povRight().onTrue(new OuttakeCubeCmd(s_Intake));
-    */
-    operator.povUp().onTrue(new IntakePiece(s_Intake, .3, true, true, false)); 
-    operator.povDown().onTrue(new IntakePiece(s_Intake, .3, false, true,false));
+  
+    operator.povUp().onTrue(new IntakePiece(s_Intake, .3, GamePiece.CONE, true));
+    operator.povDown().onTrue(new IntakePiece(s_Intake, .3, GamePiece.CONE, false));
     
-    operator.povLeft().onTrue(new IntakePiece(s_Intake, .3,true, false,false)); 
-    operator.povRight().onTrue(new IntakePiece(s_Intake, .3,false, false, false));
+    operator.povLeft().onTrue(new IntakePiece(s_Intake, .3, GamePiece.CUBE, true));
+    operator.povRight().onTrue(new IntakePiece(s_Intake, .3, GamePiece.CUBE, false));
+  
 
+    operator.y().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.HIGH, gamePiece));
+    operator.b().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.MID, gamePiece));
+    operator.a().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.LOW, gamePiece));
    
 
   
@@ -142,5 +144,13 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // Executes the autonomous command chosen in smart dashboard
     return new executeTrajectory(s_Swerve, autoChooser.getSelected(), true);
+  }
+
+  public void setGamePiece(GamePiece piece){
+    gamePiece = piece;
+  }
+
+  public GamePiece getGamePiece(){
+    return gamePiece;
   }
 }

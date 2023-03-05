@@ -189,19 +189,11 @@ public final class Constants {
 
     public static final int motorRightId = 51;
 
-    public static final double elevatorKP = .1;
-    public static final double elevatorKI = .0;
-    public static final double elevatorKD = .0;
+    public static final double elevatorKP = 3;
+    public static final double elevatorKI = .2;
+    public static final double elevatorKD = .05;
 
-    public static final double cone1 = 0;
-    public static final double cone2 = 1;
-    public static final double cone3 = 2;
-
-    public static final double cube1 = 0;
-    public static final double cube2 = 1;
-    public static final double cube3 = 2;
-
-    public static final double maxMotorSpeed = .35;
+    public static final double maxMotorSpeed = 3;
 
   }
 
@@ -256,23 +248,19 @@ public final class Constants {
   }
 
   public static enum Position{
-    CONE2,
-    CONE3,
-    CUBE2,
-    CUBE3,
-    BOTTOM,
+    HIGH,
+    MID,
+    LOW,
     STANDBY
   }
 
+  public static enum GamePiece{
+    CUBE,
+    CONE
+    
+  }
+
   public static final class IntakeConstants{
-  
-    public enum GamePiece{
-      CUBEINTAKE,
-      CONEINTAKE,
-      CUBEOUTTAKE,
-      CONEOUTTAKE
-      
-    }
     public static final int intakeMotorId = 60; 
     
 
@@ -283,7 +271,8 @@ public final class Constants {
 
     public static final double wristMaxSpeed = 0.2;
 
-    public static final double outtakeSpeed = .25; 
+    public static final double coneOuttakeSpeed = .6; 
+    public static final double cubeOuttakeSpeed = .6; 
 
     public static final double maxCurrentIntake = 80; 
 

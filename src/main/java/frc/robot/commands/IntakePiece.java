@@ -3,7 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.Constants.IntakeConstants.GamePiece;
+import frc.robot.Constants.GamePiece;
 import frc.robot.subsystems.Intake;
 
 
@@ -14,13 +14,15 @@ public class IntakePiece extends CommandBase {
     private double time;
     private final Intake intakeSubsystem;
     private Timer timer;
+    private boolean intaking;
 
     private GamePiece gamePiece;
 
 
-    public IntakePiece(Intake intakeSubsystem, double time, GamePiece gamePiece) {
+    public IntakePiece(Intake intakeSubsystem, double time, GamePiece gamePiece, boolean intaking) {
         this.time = time;
         this.gamePiece = gamePiece; 
+        this.intaking = intaking;
         this.intakeSubsystem = intakeSubsystem;
        
 
@@ -41,17 +43,19 @@ public class IntakePiece extends CommandBase {
     @Override
     public void execute() {
         switch(gamePiece){
-            case CONEINTAKE:
+            case CONE:
+                if(intaking){
             intakeSubsystem.setMotor(-Constants.IntakeConstants.coneIntakeSpeed);
+                }else{
+             intakeSubsystem.setMotor(Constants.IntakeConstants.coneOuttakeSpeed);
+                }
                 break;
-            case CONEOUTTAKE:
-             intakeSubsystem.setMotor(Constants.IntakeConstants.coneIntakeSpeed);
-                break;
-            case CUBEINTAKE:
+            case CUBE:
+            if(intaking){
             intakeSubsystem.setMotor(Constants.IntakeConstants.cubeIntakeSpeed);
-                break;
-            case CUBEOUTTAKE:
-            intakeSubsystem.setMotor(-Constants.IntakeConstants.cubeIntakeSpeed);
+        }else{
+            intakeSubsystem.setMotor(-Constants.IntakeConstants.cubeOuttakeSpeed);
+        }
                 break;
           
            
@@ -75,17 +79,17 @@ public class IntakePiece extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        if (gamePiece == GamePiece.CUBEOUTTAKE || gamePiece== GamePiece.CONEOUTTAKE) {
+        if (!intaking) {
             return timer.get() > .5;
         }
 
-        else if (gamePiece == GamePiece.CONEINTAKE && intakeSubsystem.getPDMCurrent() >= Constants.IntakeConstants.maxCurrentIntake
+        else if (intaking && intakeSubsystem.getPDMCurrent() >= Constants.IntakeConstants.maxCurrentIntake
                 && timer.hasElapsed(.3)) {
             return true;
         }
         //make two different things 
 
-       else  if (gamePiece == GamePiece.CUBEINTAKE && intakeSubsystem.getPDMCurrent() >= Constants.IntakeConstants.maxCurrentIntake
+       else  if (intaking && intakeSubsystem.getPDMCurrent() >= Constants.IntakeConstants.maxCurrentIntake
                 && timer.hasElapsed(.3)) {
             return true;
         }

@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -14,12 +15,9 @@ public class Elevator extends SubsystemBase {
 
     private final CANSparkMax elevatorMotorLeft; //making the left the lead motor
     private final CANSparkMax elevatorMotorRight; //the right motor is the follower
-    
-  
-
-    
 
     private PIDController pidController;
+    private ElevatorFeedforward feedForward;
 
     private double currentPosition;
 
@@ -49,7 +47,9 @@ public class Elevator extends SubsystemBase {
         //initialize pidContoller
         pidController = new PIDController(Constants.Elevator.elevatorKP, Constants.Elevator.elevatorKI, Constants.Elevator.elevatorKD);
         pidController.setSetpoint(0);
-        pidController.setTolerance(.5);
+        pidController.setTolerance(.25);
+
+        feedForward = new ElevatorFeedforward(1, .25, 13.81,.03);
 
 
         
@@ -60,34 +60,18 @@ public class Elevator extends SubsystemBase {
         elevatorMotorRight.getEncoder().setPosition(0);
     }
 
-    //FIX later change to something else
-    public void raise(double distance){
-        this.move(MathUtil.clamp(pidController.calculate(currentPosition-distance), -Constants.Elevator.maxMotorSpeed, Constants.Elevator.maxMotorSpeed));
-    }
-
     public void setPosition(double position){
         currentPosition = position;
     }
 
+    public double getPosition(){
+        return currentPosition;
+    }
+
     
-    public void move(double speed){
-        if(currentPosition <= 0 && speed >= 0){
-            elevatorMotorRight.set(speed*Constants.Elevator.maxMotorSpeed);
-            elevatorMotorLeft.set(speed*Constants.Elevator.maxMotorSpeed);
-        }
-        else if(currentPosition >= 35.2 && speed <= 0){
-            elevatorMotorRight.set(speed*Constants.Elevator.maxMotorSpeed);
-            elevatorMotorLeft.set(speed*Constants.Elevator.maxMotorSpeed);
-        }
-        else if(currentPosition >= 0 && currentPosition <= 35.2){
-            elevatorMotorRight.set(speed*Constants.Elevator.maxMotorSpeed);
-            elevatorMotorLeft.set(speed*Constants.Elevator.maxMotorSpeed);
-        }
-        else{
-            elevatorMotorRight.set(0);
-            elevatorMotorLeft.set(0);
-        }
-        //updatePosition();
+    public void move(double voltage){
+        elevatorMotorLeft.setVoltage(voltage);
+        elevatorMotorRight.setVoltage(voltage);
     }
     
 
@@ -106,8 +90,8 @@ public class Elevator extends SubsystemBase {
 
         move(
             MathUtil.clamp(
-                pidController.calculate(getEncoderPosition(), currentPosition), 
-                -Constants.Elevator.maxMotorSpeed, 
+                pidController.calculate(getEncoderPosition(), currentPosition),
+                -Constants.Elevator.maxMotorSpeed,
                 Constants.Elevator.maxMotorSpeed));
     }
 }

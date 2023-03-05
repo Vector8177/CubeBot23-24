@@ -16,10 +16,10 @@ public class ElevatorTest extends CommandBase {
     }
 
     public void execute(){
-        s_Elevator.raise(moveVal.getAsDouble());
-        if(s_Elevator.reachedSetpoint(moveVal.getAsDouble())){
-            s_Elevator.move(0);
-            return;
-        }
+        s_Elevator.setPosition(moveVal.getAsDouble());
+    }
+
+    public boolean isFinished(){
+        return s_Elevator.reachedSetpoint(moveVal.getAsDouble());
     }
 }

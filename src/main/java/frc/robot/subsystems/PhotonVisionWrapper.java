@@ -55,10 +55,14 @@ public class PhotonVisionWrapper extends SubsystemBase {
      */
     public void periodic(){
         if(camera.getLatestResult().getBestTarget() != null){
+            try{
             PhotonTrackedTarget target = camera.getLatestResult().getBestTarget(); 
             SmartDashboard.putNumber("X From AprilTag", target.getBestCameraToTarget().getX());
             SmartDashboard.putNumber("Y From AprilTag", target.getBestCameraToTarget().getY());
             SmartDashboard.putNumber("Angle From AprilTag", target.getYaw());
+            } catch(Exception e){
+                
+            }
         }
     }
 
