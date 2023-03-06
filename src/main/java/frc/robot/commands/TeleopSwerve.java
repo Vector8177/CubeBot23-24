@@ -15,6 +15,8 @@ public class TeleopSwerve extends CommandBase {
   private DoubleSupplier strafeSup;
   private DoubleSupplier rotationSup;
   private BooleanSupplier robotCentricSup;
+  private BooleanSupplier leftBumper;
+  private BooleanSupplier rightBumper;
 
   private SlewRateLimiter translationLimiter = new SlewRateLimiter(3.0);
   private SlewRateLimiter strafeLimiter = new SlewRateLimiter(3.0);
@@ -35,7 +37,9 @@ public class TeleopSwerve extends CommandBase {
       DoubleSupplier translationSup,
       DoubleSupplier strafeSup,
       DoubleSupplier rotationSup,
-      BooleanSupplier robotCentricSup) {
+      BooleanSupplier robotCentricSup,
+      BooleanSupplier leftBumper,
+      BooleanSupplier rightBumper) {
     this.s_Swerve = s_Swerve;
     addRequirements(s_Swerve);
 
@@ -43,6 +47,8 @@ public class TeleopSwerve extends CommandBase {
     this.strafeSup = strafeSup;
     this.rotationSup = rotationSup;
     this.robotCentricSup = robotCentricSup;
+    this.leftBumper = leftBumper;
+    this.rightBumper = rightBumper;
   }
 
   /**
@@ -60,8 +66,17 @@ public class TeleopSwerve extends CommandBase {
         .calculate(MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.Swerve.stickDeadband));
 
     s_Swerve.drive(
-        new Translation2d(translationVal, strafeVal).times(Constants.Swerve.maxSpeed),
-        rotationVal * Constants.Swerve.maxAngularVelocity,
+        new Translation2d(translationVal, strafeVal).times(
+          leftBumper.getAsBoolean() ? 
+          Constants.Swerve.maxSpeedMaxLimit : 
+          rightBumper.getAsBoolean() ? 
+          Constants.Swerve.maxSpeedMinLimit : 
+          Constants.Swerve.maxSpeed),
+        rotationVal * (leftBumper.getAsBoolean() ? 
+          Constants.Swerve.maxAngularVelocityMaxLimit : 
+          rightBumper.getAsBoolean() ? 
+          Constants.Swerve.maxAngularVelocityMinLimit : 
+          Constants.Swerve.maxAngularVelocity),
         !robotCentricSup.getAsBoolean(),
         false);
   }
