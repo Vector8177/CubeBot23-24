@@ -44,7 +44,7 @@ public class Intake extends SubsystemBase {
     }
 
     public void setMotor(double speed) {
-        intakeMotor.set(speed);
+        intakeMotor.setVoltage(speed);
     }
 
     public double getPDMCurrent() {
