@@ -28,10 +28,10 @@ public class SetPosition extends CommandBase{
                 case HIGH:
                     if(gamePiece.get() == GamePiece.CONE){
                         s_Wrist.setWristPosition(.104327);
-                        s_Elevator.setPosition(35);
+                        s_Elevator.setPosition(33.5);
                     } else if(gamePiece.get() == GamePiece.CUBE){
                         s_Wrist.setWristPosition(1.55);
-                        s_Elevator.setPosition(35.1);
+                        s_Elevator.setPosition(33.5);
                     }
                     break;
     

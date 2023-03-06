@@ -73,7 +73,9 @@ public class RobotContainer {
             () -> -driver.getRawAxis(translationAxis),
             () -> -driver.getRawAxis(strafeAxis),
             () -> -driver.getRawAxis(rotationAxis),
-            () -> driver.povDown().getAsBoolean()));
+            () -> driver.povDown().getAsBoolean(),
+            () -> driver.leftBumper().getAsBoolean(),
+            () -> driver.rightBumper().getAsBoolean()));
             
     s_Elevator.setDefaultCommand(
       new TeleopElevator(
@@ -156,7 +158,7 @@ public class RobotContainer {
     autoChooser.addOption("S curve", sCurve);
     autoChooser.addOption("SUSSY - CADEN", sussy);
     autoChooser.addOption("Autobalance :)", autobalance); 
-
+    
     SmartDashboard.putData(autoChooser);
   }
 
@@ -171,6 +173,7 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
+
   public Command getAutonomousCommand() {
     // Executes the autonomous command chosen in smart dashboard
     return new executeTrajectory(s_Swerve, autoChooser.getSelected(), true);

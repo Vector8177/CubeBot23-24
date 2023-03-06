@@ -79,7 +79,12 @@ public final class Constants {
 
     /* Swerve Profiling Values */
     public static final double maxSpeed = 3; // meters per second
+    public static final double maxSpeedMinLimit = 2.1; //meters per second when speed is limited by driver minimally
+    public static final double maxSpeedMaxLimit = .75; //meters per second when speed is limited by driver maximum
+
     public static final double maxAngularVelocity = 5;
+    public static final double maxAngularVelocityMinLimit = 3.5;
+    public static final double maxAngularVelocityMaxLimit = 1.25;
 
     /* Swerve Limiting Values */
     public static final double autoCenterLimit = .3;
@@ -193,7 +198,7 @@ public final class Constants {
     public static final double elevatorKI = .2;
     public static final double elevatorKD = .05;
 
-    public static final double maxMotorSpeed = 3;
+    public static final double maxMotorSpeed = 6;
 
   }
 
@@ -239,7 +244,7 @@ public final class Constants {
   }
   public static final class Wrist{
     public static final int wristMotorId = 61;
-    public static final double maxMotorSpeed = .5; 
+    public static final double maxMotorSpeed = .6; 
 
     public enum Positions 
     {
