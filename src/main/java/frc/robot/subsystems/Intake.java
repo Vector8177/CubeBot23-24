@@ -6,6 +6,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.GamePiece;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -16,6 +17,9 @@ public class Intake extends SubsystemBase {
 
     private final CANSparkMax intakeMotor;
     private final RelativeEncoder intakeEncoder;
+
+    /* Game Piece Currently In Robot */
+    private static GamePiece gamePiece = GamePiece.CUBE;
 
     /**
      * Constructor for intake subsystem.
@@ -29,6 +33,14 @@ public class Intake extends SubsystemBase {
 
         intakeEncoder.setVelocityConversionFactor(Constants.Intake.kDriveEncoderRPM2MeterPerSec);
 
+    }
+
+    public static void setGamePiece(GamePiece piece) {
+        gamePiece = piece;
+    }
+
+    public static GamePiece getGamePiece() {
+        return gamePiece;
     }
 
     public void setMotor(double speed) {

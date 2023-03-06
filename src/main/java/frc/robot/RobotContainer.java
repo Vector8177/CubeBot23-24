@@ -44,9 +44,7 @@ public class RobotContainer {
 
   /* Autonomous Mode Chooser */
   private final SendableChooser<PathPlannerTrajectory> autoChooser = new SendableChooser<>();
-
-  /* Robot State */
-  public static GamePiece gamePiece = GamePiece.CUBE;
+  private final SendableChooser<GamePiece> gamePieceChooser = new SendableChooser<>();
 
   /* Autonomous Modes */
   PathPlannerTrajectory moveForward = PathPlanner.loadPath("Move Forward",
@@ -91,6 +89,7 @@ public class RobotContainer {
         new TeleopWrist(
             s_Wrist,
             () -> operator.getRawAxis(wristAxis)));
+
     s_Intake.setDefaultCommand(
         new TeleopIntake(s_Intake,
             () -> operator.getRawAxis(intakeTrigger)));
@@ -115,48 +114,60 @@ public class RobotContainer {
     /* Operator Buttons */
     operator.povUp().onTrue(
         new SequentialCommandGroup(
-            new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
-            new SetPosition(s_Wrist, s_Elevator, Position.STANDINGCONEINTAKE, () -> gamePiece)));
+            new InstantCommand(() -> Intake.setGamePiece(GamePiece.CONE)),
+            new SetPosition(s_Wrist, s_Elevator, Position.STANDINGCONEINTAKE, () -> Intake.getGamePiece())));
 
     operator.povLeft().onTrue(
         new SequentialCommandGroup(
-            new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
-            new SetPosition(s_Wrist, s_Elevator, Position.CUBEINTAKE, () -> gamePiece)));
+            new InstantCommand(() -> Intake.setGamePiece(GamePiece.CUBE)),
+            new SetPosition(s_Wrist, s_Elevator, Position.CUBEINTAKE, () -> Intake.getGamePiece())));
 
     operator.povDown().onTrue(
         new SequentialCommandGroup(
-            new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
-            new SetPosition(s_Wrist, s_Elevator, Position.TIPPEDCONEINTAKE, () -> gamePiece)));
+            new InstantCommand(() -> Intake.setGamePiece(GamePiece.CONE)),
+            new SetPosition(s_Wrist, s_Elevator, Position.TIPPEDCONEINTAKE, () -> Intake.getGamePiece())));
 
     operator.povRight().onTrue(
         new SequentialCommandGroup(
-            new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
-            new SetPosition(s_Wrist, s_Elevator, Position.HUMANPLAYERINTAKE, () -> gamePiece)));
+            new InstantCommand(() -> Intake.setGamePiece(GamePiece.CONE)),
+            new SetPosition(s_Wrist, s_Elevator, Position.HUMANPLAYERINTAKE, () -> Intake.getGamePiece())));
 
-    operator.leftBumper().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.STANDBY, () -> gamePiece));
+    operator.leftBumper().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.STANDBY, () -> Intake.getGamePiece()));
 
-    operator.leftTrigger().onTrue(new OuttakePiece(s_Intake, .5, () -> gamePiece));
+    operator.leftTrigger().onTrue(new OuttakePiece(s_Intake, .5, () -> Intake.getGamePiece()));
 
-    operator.y().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.HIGH, () -> gamePiece));
-    operator.b().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.MID, () -> gamePiece));
-    operator.a().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.LOW, () -> gamePiece));
+    operator.y().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.HIGH, () -> Intake.getGamePiece()));
+    operator.b().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.MID, () -> Intake.getGamePiece()));
+    operator.a().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.LOW, () -> Intake.getGamePiece()));
 
   }
 
   private void configureSmartDashboard() {
+    // Autonomous Mode Chooser
     autoChooser.setDefaultOption("Move forward", moveForward);
     autoChooser.addOption("S curve", sCurve);
     autoChooser.addOption("SUSSY - CADEN", sussy);
     autoChooser.addOption("Autobalance :)", autobalance);
-
     SmartDashboard.putData(autoChooser);
+
+    // Game Piece Chooser
+    gamePieceChooser.setDefaultOption("Cone", GamePiece.CONE);
+    gamePieceChooser.addOption("Cube", GamePiece.CUBE);
+    SmartDashboard.putData(gamePieceChooser);
   }
 
   /**
-   * TODOs
+   * Ran once the robot is put in disabled
    */
   public void disabledInit() {
     s_Swerve.resetToAbsolute();
+  }
+
+  /**
+   * Ran once the robot is put in teleoperated mode
+   */
+  public GamePiece getSelectedGamePiece() {
+    return gamePieceChooser.getSelected();
   }
 
   /**
@@ -167,13 +178,5 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // Executes the autonomous command chosen in smart dashboard
     return new executeTrajectory(s_Swerve, autoChooser.getSelected(), true);
-  }
-
-  public void setGamePiece(GamePiece piece) {
-    gamePiece = piece;
-  }
-
-  public GamePiece getGamePiece() {
-    return gamePiece;
   }
 }
