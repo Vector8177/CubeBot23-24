@@ -36,7 +36,7 @@ public class SetPosition extends CommandBase {
 
             case MID:
                 if (gamePiece.get() == GamePiece.CONE) {
-                    s_Wrist.setPosition(0);
+                    s_Wrist.setPosition(.104327);
                     s_Elevator.setPosition(23);
                 } else if (gamePiece.get() == GamePiece.CUBE) {
                     s_Wrist.setPosition(1.427);

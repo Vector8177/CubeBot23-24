@@ -145,17 +145,17 @@ public final class Constants {
     public static final double elevatorKI = .2;
     public static final double elevatorKD = .05;
 
-    public static final double maxMotorVoltage = 3;
+    public static final double maxMotorVoltage = 6;
 
   }
 
   public static final class Wrist {
     public static final int wristMotorId = 61;
-    public static final double maxMotorVoltage = 1.5;
+    public static final double maxMotorVoltage = 2.5;
 
-    public static double kP = 5.0;
-    public static double kI = 2.5;
-    public static double kD = 0.1;
+    public static double kP = 2.0;
+    public static double kI = 0.0;
+    public static double kD = 0.2;
 
     public static double kS = 0.11237;
     public static double kV = 0.56387;
@@ -280,7 +280,7 @@ public final class Constants {
   public static final class PhotonVision {
     public static final String photonVisionName = "OV5647";
     public static final Transform3d robotToCam = new Transform3d(
-        new Translation3d(Units.inchesToMeters(11.4), 0.0, Units.inchesToMeters(6.4)),
+        new Translation3d(Units.inchesToMeters(9.1505), Units.inchesToMeters(9.666), Units.inchesToMeters(31.185)),
         new Rotation3d(
             0, Units.degreesToRadians(15),
             Units.degreesToRadians(5)));
