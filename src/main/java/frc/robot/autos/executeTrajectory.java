@@ -14,7 +14,7 @@ public class executeTrajectory extends SequentialCommandGroup {
     s_Swerve.getField().getObject("Field").setTrajectory(trajectory);
 
     PIDController thetaController = new PIDController(
-        Constants.AutoConstants.kPThetaController,
+        Constants.Autonomous.kPThetaController,
         0,
         0);
 
@@ -22,19 +22,19 @@ public class executeTrajectory extends SequentialCommandGroup {
         trajectory,
         s_Swerve::getPose,
         Constants.Swerve.swerveKinematics,
-        new PIDController(Constants.AutoConstants.kPXController, 0, 0),
-        new PIDController(Constants.AutoConstants.kPYController, 0, 0),
+        new PIDController(Constants.Autonomous.kPXController, 0, 0),
+        new PIDController(Constants.Autonomous.kPYController, 0, 0),
         thetaController,
         s_Swerve::setModuleStates,
         s_Swerve);
 
-    if(setInitialPose){
-    addCommands(
-        new InstantCommand(() -> s_Swerve.resetOdometry(trajectory.getInitialHolonomicPose())),
-        swerveControllerCommand);
-    } else{
-        addCommands(
-            swerveControllerCommand);
+    if (setInitialPose) {
+      addCommands(
+          new InstantCommand(() -> s_Swerve.resetOdometry(trajectory.getInitialHolonomicPose())),
+          swerveControllerCommand);
+    } else {
+      addCommands(
+          swerveControllerCommand);
     }
   }
 }
