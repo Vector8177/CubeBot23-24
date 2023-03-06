@@ -282,8 +282,8 @@ public final class Constants {
     public static final Transform3d robotToCam = new Transform3d(
         new Translation3d(Units.inchesToMeters(11.4), 0.0, Units.inchesToMeters(6.4)),
         new Rotation3d(
-            0, 0,
-            0));
+            0, Units.degreesToRadians(15),
+            Units.degreesToRadians(5)));
   }
 
   public static final class AprilTags {

@@ -9,9 +9,12 @@ import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import frc.robot.Constants;
 import frc.robot.FieldConstants;
 
@@ -55,6 +58,13 @@ public class PhotonVisionWrapper extends SubsystemBase {
      */
     @Override
     public void periodic() {
+        // Sets the april tag positions depending on which side the robot starts on.
+        if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
+            positionEstimation.getFieldTags().setOrigin(OriginPosition.kBlueAllianceWallRightSide);
+        } else {
+            positionEstimation.getFieldTags().setOrigin(OriginPosition.kRedAllianceWallRightSide);
+        }
+
         if (camera.getLatestResult().getBestTarget() != null) {
             try {
                 PhotonTrackedTarget target = camera.getLatestResult().getBestTarget();
