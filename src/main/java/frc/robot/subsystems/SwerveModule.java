@@ -61,7 +61,8 @@ public class SwerveModule {
 
     lastAngle = getState().angle;
   }
- /**
+
+  /**
    * TODO
    * 
    * @param desiredState
@@ -77,7 +78,7 @@ public class SwerveModule {
     setSpeed(desiredState, isOpenLoop);
   }
 
-/**
+  /**
    * 
    * @param desiredState
    * @param isOpenLoop
@@ -95,6 +96,7 @@ public class SwerveModule {
           feedforward.calculate(desiredState.speedMetersPerSecond));
     }
   }
+
   /**
    * 
    * @param desiredState
@@ -116,13 +118,15 @@ public class SwerveModule {
     double absolutePosition = getCanCoder().getDegrees() - angleOffset.getDegrees();
     integratedAngleEncoder.setPosition(absolutePosition);
   }
+
   /**
    * 
-   * @return SwerveModulePosition 
+   * @return SwerveModulePosition
    */
   public SwerveModulePosition getPosition() {
     return new SwerveModulePosition(driveEncoder.getPosition(), getAngle());
   }
+
   /**
    * 
    */
@@ -173,10 +177,11 @@ public class SwerveModule {
     driveMotor.burnFlash();
     driveEncoder.setPosition(0.0);
   }
-/**
- * 
- * @return Rotation2d TODO
- */
+
+  /**
+   * 
+   * @return Rotation2d TODO
+   */
   public Rotation2d getCanCoder() {
     return Rotation2d.fromDegrees(angleEncoder.getAbsolutePosition());
   }
@@ -188,6 +193,7 @@ public class SwerveModule {
   private Rotation2d getAngle() {
     return Rotation2d.fromDegrees(integratedAngleEncoder.getPosition());
   }
+
   /**
    * 
    * @return SwerveModulateState
