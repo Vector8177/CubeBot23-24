@@ -61,8 +61,28 @@ public class RobotContainer {
    */
   public RobotContainer() {
 
-    // Sets the default command for each subsystem
-    setDefaultCommands();
+    s_Swerve.setDefaultCommand(
+        new TeleopSwerve(
+            s_Swerve,
+            () -> -driver.getRawAxis(translationAxis),
+            () -> -driver.getRawAxis(strafeAxis),
+            () -> -driver.getRawAxis(rotationAxis),
+            () -> driver.povDown().getAsBoolean(),
+            () -> driver.leftBumper().getAsBoolean(),
+            () -> driver.rightBumper().getAsBoolean()));
+            
+    s_Elevator.setDefaultCommand(
+      new TeleopElevator(
+        s_Elevator, 
+        () -> operator.getRawAxis(elevatorAxis)));
+
+    s_Wrist.setDefaultCommand(
+      new TeleopWrist(
+        s_Wrist, 
+        () -> operator.getRawAxis(wristAxis)));
+    s_Intake.setDefaultCommand(
+      new TeleopIntake(s_Intake,  
+      () -> operator.getRawAxis(intakeTrigger)));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -147,7 +167,8 @@ public class RobotContainer {
     autoChooser.setDefaultOption("Move forward", moveForward);
     autoChooser.addOption("S curve", sCurve);
     autoChooser.addOption("SUSSY - CADEN", sussy);
-    autoChooser.addOption("Autobalance :)", autobalance);
+    autoChooser.addOption("Autobalance :)", autobalance); 
+    
     SmartDashboard.putData(autoChooser);
 
     // Game Piece Chooser
@@ -175,6 +196,7 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
+
   public Command getAutonomousCommand() {
     // Executes the autonomous command chosen in smart dashboard
     return new executeTrajectory(s_Swerve, autoChooser.getSelected(), true);

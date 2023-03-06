@@ -79,7 +79,12 @@ public final class Constants {
 
     /* Swerve Profiling Values */
     public static final double maxSpeed = 3; // meters per second
+    public static final double maxSpeedMinLimit = 2.1; //meters per second when speed is limited by driver minimally
+    public static final double maxSpeedMaxLimit = .75; //meters per second when speed is limited by driver maximum
+
     public static final double maxAngularVelocity = 5;
+    public static final double maxAngularVelocityMinLimit = 3.5;
+    public static final double maxAngularVelocityMaxLimit = 1.25;
 
     /* Swerve Limiting Values */
     public static final double autoCenterLimit = .3;
@@ -307,5 +312,142 @@ public final class Constants {
       aprilTagList.add(tag7);
       aprilTagList.add(tag8);
     }
+  }
+
+  public static final class Elevator{
+    public static final int motorLeftId = 50;
+
+    public static final int motorRightId = 51;
+
+    public static final double elevatorKP = 3;
+    public static final double elevatorKI = .2;
+    public static final double elevatorKD = .05;
+
+    public static final double maxMotorSpeed = 6;
+
+  }
+
+  public enum SEGMENT { // Numbers in order of segment from left to right (driver station POV)
+    CONE_1(0), CONE_2(31.8), CONE_3(35.2), CONE_4(-1), CONE_5(-1), CONE_6(-1),
+    CUBE_1(0), CUBE_2(20.6), CUBE_3(35.2);
+
+    //intake Ground Cube: 0
+    //intake Cone Upright: 12
+    //intake Cone Tipped: 0
+
+    //intake Cone Single HP: 8.9
+    //intake Cube Single HP: 11.8
+
+    private double level;
+
+    private SEGMENT(double level){
+      this.level = level;
+    }
+
+    public static SEGMENT getSegment(int level, boolean cone){
+      if(cone){
+        switch(level){
+            case 1: return CONE_1;
+            case 2: return CONE_2;
+            case 3: return CONE_3;
+        }
+      }
+      else{
+        switch(level){
+            case 1: return CUBE_1;
+            case 2: return CUBE_2;
+            case 3: return CUBE_3;
+        }
+      }
+      return null;
+    }
+
+    public double getValue(){
+      return level;
+    }
+    
+  }
+  public static final class Wrist{
+    public static final int wristMotorId = 61;
+    public static final double maxMotorSpeed = .6; 
+
+    public enum Positions 
+    {
+      
+    }
+  }
+
+  public static enum Position{
+    HIGH,
+    MID,
+    LOW,
+    STANDBY,
+    CUBEINTAKE,
+    TIPPEDCONEINTAKE,
+    STANDINGCONEINTAKE,
+    HUMANPLAYERINTAKE
+  }
+
+  public static enum GamePiece{
+    CUBE(1),
+    CONE(-1);
+
+    private double direction;
+
+    private GamePiece(double value){
+      direction = value;
+    }
+
+    public double getDirection(){
+      return direction;
+    }
+    
+  }
+
+  public static final class IntakeConstants{
+    public static final int intakeMotorId = 60; 
+    
+
+    public static final int pdpChannel = 2; //update number later
+    
+    public static final double intakeSpeed = .7; 
+
+    public static final double wristMaxSpeed = 0.2;
+
+    public static final double coneOuttakeSpeed = .6; 
+    public static final double cubeOuttakeSpeed = .6; 
+
+    public static final double maxCurrentIntake = 80; 
+
+    //wheel diameter, gear ratio, encoder constants
+        //will need to change depending on the robot/swerve
+        //the below value will need to be change not accurate for our robot 
+        //wrist 32/1
+        public static final double kWheelDiameterMeters = Units.inchesToMeters(4);
+        public static final double kDriveMotorGearRatio = 1 / 5.8462;
+        public static final double kTurningMotorGearRatio = 1 / 18.0;
+        public static final double kWristMotorGearRatio = 1 / 32.0;
+        public static final double kDriveEncoderRot2Meter = kDriveMotorGearRatio * Math.PI * kWheelDiameterMeters;
+        public static final double kTurningEncoderRot2Rad = kTurningMotorGearRatio * 2 * Math.PI;
+        public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter / 60;
+        public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 60;
+        
+        public static final double kPTurning = 0.5;
+
+        //PID coefficeints for wrist 
+        //will make these final later
+        public static double kP = 5e-1;  
+        public static  double kI = 1e-6; 
+        public static  double kD = 0; 
+        public static  double kIz = 0; 
+        public static  double kFF = 0.000156; 
+        public static  double kMaxOutput = 1; 
+        public static  double kMinOutput = -1;
+        public static double maxRPM = 1500; 
+        
+        public static final double wristMaxVelocity = 2000; //rpm-> this is not an accurate value
+        public static final double wristMaxAcc = 1500; 
+
+
   }
 }
