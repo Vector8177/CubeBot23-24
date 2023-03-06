@@ -58,33 +58,14 @@ public class RobotContainer {
 
   private Command coneCubeDeposit;
 
+  private Command backnFor;
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
 
-    s_Swerve.setDefaultCommand(
-        new TeleopSwerve(
-            s_Swerve,
-            () -> -driver.getRawAxis(translationAxis),
-            () -> -driver.getRawAxis(strafeAxis),
-            () -> -driver.getRawAxis(rotationAxis),
-            () -> driver.povDown().getAsBoolean(),
-            () -> driver.leftBumper().getAsBoolean(),
-            () -> driver.rightBumper().getAsBoolean()));
-            
-    s_Elevator.setDefaultCommand(
-      new TeleopElevator(
-        s_Elevator, 
-        () -> operator.getRawAxis(elevatorAxis)));
-
-    s_Wrist.setDefaultCommand(
-      new TeleopWrist(
-        s_Wrist, 
-        () -> operator.getRawAxis(wristAxis)));
-    s_Intake.setDefaultCommand(
-      new TeleopIntake(s_Intake,  
-      () -> operator.getRawAxis(intakeTrigger)));
+    setDefaultCommands();
 
     // Configure the button bindings
     configureButtonBindings();
@@ -103,7 +84,9 @@ public class RobotContainer {
             () -> -driver.getRawAxis(translationAxis),
             () -> -driver.getRawAxis(strafeAxis),
             () -> -driver.getRawAxis(rotationAxis),
-            () -> driver.povDown().getAsBoolean()));
+            () -> driver.povDown().getAsBoolean(),
+            () -> driver.leftBumper().getAsBoolean(),
+            () -> driver.rightBumper().getAsBoolean()));
 
     s_Elevator.setDefaultCommand(
         new TeleopElevator(
@@ -143,6 +126,10 @@ public class RobotContainer {
     PathPlannerTrajectory autoBalanceTraj = PathPlanner.loadPath("Autobalance",
         Constants.Autonomous.kMaxSpeedMetersPerSecond, Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
     autoBalance = new executeTrajectory(s_Swerve, autoBalanceTraj, true);
+
+    PathPlannerTrajectory backNForthTraj = PathPlanner.loadPath("BacknForth",
+        Constants.Autonomous.kMaxSpeedMetersPerSecond, Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
+    //backNForth = new executeTrajectory(s_Swerve, backNForthTraj , true);
 
     PathPlannerTrajectory coneCubeDepositTraj = PathPlanner.loadPath("coneCubeDeposit",
         Constants.Autonomous.kMaxSpeedMetersPerSecond, Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);

@@ -33,7 +33,7 @@ public class Elevator extends SubsystemBase {
         elevatorMotorLeft.restoreFactoryDefaults();
         elevatorMotorRight.restoreFactoryDefaults();
 
-        elevatorMotorRight.setInverted(true);
+        elevatorMotorRight.follow(elevatorMotorLeft, true);
 
         // elevatorRightController = new CANCoder(Constants.Elevator.canConderRightId);
 
@@ -63,7 +63,6 @@ public class Elevator extends SubsystemBase {
 
     public void move(double voltage) {
         elevatorMotorLeft.setVoltage(voltage);
-        elevatorMotorRight.setVoltage(voltage);
     }
 
     public boolean reachedSetpoint(double distance) {
@@ -80,6 +79,7 @@ public class Elevator extends SubsystemBase {
 
     @Override
     public void periodic() {
+        SmartDashboard.putBoolean("Elevator at setpoint", atSetpoint());
         SmartDashboard.putNumber("Elevator Position", getEncoderPosition());
         SmartDashboard.putNumber("Elevator Goal Position", currentPosition);
 

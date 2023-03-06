@@ -21,70 +21,13 @@ public class SetPosition extends CommandBase {
         this.gamePiece = gamePiece;
         }
 
-        @Override
-        public void execute(){
-            switch(position){
-                case HIGH:
-                    if(gamePiece.get() == GamePiece.CONE){
-                        s_Wrist.setWristPosition(.104327);
-                        s_Elevator.setPosition(33.5);
-                    } else if(gamePiece.get() == GamePiece.CUBE){
-                        s_Wrist.setWristPosition(1.55);
-                        s_Elevator.setPosition(33.5);
-                    }
-                    break;
-    
-                case MID:
-                    if(gamePiece.get() == GamePiece.CONE){
-                        s_Wrist.setWristPosition(0);
-                        s_Elevator.setPosition(23);
-                    } else if(gamePiece.get() == GamePiece.CUBE){
-                        s_Wrist.setWristPosition(1.427);
-                        s_Elevator.setPosition(16.5);
-                    }
-                    break;
-    
-                case LOW:
-                    s_Wrist.setWristPosition(0.5236);
-                    s_Elevator.setPosition(0);
-                    break;
-                    
-                case STANDBY:
-                    s_Wrist.setWristPosition(1.3963);
-                    s_Elevator.setPosition(0);
-                    break;
-
-                case CUBEINTAKE:
-                    s_Wrist.setWristPosition(0);
-                    s_Elevator.setPosition(0);
-                    break;
-
-                case STANDINGCONEINTAKE:
-                    s_Wrist.setWristPosition(5.106);
-                    s_Elevator.setPosition(14.380);
-                    break;
-
-                case TIPPEDCONEINTAKE:
-                    s_Wrist.setWristPosition(5.572);
-                    s_Elevator.setPosition(1.333);
-                    break;
-
-                case HUMANPLAYERINTAKE:
-                    s_Wrist.setWristPosition(.8763);
-                    s_Elevator.setPosition(3.5472);
-                    break;
-        }
-
-        
-    }
-
     @Override
     public void execute() {
         switch (position) {
             case HIGH:
                 if (gamePiece.get() == GamePiece.CONE) {
                     s_Wrist.setPosition(.104327);
-                    s_Elevator.setPosition(35);
+                    s_Elevator.setPosition(35.1);
                 } else if (gamePiece.get() == GamePiece.CUBE) {
                     s_Wrist.setPosition(1.55);
                     s_Elevator.setPosition(35.1);
