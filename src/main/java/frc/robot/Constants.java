@@ -176,10 +176,10 @@ public final class Constants {
 
     public static final int pdpChannel = 2; // update number later
 
-    public static final double intakeSpeed = 3;
+    public static final double intakeSpeed = 8;
 
-    public static final double coneOuttakeSpeed = .6;
-    public static final double cubeOuttakeSpeed = .6;
+    public static final double coneOuttakeSpeed = 7;
+    public static final double cubeOuttakeSpeed = 7;
 
     public static final double maxCurrentIntake = 80;
 
