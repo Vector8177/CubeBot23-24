@@ -79,6 +79,6 @@ public class SetPosition extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return true;
+        return s_Wrist.atSetpoint() && s_Elevator.atSetpoint();
     }
 }

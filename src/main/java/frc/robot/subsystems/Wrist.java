@@ -47,6 +47,7 @@ public class Wrist extends SubsystemBase {
 
         pidController = new PIDController(Constants.Wrist.kP, Constants.Wrist.kI, Constants.Wrist.kD);
         pidController.enableContinuousInput(0, Math.PI * 2);
+        pidController.setTolerance(.25);
 
         relativeEncoder = wristMotor.getEncoder();
 
@@ -98,6 +99,10 @@ public class Wrist extends SubsystemBase {
 
     public double getPosition() {
         return currentPosition;
+    }
+
+    public boolean atSetpoint() {
+        return pidController.atSetpoint();
     }
 
 }

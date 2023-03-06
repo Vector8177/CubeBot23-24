@@ -74,6 +74,10 @@ public class Elevator extends SubsystemBase {
         return (elevatorMotorLeft.getEncoder().getPosition() + elevatorMotorRight.getEncoder().getPosition()) / 2;
     }
 
+    public boolean atSetpoint() {
+        return pidController.atSetpoint();
+    }
+
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Elevator Position", getEncoderPosition());

@@ -4,8 +4,11 @@
 
 package frc.robot;
 
+import java.util.HashMap;
+
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.FollowPathWithEvents;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -43,18 +46,17 @@ public class RobotContainer {
   private final Wrist s_Wrist = new Wrist();
 
   /* Autonomous Mode Chooser */
-  private final SendableChooser<PathPlannerTrajectory> autoChooser = new SendableChooser<>();
+  private final SendableChooser<Command> autoChooser = new SendableChooser<>();
   private final SendableChooser<GamePiece> gamePieceChooser = new SendableChooser<>();
 
   /* Autonomous Modes */
-  PathPlannerTrajectory moveForward = PathPlanner.loadPath("Move Forward",
-      Constants.Autonomous.kMaxSpeedMetersPerSecond, Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
-  PathPlannerTrajectory sCurve = PathPlanner.loadPath("S Curve",
-      Constants.Autonomous.kMaxSpeedMetersPerSecond, Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
-  PathPlannerTrajectory sussy = PathPlanner.loadPath("sussy",
-      Constants.Autonomous.kMaxSpeedMetersPerSecond, Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
-  PathPlannerTrajectory autobalance = PathPlanner.loadPath("Autobalance",
-      Constants.Autonomous.kMaxSpeedMetersPerSecond, Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
+  private Command moveForward;
+
+  private Command sCurve;
+
+  private Command autoBalance;
+
+  private Command coneCubeDeposit;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -69,6 +71,9 @@ public class RobotContainer {
 
     // Configure Smart Dashboard options
     configureSmartDashboard();
+
+    // Configure autonomous routines
+    configureAutonomousPaths();
   }
 
   private void setDefaultCommands() {
@@ -93,6 +98,38 @@ public class RobotContainer {
     s_Intake.setDefaultCommand(
         new TeleopIntake(s_Intake,
             () -> operator.getRawAxis(intakeTrigger)));
+  }
+
+  private void configureAutonomousPaths() {
+    HashMap<String, Command> eventMap = new HashMap<>();
+    eventMap.put("setStandbyPosition", new SetPosition(s_Wrist, s_Elevator, Position.STANDBY, () -> GamePiece.CONE));
+    eventMap.put("setCone3Position", new SetPosition(s_Wrist, s_Elevator, Position.HIGH, () -> GamePiece.CONE));
+    eventMap.put("setCube3Position", new SetPosition(s_Wrist, s_Elevator, Position.HIGH, () -> GamePiece.CUBE));
+    eventMap.put("setCubeIntakePosition",
+        new SetPosition(s_Wrist, s_Elevator, Position.CUBEINTAKE, () -> GamePiece.CUBE));
+    eventMap.put("coneDeposit", new OuttakePiece(s_Intake, .3, () -> GamePiece.CONE));
+    eventMap.put("cubeDeposit", new OuttakePiece(s_Intake, .3, () -> GamePiece.CUBE));
+    eventMap.put("runCubeIntake3", new OuttakePiece(s_Intake, 3, () -> GamePiece.CUBE));
+
+    PathPlannerTrajectory moveForwardTraj = PathPlanner.loadPath("Move Forward",
+        Constants.Autonomous.kMaxSpeedMetersPerSecond, Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
+    moveForward = new executeTrajectory(s_Swerve, moveForwardTraj, true);
+
+    PathPlannerTrajectory sCurveTraj = PathPlanner.loadPath("S Curve",
+        Constants.Autonomous.kMaxSpeedMetersPerSecond, Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
+    sCurve = new executeTrajectory(s_Swerve, sCurveTraj, true);
+
+    PathPlannerTrajectory autoBalanceTraj = PathPlanner.loadPath("Autobalance",
+        Constants.Autonomous.kMaxSpeedMetersPerSecond, Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
+    autoBalance = new executeTrajectory(s_Swerve, autoBalanceTraj, true);
+
+    PathPlannerTrajectory coneCubeDepositTraj = PathPlanner.loadPath("coneCubeDeposit",
+        Constants.Autonomous.kMaxSpeedMetersPerSecond, Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
+    coneCubeDeposit = new FollowPathWithEvents(
+        new executeTrajectory(s_Swerve, coneCubeDepositTraj, true),
+        coneCubeDepositTraj.getMarkers(),
+        eventMap);
+
   }
 
   /**
@@ -146,8 +183,8 @@ public class RobotContainer {
     // Autonomous Mode Chooser
     autoChooser.setDefaultOption("Move forward", moveForward);
     autoChooser.addOption("S curve", sCurve);
-    autoChooser.addOption("SUSSY - CADEN", sussy);
-    autoChooser.addOption("Autobalance :)", autobalance);
+    autoChooser.addOption("Auto balance", autoBalance);
+    autoChooser.addOption("Cone and Cube", coneCubeDeposit);
     SmartDashboard.putData(autoChooser);
 
     // Game Piece Chooser
@@ -177,6 +214,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // Executes the autonomous command chosen in smart dashboard
-    return new executeTrajectory(s_Swerve, autoChooser.getSelected(), true);
+    return autoChooser.getSelected();
   }
 }
