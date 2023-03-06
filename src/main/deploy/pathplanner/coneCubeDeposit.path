@@ -17,8 +17,8 @@
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "setCone3Position",
-          "coneDeposit",
+          "setCube3Position",
+          "cubeDeposit",
           "setStandbyPosition"
         ],
         "executionBehavior": "sequential",
@@ -68,8 +68,8 @@
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "setPosition3Cube",
-          "cubeDeposit"
+          "setPosition3Cone",
+          "coneDeposit"
         ],
         "executionBehavior": "sequential",
         "waitBehavior": "none",
@@ -81,8 +81,8 @@
     {
       "position": 0.7636363636363638,
       "names": [
-        "runCubeIntake3",
-        "setCubeIntakePosition"
+        "runConeIntake3",
+        "setConeIntakePosition"
       ]
     },
     {

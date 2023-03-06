@@ -110,6 +110,7 @@ public class RobotContainer {
     eventMap.put("coneDeposit", new OuttakePiece(s_Intake, .3, () -> GamePiece.CONE));
     eventMap.put("cubeDeposit", new OuttakePiece(s_Intake, .3, () -> GamePiece.CUBE));
     eventMap.put("runCubeIntake3", new OuttakePiece(s_Intake, 3, () -> GamePiece.CUBE));
+    eventMap.put("runConeIntake3", new OuttakePiece(s_Intake, 3, () -> GamePiece.CONE));
 
     PathPlannerTrajectory moveForwardTraj = PathPlanner.loadPath("Move Forward",
         Constants.Autonomous.kMaxSpeedMetersPerSecond, Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
