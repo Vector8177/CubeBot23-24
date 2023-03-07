@@ -8,6 +8,7 @@ import com.revrobotics.SparkMaxAbsoluteEncoder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.Position;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
@@ -61,7 +62,7 @@ public class Wrist extends SubsystemBase {
 
         relativeEncoder.setPosition(absoluteEncoder.getPosition());
 
-        currentPosition = 0;
+        setPose(Position.STANDBY.getWrist());
     }
 
     public void resetRelativeEncoder() {

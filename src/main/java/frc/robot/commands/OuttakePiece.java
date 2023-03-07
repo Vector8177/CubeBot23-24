@@ -1,7 +1,5 @@
 package frc.robot.commands;
 
-import java.util.function.Supplier;
-
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
@@ -15,14 +13,24 @@ public class OuttakePiece extends CommandBase {
     private final Intake intakeSubsystem;
     private Timer timer;
     private EjectSpeed eject;
-    private Supplier<GamePiece> gamePiece;
+    private GamePiece gamePiece;
+    private boolean auto;
 
-    public OuttakePiece(Intake intakeSubsystem, double time, Supplier<GamePiece> gamePiece, EjectSpeed eject) {
+    public OuttakePiece(Intake intakeSubsystem, double time, EjectSpeed eject) {
         this.time = time;
-        this.gamePiece = gamePiece;
         this.eject = eject;
         this.intakeSubsystem = intakeSubsystem;
+        this.timer = new Timer();
 
+        addRequirements(intakeSubsystem);
+    }
+
+    public OuttakePiece(Intake intakeSubsystem, double time, GamePiece gamePiece, EjectSpeed eject) {
+        this.time = time;
+        this.eject = eject;
+        this.intakeSubsystem = intakeSubsystem;
+        this.gamePiece =  gamePiece;
+        this.auto = true;
         this.timer = new Timer();
 
         addRequirements(intakeSubsystem);
@@ -36,7 +44,7 @@ public class OuttakePiece extends CommandBase {
 
     @Override
     public void execute() {
-        switch (gamePiece.get()) {
+        switch (auto ? gamePiece : Intake.getGamePiece()) {
             case CONE:
                 intakeSubsystem.setMotor((eject == EjectSpeed.NORMAL) ? Constants.Intake.coneOuttakeSpeed
                         : Constants.Intake.coneShootSpeed);
@@ -44,7 +52,7 @@ public class OuttakePiece extends CommandBase {
             case CUBE:
                 intakeSubsystem.setMotor(-Constants.Intake.cubeOuttakeSpeed);
                 break;
-
+            
         }
 
     }

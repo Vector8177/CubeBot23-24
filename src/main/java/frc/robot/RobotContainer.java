@@ -12,13 +12,13 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.Position;
@@ -76,11 +76,11 @@ public class RobotContainer {
         eventMap.put("setCubeIntakePosition", new SetPosition(s_Wrist, s_Elevator, Position.CUBEINTAKE));
         eventMap.put("setStandingConeIntakePosition", new SetPosition(s_Wrist, s_Elevator, Position.STANDINGCONEINTAKE));
 
-        eventMap.put("coneDeposit", new OuttakePiece(s_Intake, .3, () -> GamePiece.CONE, EjectSpeed.NORMAL));
-        eventMap.put("cubeDeposit", new OuttakePiece(s_Intake, .3, () -> GamePiece.CUBE, EjectSpeed.NORMAL));
+        eventMap.put("coneDeposit", new OuttakePiece(s_Intake, .3, GamePiece.CONE, EjectSpeed.NORMAL));
+        eventMap.put("cubeDeposit", new OuttakePiece(s_Intake, .3, GamePiece.CUBE, EjectSpeed.NORMAL));
 
-        eventMap.put("runCubeIntake3", new OuttakePiece(s_Intake, 3, () -> GamePiece.CONE, EjectSpeed.NORMAL));
-        eventMap.put("runConeIntake3", new OuttakePiece(s_Intake, 3, () -> GamePiece.CUBE, EjectSpeed.NORMAL));
+        eventMap.put("runCubeIntake3", new OuttakePiece(s_Intake, 3, GamePiece.CONE, EjectSpeed.NORMAL));
+        eventMap.put("runConeIntake3", new OuttakePiece(s_Intake, 3, GamePiece.CUBE, EjectSpeed.NORMAL));
     }
 
     private final PathPlannerTrajectory moveForward = PathPlanner.loadPath("Move Forward",
@@ -102,6 +102,8 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
+        CameraServer.startAutomaticCapture();
+
         // Sets each subsystem's default commands
         setDefaultCommands();
 
@@ -158,6 +160,7 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         driver.y().onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
+        driver.rightTrigger().onTrue(new OuttakePiece(s_Intake, .5, EjectSpeed.NORMAL));
 
         /* Operator Buttons */
         operator.povUp().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.STANDINGCONEINTAKE));
@@ -168,8 +171,8 @@ public class RobotContainer {
         operator.leftBumper()
                 .onTrue(new SetPosition(s_Wrist, s_Elevator, Position.STANDBY));
 
-        operator.leftTrigger().onTrue(new OuttakePiece(s_Intake, .5, () -> Intake.getGamePiece(), EjectSpeed.NORMAL));
-        operator.x().onTrue(new OuttakePiece(s_Intake, .5, () -> Intake.getGamePiece(), EjectSpeed.FAST));
+        
+        operator.x().onTrue(new OuttakePiece(s_Intake, .5, EjectSpeed.FAST));
 
         operator.rightBumper().onTrue(new InstantCommand(() -> s_LEDs.toggleHPSignal()));
 

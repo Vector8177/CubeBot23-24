@@ -5,17 +5,21 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.Position;
 
 public class Elevator extends SubsystemBase {
 
     private final CANSparkMax elevatorMotorLeft; // making the left the lead motor
     private final CANSparkMax elevatorMotorRight; // the right motor is the follower
 
-    private PIDController pidController;
+    private ProfiledPIDController pidController;
 
     private double currentPosition;
 
@@ -43,10 +47,12 @@ public class Elevator extends SubsystemBase {
         // left motor is so only need to adjust output for the left motor
 
         // initialize pidContoller
-        pidController = new PIDController(Constants.Elevator.elevatorKP, Constants.Elevator.elevatorKI,
-                Constants.Elevator.elevatorKD);
+        pidController = new ProfiledPIDController(Constants.Elevator.elevatorKP, Constants.Elevator.elevatorKI,
+                Constants.Elevator.elevatorKD, new Constraints(3, 1));
         pidController.setSetpoint(0);
         pidController.setTolerance(.25);
+
+        setPose(Position.STANDBY.getElev());
     }
 
     public void resetEncoder() {

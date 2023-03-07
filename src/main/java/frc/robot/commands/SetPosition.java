@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.Position;
@@ -18,8 +19,11 @@ public class SetPosition extends SequentialCommandGroup {
         Command setWristPose = s_Wrist.setPose(Position.STANDBY.getWrist());
         boolean sequential = false;
 
-        if(position.getGamePiece() != null) {
-            Intake.setGamePiece(position.getGamePiece());
+        
+        if(position.getGamePiece() != GamePiece.NONE) {
+            addCommands(
+                new InstantCommand(() -> Intake.setGamePiece(position.getGamePiece()))
+                );
         }
 
         switch (position) {
