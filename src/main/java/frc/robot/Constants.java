@@ -79,8 +79,8 @@ public final class Constants {
 
     /* Swerve Profiling Values */
     public static final double maxSpeed = 3; // meters per second
-    public static final double maxSpeedMinLimit = 2.1; //meters per second when speed is limited by driver minimally
-    public static final double maxSpeedMaxLimit = .75; //meters per second when speed is limited by driver maximum
+    public static final double maxSpeedMinLimit = 2.1; // meters per second when speed is limited by driver minimally
+    public static final double maxSpeedMaxLimit = .75; // meters per second when speed is limited by driver maximum
 
     public static final double maxAngularVelocity = 5;
     public static final double maxAngularVelocityMinLimit = 3.5;
