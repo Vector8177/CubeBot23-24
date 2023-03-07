@@ -5,6 +5,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import edu.wpi.first.math.MathUtil;
@@ -92,6 +93,10 @@ public class Wrist extends SubsystemBase {
 
     public void setMotor(double voltage) {
         wristMotor.setVoltage(voltage);
+    }
+
+    public Command setPose(double position) {
+        return run(() -> setPosition(position)).until(() -> atSetpoint());
     }
 
     public void setPosition(double position) {

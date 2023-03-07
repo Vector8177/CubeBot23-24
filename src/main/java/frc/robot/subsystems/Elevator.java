@@ -6,6 +6,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -51,6 +52,10 @@ public class Elevator extends SubsystemBase {
     public void resetEncoder() {
         elevatorMotorLeft.getEncoder().setPosition(0);
         elevatorMotorRight.getEncoder().setPosition(0);
+    }
+
+    public Command setPose(double position) {
+        return run(() -> setPosition(position)).until(() -> atSetpoint());
     }
 
     public void setPosition(double position) {
