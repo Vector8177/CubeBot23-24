@@ -22,54 +22,29 @@ public class SetPosition extends SequentialCommandGroup {
         switch (position) {
             case HIGH:
                 if (gamePiece.get() == GamePiece.CONE) {
-                    setWristPose = s_Wrist.setPose(.104327); 
-                    setElevatorPose = s_Elevator.setPose(35);
+                    setWristPose = s_Wrist.setPose(Position.CONEHIGH.getWrist()); 
+                    setElevatorPose = s_Elevator.setPose(Position.CONEHIGH.getElev());
                     sequential = true;                       
                 } else if (gamePiece.get() == GamePiece.CUBE) {
-                    setWristPose = s_Wrist.setPose(1.55);
-                    setElevatorPose = s_Elevator.setPose(35.1);
+                    setWristPose = s_Wrist.setPose(Position.CUBEHIGH.getWrist());
+                    setElevatorPose = s_Elevator.setPose(Position.CUBEHIGH.getElev());
                 }
                 break;
 
             case MID:
                 if (gamePiece.get() == GamePiece.CONE) {
-                    setWristPose = s_Wrist.setPose(.104327);
-                    setElevatorPose = s_Elevator.setPose(23);
+                    setWristPose = s_Wrist.setPose(Position.CONEMID.getWrist());
+                    setElevatorPose = s_Elevator.setPose(Position.CONEMID.getElev());
                 } else if (gamePiece.get() == GamePiece.CUBE) {
-                    setWristPose = s_Wrist.setPose(1.427);
-                    setElevatorPose = s_Elevator.setPose(16.5);
+                    setWristPose = s_Wrist.setPose(Position.CUBEMID.getWrist());
+                    setElevatorPose = s_Elevator.setPose(Position.CUBEMID.getElev());
                 }
                 break;
-
-            case LOW:
-                setWristPose = s_Wrist.setPose(0.5236);
-                setElevatorPose = s_Elevator.setPose(0.25);
-                break;
-
-            case STANDBY:
-                setWristPose = s_Wrist.setPose(1.1765);
-                setElevatorPose = s_Elevator.setPose(0.25);
-                break;
-
-            case CUBEINTAKE:
-                setWristPose = s_Wrist.setPose(0);
-                setElevatorPose = s_Elevator.setPose(0.25);
-                break;
-
-            case STANDINGCONEINTAKE:
-                setWristPose = s_Wrist.setPose(5.106);
-                setElevatorPose = s_Elevator.setPose(14.380);
-                break;
-
-            case TIPPEDCONEINTAKE:
-                setWristPose = s_Wrist.setPose(5.572);
-                setElevatorPose = s_Elevator.setPose(1.333);
-                break;
-
-            case HUMANPLAYERINTAKE:
-                setWristPose = s_Wrist.setPose(.8763);
-                setElevatorPose = s_Elevator.setPose(3.5472);
-                break;
+            
+            default:
+                setWristPose = s_Wrist.setPose(position.getWrist());
+                setElevatorPose = s_Elevator.setPose(position.getElev());
+            
         }
 
         if(sequential) {

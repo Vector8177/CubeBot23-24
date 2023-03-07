@@ -191,14 +191,34 @@ public final class Constants {
   }
 
   public enum Position {
-    HIGH,
-    MID,
-    LOW,
-    STANDBY,
-    CUBEINTAKE,
-    TIPPEDCONEINTAKE,
-    STANDINGCONEINTAKE,
-    HUMANPLAYERINTAKE
+    HIGH(0,0),
+    CONEHIGH(.104327, 35),
+    CUBEHIGH(1.55, 35),
+    MID(0,0),
+    CONEMID(.104327, 23),
+    CUBEMID(1.427, 16.5),
+    LOW(.5236, .25),
+    STANDBY(1.1765, .25),
+    CUBEINTAKE(0.1, 0.3),
+    TIPPEDCONEINTAKE(5.106, 14.380),
+    STANDINGCONEINTAKE(5.572, 1.333),
+    HUMANPLAYERINTAKE(.8763, 3.5472);
+
+    private double wristPos;
+    private double elevatorPos;
+
+    private Position(double wrist, double elev) {
+      wristPos = wrist;
+      elevatorPos = elev;
+    }
+
+    public double getWrist() {
+      return wristPos;
+    }
+
+    public double getElev() {
+      return elevatorPos;
+    }
   }
 
   public enum GamePiece {
