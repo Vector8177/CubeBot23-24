@@ -47,6 +47,7 @@ public class RobotContainer {
     private final Intake s_Intake = new Intake();
     private final Elevator s_Elevator = new Elevator();
     private final Wrist s_Wrist = new Wrist();
+    private final LEDs s_LEDs = new LEDs();
 
     /* Autonomous Mode Chooser */
     private final SendableChooser<PathPlannerTrajectory> autoChooser = new SendableChooser<>();
@@ -188,6 +189,8 @@ public class RobotContainer {
 
         operator.leftTrigger().onTrue(new OuttakePiece(s_Intake, .5, () -> Intake.getGamePiece(), EjectSpeed.NORMAL));
         operator.x().onTrue(new OuttakePiece(s_Intake, .5, () -> Intake.getGamePiece(), EjectSpeed.FAST));
+
+        operator.rightBumper().onTrue(new InstantCommand(() -> s_LEDs.toggleHPSignal()));
 
         operator.y().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.HIGH, () -> Intake.getGamePiece()));
         operator.b().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.MID, () -> Intake.getGamePiece()));
