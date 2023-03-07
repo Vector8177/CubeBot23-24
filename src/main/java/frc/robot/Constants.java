@@ -179,21 +179,10 @@ public final class Constants {
     public static final double intakeSpeed = 8;
 
     public static final double coneOuttakeSpeed = 7;
+    public static final double coneShootSpeed = 12;
     public static final double cubeOuttakeSpeed = 7;
 
     public static final double maxCurrentIntake = 80;
-
-    // wheel diameter, gear ratio, encoder constants
-    // will need to change depending on the robot/swerve
-    // the below value will need to be change not accurate for our robot
-    // wrist 32/1
-    public static final double kWheelDiameterMeters = Units.inchesToMeters(4);
-    public static final double kDriveMotorGearRatio = 1 / 5.8462;
-    public static final double kTurningMotorGearRatio = 1 / 18.0;
-    public static final double kDriveEncoderRot2Meter = kDriveMotorGearRatio * Math.PI * kWheelDiameterMeters;
-    public static final double kTurningEncoderRot2Rad = kTurningMotorGearRatio * 2 * Math.PI;
-    public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter / 60;
-    public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 60;
   }
 
   public enum Position {
@@ -220,7 +209,11 @@ public final class Constants {
     public double getDirection() {
       return direction;
     }
+  }
 
+  public enum EjectSpeed {
+    FAST,
+    NORMAL
   }
 
   public enum SEGMENT { // Numbers in order of segment from left to right (driver station POV)

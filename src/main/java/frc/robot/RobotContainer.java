@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.Position;
+import frc.robot.Constants.EjectSpeed;
 import frc.robot.Constants.GamePiece;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
@@ -76,10 +77,10 @@ public class RobotContainer {
         eventMap.put("setStandingConeIntakePosition",
                 new SetPosition(s_Wrist, s_Elevator, Position.STANDINGCONEINTAKE, () -> GamePiece.CONE));
 
-        eventMap.put("coneDeposit", new OuttakePiece(s_Intake, .3, () -> GamePiece.CONE));
-        eventMap.put("cubeDeposit", new OuttakePiece(s_Intake, .3, () -> GamePiece.CUBE));
-        eventMap.put("runCubeIntake3", new OuttakePiece(s_Intake, 3, () -> GamePiece.CUBE));
-        eventMap.put("runConeIntake3", new OuttakePiece(s_Intake, 3, () -> GamePiece.CONE));
+        eventMap.put("coneDeposit", new OuttakePiece(s_Intake, .3, () -> GamePiece.CONE, EjectSpeed.NORMAL));
+        eventMap.put("cubeDeposit", new OuttakePiece(s_Intake, .3, () -> GamePiece.CUBE, EjectSpeed.NORMAL));
+        eventMap.put("runCubeIntake3", new OuttakePiece(s_Intake, 3, () -> GamePiece.CUBE, EjectSpeed.NORMAL));
+        eventMap.put("runConeIntake3", new OuttakePiece(s_Intake, 3, () -> GamePiece.CONE, EjectSpeed.NORMAL));
     }
 
     private final PathPlannerTrajectory moveForward = PathPlanner.loadPath("Move Forward",
@@ -185,7 +186,8 @@ public class RobotContainer {
         operator.leftBumper()
                 .onTrue(new SetPosition(s_Wrist, s_Elevator, Position.STANDBY, () -> Intake.getGamePiece()));
 
-        operator.leftTrigger().onTrue(new OuttakePiece(s_Intake, .5, () -> Intake.getGamePiece()));
+        operator.leftTrigger().onTrue(new OuttakePiece(s_Intake, .5, () -> Intake.getGamePiece(), EjectSpeed.NORMAL));
+        operator.x().onTrue(new OuttakePiece(s_Intake, .5, () -> Intake.getGamePiece(), EjectSpeed.FAST));
 
         operator.rightBumper().onTrue(new InstantCommand(() -> s_LEDs.toggleHPSignal()));
 
