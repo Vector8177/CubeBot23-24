@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.autos;
 
 import org.photonvision.targeting.PhotonTrackedTarget;
 

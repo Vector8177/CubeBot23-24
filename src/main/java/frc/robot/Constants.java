@@ -183,6 +183,11 @@ public final class Constants {
     public static final double cubeOuttakeSpeed = 7;
 
     public static final double maxCurrentIntake = 80;
+
+    public enum EjectSpeed {
+      FAST,
+      NORMAL
+    }
   }
 
   public enum Position {
@@ -209,11 +214,6 @@ public final class Constants {
     public double getDirection() {
       return direction;
     }
-  }
-
-  public enum EjectSpeed {
-    FAST,
-    NORMAL
   }
 
   public enum SEGMENT { // Numbers in order of segment from left to right (driver station POV)

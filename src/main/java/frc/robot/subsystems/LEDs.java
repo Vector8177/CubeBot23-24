@@ -130,7 +130,7 @@ public class LEDs extends SubsystemBase {
      * Orange dot
      */
 
-    private double m_orangeDotMiddleIndex = -VectorWave.pauseBetween;
+    private double m_orangeDotMiddleIndex = -OrangeDot.pauseBetween;
 
     private void orangeDot() {
         for (int i = 0; i < m_ledBuffer.getLength() + OrangeDot.pauseBetween; i++) {

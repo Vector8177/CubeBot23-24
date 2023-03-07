@@ -18,11 +18,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.Position;
-import frc.robot.Constants.EjectSpeed;
+import frc.robot.Constants.Intake.EjectSpeed;
 import frc.robot.Constants.GamePiece;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
@@ -72,15 +73,19 @@ public class RobotContainer {
                 new SetPosition(s_Wrist, s_Elevator, Position.STANDBY, () -> GamePiece.CONE));
         eventMap.put("setCone3Position", new SetPosition(s_Wrist, s_Elevator, Position.HIGH, () -> GamePiece.CONE));
         eventMap.put("setCube3Position", new SetPosition(s_Wrist, s_Elevator, Position.HIGH, () -> GamePiece.CUBE));
-        eventMap.put("setCubeIntakePosition",
-                new SetPosition(s_Wrist, s_Elevator, Position.CUBEINTAKE, () -> GamePiece.CUBE));
-        eventMap.put("setStandingConeIntakePosition",
-                new SetPosition(s_Wrist, s_Elevator, Position.STANDINGCONEINTAKE, () -> GamePiece.CONE));
+
+        eventMap.put("setCubeIntakePosition", new ParallelCommandGroup(
+                new SetPosition(s_Wrist, s_Elevator, Position.CUBEINTAKE, () -> GamePiece.CUBE),
+                new InstantCommand(() -> Intake.setGamePiece(GamePiece.CUBE))));
+        eventMap.put("setStandingConeIntakePosition", new ParallelCommandGroup(
+                new SetPosition(s_Wrist, s_Elevator, Position.STANDINGCONEINTAKE, () -> GamePiece.CONE),
+                new InstantCommand(() -> Intake.setGamePiece(GamePiece.CONE))));
 
         eventMap.put("coneDeposit", new OuttakePiece(s_Intake, .3, () -> GamePiece.CONE, EjectSpeed.NORMAL));
         eventMap.put("cubeDeposit", new OuttakePiece(s_Intake, .3, () -> GamePiece.CUBE, EjectSpeed.NORMAL));
-        eventMap.put("runCubeIntake3", new OuttakePiece(s_Intake, 3, () -> GamePiece.CUBE, EjectSpeed.NORMAL));
-        eventMap.put("runConeIntake3", new OuttakePiece(s_Intake, 3, () -> GamePiece.CONE, EjectSpeed.NORMAL));
+
+        eventMap.put("runCubeIntake3", new OuttakePiece(s_Intake, 3, () -> GamePiece.CONE, EjectSpeed.NORMAL));
+        eventMap.put("runConeIntake3", new OuttakePiece(s_Intake, 3, () -> GamePiece.CUBE, EjectSpeed.NORMAL));
     }
 
     private final PathPlannerTrajectory moveForward = PathPlanner.loadPath("Move Forward",
