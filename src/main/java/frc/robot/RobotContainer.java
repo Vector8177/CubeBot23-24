@@ -50,7 +50,6 @@ public class RobotContainer {
 
     /* Autonomous Mode Chooser */
     private final SendableChooser<PathPlannerTrajectory> autoChooser = new SendableChooser<>();
-    private final SendableChooser<GamePiece> gamePieceChooser = new SendableChooser<>();
 
     /* Autonomous */
     private final SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
@@ -204,11 +203,6 @@ public class RobotContainer {
         autoChooser.addOption("Cone and Cube", coneCubeDeposit);
         autoChooser.addOption("Back and Forth", backnForth);
         SmartDashboard.putData(autoChooser);
-
-        // Game Piece Chooser
-        gamePieceChooser.setDefaultOption("Cone", GamePiece.CONE);
-        gamePieceChooser.addOption("Cube", GamePiece.CUBE);
-        SmartDashboard.putData(gamePieceChooser);
     }
 
     /**
@@ -216,13 +210,6 @@ public class RobotContainer {
      */
     public void disabledInit() {
         s_Swerve.resetToAbsolute();
-    }
-
-    /**
-     * Ran once the robot is put in teleoperated mode
-     */
-    public GamePiece getSelectedGamePiece() {
-        return gamePieceChooser.getSelected();
     }
 
     /**
