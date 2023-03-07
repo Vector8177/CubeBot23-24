@@ -199,11 +199,12 @@ public final class Constants {
     CUBEMID(1.427, 16.5),
     LOW(.5236, .25),
     STANDBY(1.1765, .25),
-    CUBEINTAKE(0.1, 0.3),
-    TIPPEDCONEINTAKE(5.106, 14.380),
-    STANDINGCONEINTAKE(5.572, 1.333),
-    HUMANPLAYERINTAKE(.8763, 3.5472);
+    CUBEINTAKE(0.1, 0.3, GamePiece.CUBE),
+    TIPPEDCONEINTAKE(5.106, 14.380, GamePiece.CONE),
+    STANDINGCONEINTAKE(5.572, 1.333, GamePiece.CONE),
+    HUMANPLAYERINTAKE(.8763, 3.5472, GamePiece.CONE);
 
+    private GamePiece gamePiece = null;
     private double wristPos;
     private double elevatorPos;
 
@@ -212,12 +213,22 @@ public final class Constants {
       elevatorPos = elev;
     }
 
+    private Position(double wrist, double elev, GamePiece piece) {
+      wristPos = wrist;
+      elevatorPos = elev;
+      gamePiece = piece;
+    }
+
     public double getWrist() {
       return wristPos;
     }
 
     public double getElev() {
       return elevatorPos;
+    }
+
+    public GamePiece getGamePiece() {
+      return gamePiece;
     }
   }
 

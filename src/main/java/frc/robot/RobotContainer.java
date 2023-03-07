@@ -70,15 +70,15 @@ public class RobotContainer {
     private static Map<String, Command> eventMap = new HashMap<>();
     {
         eventMap.put("setStandbyPosition",
-                new SetPosition(s_Wrist, s_Elevator, Position.STANDBY, () -> GamePiece.CONE));
-        eventMap.put("setCone3Position", new SetPosition(s_Wrist, s_Elevator, Position.HIGH, () -> GamePiece.CONE));
-        eventMap.put("setCube3Position", new SetPosition(s_Wrist, s_Elevator, Position.HIGH, () -> GamePiece.CUBE));
+                new SetPosition(s_Wrist, s_Elevator, Position.STANDBY));
+        eventMap.put("setCone3Position", new SetPosition(s_Wrist, s_Elevator, Position.HIGH));
+        eventMap.put("setCube3Position", new SetPosition(s_Wrist, s_Elevator, Position.HIGH));
 
         eventMap.put("setCubeIntakePosition", new ParallelCommandGroup(
-                new SetPosition(s_Wrist, s_Elevator, Position.CUBEINTAKE, () -> GamePiece.CUBE),
+                new SetPosition(s_Wrist, s_Elevator, Position.CUBEINTAKE),
                 new InstantCommand(() -> Intake.setGamePiece(GamePiece.CUBE))));
         eventMap.put("setStandingConeIntakePosition", new ParallelCommandGroup(
-                new SetPosition(s_Wrist, s_Elevator, Position.STANDINGCONEINTAKE, () -> GamePiece.CONE),
+                new SetPosition(s_Wrist, s_Elevator, Position.STANDINGCONEINTAKE),
                 new InstantCommand(() -> Intake.setGamePiece(GamePiece.CONE))));
 
         eventMap.put("coneDeposit", new OuttakePiece(s_Intake, .3, () -> GamePiece.CONE, EjectSpeed.NORMAL));
@@ -167,38 +167,22 @@ public class RobotContainer {
         driver.y().onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
 
         /* Operator Buttons */
-        operator.povUp().onTrue(
-                new SequentialCommandGroup(
-                        new InstantCommand(() -> Intake.setGamePiece(GamePiece.CONE)),
-                        new SetPosition(s_Wrist, s_Elevator, Position.STANDINGCONEINTAKE,
-                                () -> Intake.getGamePiece())));
-
-        operator.povLeft().onTrue(
-                new SequentialCommandGroup(
-                        new InstantCommand(() -> Intake.setGamePiece(GamePiece.CUBE)),
-                        new SetPosition(s_Wrist, s_Elevator, Position.CUBEINTAKE, () -> Intake.getGamePiece())));
-
-        operator.povDown().onTrue(
-                new SequentialCommandGroup(
-                        new InstantCommand(() -> Intake.setGamePiece(GamePiece.CONE)),
-                        new SetPosition(s_Wrist, s_Elevator, Position.TIPPEDCONEINTAKE, () -> Intake.getGamePiece())));
-
-        operator.povRight().onTrue(
-                new SequentialCommandGroup(
-                        new InstantCommand(() -> Intake.setGamePiece(GamePiece.CONE)),
-                        new SetPosition(s_Wrist, s_Elevator, Position.HUMANPLAYERINTAKE, () -> Intake.getGamePiece())));
+        operator.povUp().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.STANDINGCONEINTAKE));
+        operator.povLeft().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.CUBEINTAKE));
+        operator.povDown().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.TIPPEDCONEINTAKE));
+        operator.povRight().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.HUMANPLAYERINTAKE));
 
         operator.leftBumper()
-                .onTrue(new SetPosition(s_Wrist, s_Elevator, Position.STANDBY, () -> Intake.getGamePiece()));
+                .onTrue(new SetPosition(s_Wrist, s_Elevator, Position.STANDBY));
 
         operator.leftTrigger().onTrue(new OuttakePiece(s_Intake, .5, () -> Intake.getGamePiece(), EjectSpeed.NORMAL));
         operator.x().onTrue(new OuttakePiece(s_Intake, .5, () -> Intake.getGamePiece(), EjectSpeed.FAST));
 
         operator.rightBumper().onTrue(new InstantCommand(() -> s_LEDs.toggleHPSignal()));
 
-        operator.y().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.HIGH, () -> Intake.getGamePiece()));
-        operator.b().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.MID, () -> Intake.getGamePiece()));
-        operator.a().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.LOW, () -> Intake.getGamePiece()));
+        operator.y().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.HIGH));
+        operator.b().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.MID));
+        operator.a().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.LOW));
 
     }
 
