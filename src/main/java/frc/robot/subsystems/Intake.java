@@ -28,11 +28,6 @@ public class Intake extends SubsystemBase {
         intakeMotor = new CANSparkMax(Constants.Intake.motorId, MotorType.kBrushless);
 
         intakeEncoder = intakeMotor.getEncoder();
-
-        intakeEncoder.setPositionConversionFactor(Constants.Intake.kDriveEncoderRot2Meter);
-
-        intakeEncoder.setVelocityConversionFactor(Constants.Intake.kDriveEncoderRPM2MeterPerSec);
-
     }
 
     public static void setGamePiece(GamePiece piece) {
