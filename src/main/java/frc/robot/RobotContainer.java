@@ -75,11 +75,9 @@ public class RobotContainer {
         eventMap.put("setCube3Position", new SetPosition(s_Wrist, s_Elevator, Position.HIGH));
 
         eventMap.put("setCubeIntakePosition", new ParallelCommandGroup(
-                new SetPosition(s_Wrist, s_Elevator, Position.CUBEINTAKE),
-                new InstantCommand(() -> Intake.setGamePiece(GamePiece.CUBE))));
+                new SetPosition(s_Wrist, s_Elevator, Position.CUBEINTAKE)));
         eventMap.put("setStandingConeIntakePosition", new ParallelCommandGroup(
-                new SetPosition(s_Wrist, s_Elevator, Position.STANDINGCONEINTAKE),
-                new InstantCommand(() -> Intake.setGamePiece(GamePiece.CONE))));
+                new SetPosition(s_Wrist, s_Elevator, Position.STANDINGCONEINTAKE)));
 
         eventMap.put("coneDeposit", new OuttakePiece(s_Intake, .3, () -> GamePiece.CONE, EjectSpeed.NORMAL));
         eventMap.put("cubeDeposit", new OuttakePiece(s_Intake, .3, () -> GamePiece.CUBE, EjectSpeed.NORMAL));
