@@ -82,7 +82,7 @@
       "position": 0.7636363636363638,
       "names": [
         "runConeIntake3",
-        "setConeIntakePosition"
+        "setStandingConeIntakePosition"
       ]
     },
     {
