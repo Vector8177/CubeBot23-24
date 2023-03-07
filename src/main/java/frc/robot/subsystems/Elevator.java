@@ -19,7 +19,7 @@ public class Elevator extends SubsystemBase {
     private final CANSparkMax elevatorMotorLeft; // making the left the lead motor
     private final CANSparkMax elevatorMotorRight; // the right motor is the follower
 
-    private ProfiledPIDController pidController;
+    private PIDController pidController;
 
     private double currentPosition;
 
@@ -47,12 +47,12 @@ public class Elevator extends SubsystemBase {
         // left motor is so only need to adjust output for the left motor
 
         // initialize pidContoller
-        pidController = new ProfiledPIDController(Constants.Elevator.elevatorKP, Constants.Elevator.elevatorKI,
-                Constants.Elevator.elevatorKD, new Constraints(3, 1));
+        pidController = new PIDController(Constants.Elevator.elevatorKP, Constants.Elevator.elevatorKI,
+                Constants.Elevator.elevatorKD);
         pidController.setSetpoint(0);
         pidController.setTolerance(.25);
 
-        setPose(Position.STANDBY.getElev());
+        setPosition(Position.STANDBY.getElev());
     }
 
     public void resetEncoder() {

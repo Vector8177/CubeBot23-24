@@ -62,7 +62,7 @@ public class Wrist extends SubsystemBase {
 
         relativeEncoder.setPosition(absoluteEncoder.getPosition());
 
-        setPose(Position.STANDBY.getWrist());
+        setPosition(Position.STANDBY.getWrist());
     }
 
     public void resetRelativeEncoder() {
