@@ -98,7 +98,7 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-
+        // Sets each subsystem's default commands
         setDefaultCommands();
 
         // Configure the button bindings
