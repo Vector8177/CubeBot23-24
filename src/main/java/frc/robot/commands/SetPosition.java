@@ -19,7 +19,7 @@ public class SetPosition extends CommandBase {
         this.s_Elevator = s_Elevator;
         this.position = position;
         this.gamePiece = gamePiece;
-        }
+    }
 
     @Override
     public void execute() {
@@ -27,7 +27,7 @@ public class SetPosition extends CommandBase {
             case HIGH:
                 if (gamePiece.get() == GamePiece.CONE) {
                     s_Wrist.setPosition(.104327);
-                    s_Elevator.setPosition(35.1);
+                    s_Elevator.setPosition(35);
                 } else if (gamePiece.get() == GamePiece.CUBE) {
                     s_Wrist.setPosition(1.55);
                     s_Elevator.setPosition(35.1);
@@ -46,17 +46,17 @@ public class SetPosition extends CommandBase {
 
             case LOW:
                 s_Wrist.setPosition(0.5236);
-                s_Elevator.setPosition(0);
+                s_Elevator.setPosition(0.25);
                 break;
 
             case STANDBY:
                 s_Wrist.setPosition(1.1765);
-                s_Elevator.setPosition(0);
+                s_Elevator.setPosition(0.25);
                 break;
 
             case CUBEINTAKE:
                 s_Wrist.setPosition(0);
-                s_Elevator.setPosition(0);
+                s_Elevator.setPosition(0.25);
                 break;
 
             case STANDINGCONEINTAKE:
@@ -74,11 +74,11 @@ public class SetPosition extends CommandBase {
                 s_Elevator.setPosition(3.5472);
                 break;
         }
-
+ 
     }
 
     @Override
     public boolean isFinished() {
-        return s_Wrist.atSetpoint() && s_Elevator.atSetpoint();
+        return true;
     }
 }
