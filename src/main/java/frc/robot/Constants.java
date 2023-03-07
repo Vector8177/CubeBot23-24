@@ -313,4 +313,45 @@ public final class Constants {
       aprilTagList.add(tag8);
     }
   }
+
+  public static final class LEDs {
+    public static final int id = 9;
+    public static final int length = 18;
+
+    public static final LEDMode defaultMode = LEDMode.VECTORWAVE;
+
+    public static final class Flash {
+      public static final double speed = 3;
+    }
+
+    public static final class VectorWave {
+      public static final int h = 30;
+      public static final int s = 77;
+      public static final int v = 100;
+
+      public static final int pauseBetween = 5;
+      public static final int length = 20;
+      public static final double spread = 4;
+      public static final double speed = .5;
+    }
+
+    public static final class OrangeDot {
+      public static final int h = 30;
+      public static final int s = 77;
+      public static final int v = 100;
+
+      public static final int pauseBetween = 10;
+      public static final int length = 0;
+      public static final double spread = 2;
+      public static final double speed = .5;
+    }
+
+    public enum LEDMode {
+      ORANGEDOT,
+      VECTORWAVE,
+      RAINBOW,
+      PURPLEFLASH,
+      YELLOWFLASH
+    }
+  }
 }
