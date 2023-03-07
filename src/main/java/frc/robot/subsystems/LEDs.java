@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.LEDs.VectorWave;
@@ -41,12 +42,15 @@ public class LEDs extends SubsystemBase {
                 orangeDot();
                 break;
             case PURPLEFLASH:
-                flash(276, 89, 91);
+            for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+                m_ledBuffer.setRGB(i, 255, 100, 0);
+            }
                 break;
             case YELLOWFLASH:
                 flash(58, 100, 100);
                 break;
         }
+        m_led.setData(m_ledBuffer);
     }
 
     public void setLEDMode(LEDMode mode) {
@@ -81,6 +85,7 @@ public class LEDs extends SubsystemBase {
         for (var i = 0; i < m_ledBuffer.getLength(); i++) {
             m_ledBuffer.setHSV(i, h, s, (int) brightness);
         }
+        SmartDashboard.putNumber("LED", brightness);
     }
 
     /*

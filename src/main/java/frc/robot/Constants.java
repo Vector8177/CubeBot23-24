@@ -311,10 +311,10 @@ public final class Constants {
     public static final int id = 9;
     public static final int length = 18;
 
-    public static final LEDMode defaultMode = LEDMode.VECTORWAVE;
+    public static final LEDMode defaultMode = LEDMode.PURPLEFLASH;
 
     public static final class Flash {
-      public static final double speed = 3;
+      public static final double speed = 5;
     }
 
     public static final class VectorWave {
