@@ -3,10 +3,8 @@ package frc.robot.commands;
 import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.Position;
 import frc.robot.Constants.GamePiece;
 import frc.robot.subsystems.Elevator;
@@ -35,42 +33,42 @@ public class SetPosition extends SequentialCommandGroup {
 
             case MID:
                 if (gamePiece.get() == GamePiece.CONE) {
-                    s_Wrist.setPose(.104327);
-                    s_Elevator.setPose(23);
+                    setWristPose = s_Wrist.setPose(.104327);
+                    setElevatorPose = s_Elevator.setPose(23);
                 } else if (gamePiece.get() == GamePiece.CUBE) {
-                    s_Wrist.setPose(1.427);
-                    s_Elevator.setPose(16.5);
+                    setWristPose = s_Wrist.setPose(1.427);
+                    setElevatorPose = s_Elevator.setPose(16.5);
                 }
                 break;
 
             case LOW:
-                s_Wrist.setPose(0.5236);
-                s_Elevator.setPose(0.25);
+                setWristPose = s_Wrist.setPose(0.5236);
+                setElevatorPose = s_Elevator.setPose(0.25);
                 break;
 
             case STANDBY:
-                s_Wrist.setPose(1.1765);
-                s_Elevator.setPose(0.25);
+                setWristPose = s_Wrist.setPose(1.1765);
+                setElevatorPose = s_Elevator.setPose(0.25);
                 break;
 
             case CUBEINTAKE:
-                s_Wrist.setPose(0);
-                s_Elevator.setPose(0.25);
+                setWristPose = s_Wrist.setPose(0);
+                setElevatorPose = s_Elevator.setPose(0.25);
                 break;
 
             case STANDINGCONEINTAKE:
-                s_Wrist.setPose(5.106);
-                s_Elevator.setPose(14.380);
+                setWristPose = s_Wrist.setPose(5.106);
+                setElevatorPose = s_Elevator.setPose(14.380);
                 break;
 
             case TIPPEDCONEINTAKE:
-                s_Wrist.setPose(5.572);
-                s_Elevator.setPose(1.333);
+                setWristPose = s_Wrist.setPose(5.572);
+                setElevatorPose = s_Elevator.setPose(1.333);
                 break;
 
             case HUMANPLAYERINTAKE:
-                s_Wrist.setPose(.8763);
-                s_Elevator.setPose(3.5472);
+                setWristPose = s_Wrist.setPose(.8763);
+                setElevatorPose = s_Elevator.setPose(3.5472);
                 break;
         }
 
