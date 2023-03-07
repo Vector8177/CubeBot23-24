@@ -191,33 +191,26 @@ public final class Constants {
   }
 
   public enum Position {
-    HIGH(0,0, GamePiece.NONE),
-    CONEHIGH(.104327, 35, GamePiece.NONE),
-    CUBEHIGH(1.55, 35, GamePiece.NONE),
-    MID(0,0, GamePiece.NONE),
-    CONEMID(.104327, 23, GamePiece.NONE),
-    CUBEMID(1.427, 16.5, GamePiece.NONE),
-    LOW(.5236, .25, GamePiece.NONE),
-    STANDBY(1.1765, .25, GamePiece.NONE),
-    CUBEINTAKE(0.1, 0.3, GamePiece.CUBE),
-    STANDINGCONEINTAKE(5.106, 14.380, GamePiece.CONE),
-    TIPPEDCONEINTAKE(5.572, 1.333, GamePiece.CONE),
-    HUMANPLAYERINTAKE(.8763, 3.5472, GamePiece.CONE);
 
-    private GamePiece gamePiece;
+    HIGH(0,0),
+    CONEHIGH(.104327, 35),
+    CUBEHIGH(1.55, 35),
+    MID(0,0),
+    CONEMID(.104327, 23),
+    CUBEMID(1.427, 16.5),
+    LOW(.5236, .25),
+    STANDBY(1.1765, .25),
+    CUBEINTAKE(0.1, 0.3),
+    STANDINGCONEINTAKE(5.106, 14.380),
+    TIPPEDCONEINTAKE(5.572, 1.333),
+    HUMANPLAYERINTAKE(.8763, 3.5472);
+
     private double wristPos;
     private double elevatorPos;
 
     private Position(double wrist, double elev) {
       this.wristPos = wrist;
       this.elevatorPos = elev;
-      this.gamePiece = GamePiece.NONE;
-    }
-
-    private Position(double wrist, double elev, GamePiece piece) {
-      this.wristPos = wrist;
-      this.elevatorPos = elev;
-      this.gamePiece = piece;
     }
 
     public double getWrist() {
@@ -226,10 +219,6 @@ public final class Constants {
 
     public double getElev() {
       return elevatorPos;
-    }
-
-    public GamePiece getGamePiece() {
-      return gamePiece;
     }
   }
 
