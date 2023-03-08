@@ -192,10 +192,10 @@ public final class Constants {
 
   public enum Position {
 
-    HIGH(0,0),
+    HIGH(0, 0),
     CONEHIGH(.104327, 35),
     CUBEHIGH(1.55, 35),
-    MID(0,0),
+    MID(0, 0),
     CONEMID(.104327, 23),
     CUBEMID(1.427, 16.5),
     LOW(.5236, .25),
@@ -224,7 +224,6 @@ public final class Constants {
 
   public enum GamePiece {
     CUBE(1),
-    NONE(0),
     CONE(-1);
 
     private double direction;
@@ -362,11 +361,22 @@ public final class Constants {
     }
 
     public enum LEDMode {
-      ORANGEDOT,
-      VECTORWAVE,
-      RAINBOW,
-      PURPLEFLASH,
-      YELLOWFLASH
+      ORANGEDOT("Orange Dot"),
+      VECTORWAVE("Vector Wave"),
+      RAINBOW("Rainbow"),
+      PURPLEFLASH("Purple Flash"),
+      YELLOWFLASH("Yellow Flash");
+
+      private String name;
+
+      private LEDMode(String name) {
+        this.name = name;
+      }
+
+      @Override
+      public String toString() {
+        return name;
+      }
     }
   }
 }
