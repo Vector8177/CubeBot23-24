@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import java.util.function.Supplier;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
@@ -10,30 +12,28 @@ import frc.robot.subsystems.Intake;
 public class OuttakePiece extends CommandBase {
 
     private double time;
-    private final Intake intakeSubsystem;
+    private final Intake s_Intake;
     private Timer timer;
     private EjectSpeed eject;
-    private GamePiece gamePiece;
-    private boolean auto;
+    private Supplier<GamePiece> gamePiece;
 
-    public OuttakePiece(Intake intakeSubsystem, double time, EjectSpeed eject) {
+    public OuttakePiece(Intake s_Intake, double time, EjectSpeed eject) {
         this.time = time;
         this.eject = eject;
-        this.intakeSubsystem = intakeSubsystem;
+        this.s_Intake = s_Intake;
         this.timer = new Timer();
 
-        addRequirements(intakeSubsystem);
+        addRequirements(s_Intake);
     }
 
-    public OuttakePiece(Intake intakeSubsystem, double time, GamePiece gamePiece, EjectSpeed eject) {
+    public OuttakePiece(Intake s_Intake, double time, Supplier<GamePiece> gamePiece, EjectSpeed eject) {
         this.time = time;
         this.eject = eject;
-        this.intakeSubsystem = intakeSubsystem;
+        this.s_Intake = s_Intake;
         this.gamePiece =  gamePiece;
-        this.auto = true;
         this.timer = new Timer();
 
-        addRequirements(intakeSubsystem);
+        addRequirements(s_Intake);
     }
 
     @Override
@@ -44,13 +44,13 @@ public class OuttakePiece extends CommandBase {
 
     @Override
     public void execute() {
-        switch (auto ? gamePiece : Intake.getGamePiece()) {
+        switch (gamePiece.get()) {
             case CONE:
-                intakeSubsystem.setMotor((eject == EjectSpeed.NORMAL) ? Constants.Intake.coneOuttakeSpeed
+                s_Intake.setMotor((eject == EjectSpeed.NORMAL) ? Constants.Intake.coneOuttakeSpeed
                         : Constants.Intake.coneShootSpeed);
                 break;
             case CUBE:
-                intakeSubsystem.setMotor(-Constants.Intake.cubeOuttakeSpeed);
+                s_Intake.setMotor(-Constants.Intake.cubeOuttakeSpeed);
                 break;
             
         }
@@ -63,7 +63,7 @@ public class OuttakePiece extends CommandBase {
         timer.stop();
         timer.reset();
 
-        intakeSubsystem.setMotor(0);
+        s_Intake.setMotor(0);
     }
 
     @Override
