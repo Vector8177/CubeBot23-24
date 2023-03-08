@@ -1,8 +1,9 @@
-package frc.robot.subsystems.LEDs;
+package frc.robot.subsystems.LEDs.LEDModes;
 
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 
 public class Rainbow extends LEDModeBase {
+    private int m_rainbowFirstPixelHue = 0;
     public Rainbow(AddressableLEDBuffer m_ledBuffer) {
         super(m_ledBuffer);
     }

@@ -7,7 +7,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.GamePiece;
-import frc.robot.Constants.Position;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -30,7 +29,6 @@ public class Intake extends SubsystemBase {
 
         intakeEncoder = intakeMotor.getEncoder();
 
-        
     }
 
     public static void setGamePiece(GamePiece piece) {

@@ -1,4 +1,4 @@
-package frc.robot.subsystems.LEDs;
+package frc.robot.subsystems.LEDs.LEDModes;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
@@ -7,10 +7,14 @@ import frc.robot.Constants.LEDs;
 /*
      * Orange with black wave
      */
-public class VectorWave implements LEDModeBase {
+public class VectorWave extends LEDModeBase {
     private double vectorWaveMiddleIndex = -LEDs.VectorWave.pauseBetween;
 
-    public void execute(AddressableLEDBuffer m_ledBuffer) {
+    public VectorWave(AddressableLEDBuffer m_ledBuffer){
+        super(m_ledBuffer);
+    }
+
+    public void execute() {
         for (int i = 0; i < m_ledBuffer.getLength() + LEDs.VectorWave.pauseBetween; i++) {
             int value = MathUtil.clamp(
                     (int) ((1 / LEDs.VectorWave.spread) * (Math.abs(vectorWaveMiddleIndex - i)) * LEDs.VectorWave.v)
