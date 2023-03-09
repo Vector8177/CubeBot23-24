@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.Position;
 import frc.robot.Constants.Intake.EjectSpeed;
+import frc.robot.autos.AutoBalancing;
 import frc.robot.Constants.GamePiece;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
@@ -95,6 +96,8 @@ public class RobotContainer {
                 eventMap.put("runConeIntake3", new OuttakePiece(s_Intake, 3, ()-> GamePiece.CUBE, EjectSpeed.NORMAL));
 
                 eventMap.put("wait1Seconds", new WaitCommand(1));
+
+                eventMap.put("AutoBalance", new AutoBalancing(s_Swerve));
         }
 
         private final PathPlannerTrajectory moveForward = PathPlanner.loadPath("Move Forward",
@@ -106,8 +109,8 @@ public class RobotContainer {
                         Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
 
         private final PathPlannerTrajectory autoBalance = PathPlanner.loadPath("Autobalance",
-                        Constants.Autonomous.kMaxSpeedMetersPerSecond,
-                        Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
+                        .75,
+                        3);
 
         private final PathPlannerTrajectory backnForth = PathPlanner.loadPath("BacknForth",
                         Constants.Autonomous.kMaxSpeedMetersPerSecond,
@@ -179,6 +182,7 @@ public class RobotContainer {
         private void configureButtonBindings() {
                 /* Driver Buttons */
                 driver.y().onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
+                driver.x().onTrue(new AutoBalancing(s_Swerve));
                 driver.rightTrigger().onTrue(new OuttakePiece(s_Intake, .5, () -> getGamePiece() , EjectSpeed.NORMAL));
 
                 /* Operator Buttons */

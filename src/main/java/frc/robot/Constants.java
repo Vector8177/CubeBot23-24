@@ -50,8 +50,8 @@ public final class Constants {
 
     public static final double pitchSetPoint = 0.0;
 
-    public static final double drivePitchKP = 0.04;
-    public static final double drivePitchKI = 0.00005;
+    public static final double drivePitchKP = 0.015;
+    public static final double drivePitchKI = 0.0001;
     public static final double drivePitchKD = 0.000000000000001;
     public static final double drivePitchKFF = 0.000000000000001;
 
@@ -203,7 +203,7 @@ public final class Constants {
     CUBEINTAKE(0.05, 0.3),
     STANDINGCONEINTAKE(5.106, 14.380),
     TIPPEDCONEINTAKE(5.572, 1.333),
-    HUMANPLAYERINTAKE(.8763, 3.5472);
+    HUMANPLAYERINTAKE(.8763, 1.5);
 
     private double wristPos;
     private double elevatorPos;

@@ -12,38 +12,47 @@
       },
       "holonomicAngle": 180.0,
       "isReversal": false,
-      "velOverride": 0.25,
+      "velOverride": 0.75,
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [],
-        "executionBehavior": "parallel",
-        "waitBehavior": "none",
-        "waitTime": 0
+        "names": [
+          "setCube3Position",
+          "cubeDeposit",
+          "setStandbyPosition"
+        ],
+        "executionBehavior": "sequential",
+        "waitBehavior": "after",
+        "waitTime": 0.0
       }
     },
     {
       "anchorPoint": {
-        "x": 3.8967151438576377,
-        "y": 2.729181184858097
+        "x": 3.746797779309845,
+        "y": 2.705486410972822
       },
       "prevControl": {
-        "x": 3.1893791641355618,
-        "y": 2.729181184858097
+        "x": 3.039461799587769,
+        "y": 2.705486410972822
       },
       "nextControl": null,
       "holonomicAngle": 180.0,
       "isReversal": false,
-      "velOverride": 0.25,
+      "velOverride": 0.75,
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [],
-        "executionBehavior": "parallel",
+        "names": [
+          "AutoBalance"
+        ],
+        "executionBehavior": "sequential",
         "waitBehavior": "none",
         "waitTime": 0
       }
     }
   ],
+  "maxVelocity": 0.75,
+  "maxAcceleration": 3.0,
+  "isReversed": null,
   "markers": []
 }
