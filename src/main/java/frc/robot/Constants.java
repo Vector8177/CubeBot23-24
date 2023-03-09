@@ -14,6 +14,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import frc.lib.config.SwerveModuleConstants;
+import frc.lib.util.HSV;
 
 public final class Constants {
 
@@ -339,9 +340,7 @@ public final class Constants {
     }
 
     public static final class VectorWave {
-      public static final int h = 30;
-      public static final int s = 77;
-      public static final int v = 100;
+      public static final HSV hsv = HSV.googleColorPickerHSV(30, 77, 100);
 
       public static final int pauseBetween = 5;
       public static final int length = 20;
@@ -350,9 +349,7 @@ public final class Constants {
     }
 
     public static final class OrangeDot {
-      public static final int h = 30;
-      public static final int s = 77;
-      public static final int v = 100;
+      public static final HSV hsv = HSV.googleColorPickerHSV(30, 77, 100);
 
       public static final int pauseBetween = 10;
       public static final int length = 0;

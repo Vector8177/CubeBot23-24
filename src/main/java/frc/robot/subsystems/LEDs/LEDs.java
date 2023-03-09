@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.lib.util.HSV;
 import frc.robot.Constants;
 import frc.robot.Constants.GamePiece;
 import frc.robot.Constants.LEDs.LEDMode;
@@ -33,8 +34,8 @@ public class LEDs extends SubsystemBase {
         this.orangeDot = new OrangeDot(m_ledBuffer);
         this.rainbow = new Rainbow(m_ledBuffer);
         this.vectorWave = new VectorWave(m_ledBuffer);
-        this.purpleFlash = new Flash(m_ledBuffer, 263, 73, 96);
-        this.yellowFlash = new Flash(m_ledBuffer, 55, 91, 100);
+        this.purpleFlash = new Flash(m_ledBuffer, HSV.googleColorPickerHSV(263, 73, 96));
+        this.yellowFlash = new Flash(m_ledBuffer, HSV.googleColorPickerHSV(55, 91, 100));
 
         m_led.setLength(m_ledBuffer.getLength());
         m_led.setData(m_ledBuffer);

@@ -2,7 +2,7 @@ package frc.robot.subsystems.LEDs.LEDModes;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
-
+import frc.lib.util.HSV;
 import frc.robot.Constants.LEDs;
 
 /*
@@ -10,6 +10,7 @@ import frc.robot.Constants.LEDs;
      */
 public class OrangeDot extends LEDModeBase {
     private double m_orangeDotMiddleIndex = -LEDs.OrangeDot.pauseBetween;
+    private HSV hsv = LEDs.OrangeDot.hsv;
 
     public OrangeDot(AddressableLEDBuffer m_ledBuffer) {
         super(m_ledBuffer);
@@ -18,13 +19,13 @@ public class OrangeDot extends LEDModeBase {
     public void execute() {
         for (int i = 0; i < m_ledBuffer.getLength() + LEDs.OrangeDot.pauseBetween; i++) {
             int value = MathUtil.clamp(
-                    (int) ((1 / LEDs.OrangeDot.spread) * (Math.abs(m_orangeDotMiddleIndex - i)) * LEDs.OrangeDot.v)
+                    (int) ((1 / LEDs.OrangeDot.spread) * (Math.abs(m_orangeDotMiddleIndex - i)) * hsv.v)
                             - LEDs.OrangeDot.length,
                     0,
-                    LEDs.OrangeDot.v) - LEDs.OrangeDot.v;
+                    hsv.v) - hsv.v;
 
             if (m_ledBuffer.getLength() > i)
-                m_ledBuffer.setHSV(i, LEDs.OrangeDot.h, LEDs.OrangeDot.s, value);
+                m_ledBuffer.setHSV(i, hsv.h, hsv.s, value);
         }
         m_orangeDotMiddleIndex = (m_orangeDotMiddleIndex + LEDs.OrangeDot.speed) > m_ledBuffer.getLength()
                 + LEDs.OrangeDot.pauseBetween ? -LEDs.OrangeDot.pauseBetween
