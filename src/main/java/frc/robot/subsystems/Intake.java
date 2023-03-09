@@ -6,7 +6,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Constants.GamePiece;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -19,7 +18,7 @@ public class Intake extends SubsystemBase {
     private final RelativeEncoder intakeEncoder;
 
     /* Game Piece Currently In Robot */
-    private static GamePiece gamePiece = GamePiece.CUBE;
+    
 
     /**
      * Constructor for intake subsystem.
@@ -30,14 +29,15 @@ public class Intake extends SubsystemBase {
         intakeEncoder = intakeMotor.getEncoder();
 
     }
-
-    public static void setGamePiece(GamePiece piece) {
+/* 
+    public void setGamePiece(GamePiece piece) {
         gamePiece = piece;
     }
 
-    public static GamePiece getGamePiece() {
+    public GamePiece getGamePiece() {
         return gamePiece;
     }
+    */
 
     public void setMotor(double speed) {
         intakeMotor.setVoltage(speed);
@@ -53,7 +53,7 @@ public class Intake extends SubsystemBase {
         // double intakeCurrent = pdm.getCurrent(Constants.IntakeConstants.pdpChannel);
         double intakeCurrent = intakeMotor.getOutputCurrent();
         SmartDashboard.putNumber("Intake Current", intakeCurrent);
-        SmartDashboard.putNumber("Gamepiece", getGamePiece().getDirection());
+        //SmartDashboard.putNumber("Gamepiece", getGamePiece().getDirection());
 
     }
 

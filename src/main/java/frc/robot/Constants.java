@@ -51,8 +51,8 @@ public final class Constants {
 
     public static final double pitchSetPoint = 0.0;
 
-    public static final double drivePitchKP = 0.04;
-    public static final double drivePitchKI = 0.00005;
+    public static final double drivePitchKP = 0.015;
+    public static final double drivePitchKI = 0.0001;
     public static final double drivePitchKD = 0.000000000000001;
     public static final double drivePitchKFF = 0.000000000000001;
 
@@ -79,8 +79,8 @@ public final class Constants {
     public static final double angleConversionFactor = 360.0 / angleGearRatio;
 
     /* Swerve Profiling Values */
-    public static final double maxSpeed = 3; // meters per second
-    public static final double maxSpeedMinLimit = 2.1; // meters per second when speed is limited by driver minimally
+    public static final double maxSpeed = 4.5; // meters per second
+    public static final double maxSpeedMinLimit = 2; // meters per second when speed is limited by driver minimally
     public static final double maxSpeedMaxLimit = .75; // meters per second when speed is limited by driver maximum
 
     public static final double maxAngularVelocity = 5;
@@ -177,7 +177,9 @@ public final class Constants {
 
     public static final int pdpChannel = 2; // update number later
 
-    public static final double intakeSpeed = 8;
+    public static final double coneIntakeSpeed = 8;
+    public static final double cubeIntakeSpeed = 4;
+
 
     public static final double coneOuttakeSpeed = 7;
     public static final double coneShootSpeed = 12;
@@ -201,10 +203,10 @@ public final class Constants {
     CUBEMID(1.427, 16.5),
     LOW(.5236, .25),
     STANDBY(1.1765, .25),
-    CUBEINTAKE(0.1, 0.3),
+    CUBEINTAKE(0.05, 0.3),
     STANDINGCONEINTAKE(5.106, 14.380),
     TIPPEDCONEINTAKE(5.572, 1.333),
-    HUMANPLAYERINTAKE(.8763, 3.5472);
+    HUMANPLAYERINTAKE(.8763, 1.5);
 
     private double wristPos;
     private double elevatorPos;
@@ -333,7 +335,7 @@ public final class Constants {
     public static final int id = 9;
     public static final int length = 18;
 
-    public static final LEDMode defaultMode = LEDMode.PURPLEFLASH;
+    public static final LEDMode defaultMode = LEDMode.RAINBOW;
 
     public static final class Flash {
       public static final double speed = 5;
