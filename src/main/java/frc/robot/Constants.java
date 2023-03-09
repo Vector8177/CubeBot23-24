@@ -78,8 +78,8 @@ public final class Constants {
     public static final double angleConversionFactor = 360.0 / angleGearRatio;
 
     /* Swerve Profiling Values */
-    public static final double maxSpeed = 3; // meters per second
-    public static final double maxSpeedMinLimit = 2.1; // meters per second when speed is limited by driver minimally
+    public static final double maxSpeed = 4.5; // meters per second
+    public static final double maxSpeedMinLimit = 2; // meters per second when speed is limited by driver minimally
     public static final double maxSpeedMaxLimit = .75; // meters per second when speed is limited by driver maximum
 
     public static final double maxAngularVelocity = 5;
@@ -176,7 +176,9 @@ public final class Constants {
 
     public static final int pdpChannel = 2; // update number later
 
-    public static final double intakeSpeed = 8;
+    public static final double coneIntakeSpeed = 8;
+    public static final double cubeIntakeSpeed = 4;
+
 
     public static final double coneOuttakeSpeed = 7;
     public static final double coneShootSpeed = 12;
@@ -332,7 +334,7 @@ public final class Constants {
     public static final int id = 9;
     public static final int length = 18;
 
-    public static final LEDMode defaultMode = LEDMode.PURPLEFLASH;
+    public static final LEDMode defaultMode = LEDMode.RAINBOW;
 
     public static final class Flash {
       public static final double speed = 5;
