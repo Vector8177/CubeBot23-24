@@ -1,7 +1,5 @@
 package frc.robot.subsystems;
 
-import java.util.Optional;
-import org.photonvision.EstimatedRobotPose;
 import com.ctre.phoenix.sensors.Pigeon2;
 import com.pathplanner.lib.PathPoint;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -134,18 +132,16 @@ public class Swerve extends SubsystemBase {
   @Override
   public void periodic() {
 
-    
-    
     swervePoseEstimator.update(getYaw(), getPositions());
-    /* 
-    Optional<EstimatedRobotPose> result = pcw.getEstimatedGlobalPose(getPose());
-
-    if (result.isPresent()) {
-      EstimatedRobotPose camPose = result.get();
-      swervePoseEstimator.addVisionMeasurement(
-          camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
-    }
-    */
+    /*
+     * Optional<EstimatedRobotPose> result = pcw.getEstimatedGlobalPose(getPose());
+     * 
+     * if (result.isPresent()) {
+     * EstimatedRobotPose camPose = result.get();
+     * swervePoseEstimator.addVisionMeasurement(
+     * camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
+     * }
+     */
     field.setRobotPose(getPose());
 
     SmartDashboard.putNumber("Pigeon2 Yaw", gyro.getYaw());

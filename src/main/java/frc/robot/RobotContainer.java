@@ -73,27 +73,29 @@ public class RobotContainer {
 
         private static Map<String, Command> eventMap = new HashMap<>();
         {
-                
+
                 eventMap.put("setStandbyPosition",
-                                new SetPosition(s_Wrist, s_Elevator,Position.STANDBY, () -> gamePiece));
+                                new SetPosition(s_Wrist, s_Elevator, Position.STANDBY, () -> gamePiece));
                 eventMap.put("setCone3Position",
-                                new SetPosition(s_Wrist, s_Elevator,Position.HIGH, () -> GamePiece.CONE));
+                                new SequentialCommandGroup(
+                                                s_Elevator.setPose(Position.CONEHIGH.getElev()),
+                                                s_Wrist.setPose(Position.CONEHIGH.getWrist())));
                 eventMap.put("setCube3Position",
-                                new SetPosition(s_Wrist, s_Elevator,Position.HIGH, () -> GamePiece.CUBE));
+                                new SetPosition(s_Wrist, s_Elevator, Position.HIGH, () -> GamePiece.CUBE));
 
                 eventMap.put("setCubeIntakePosition",
-                                new SetPosition(s_Wrist, s_Elevator,Position.CUBEINTAKE, () -> GamePiece.CUBE));
-                eventMap.put("setStandingConeIntakePosition", new SetPosition(s_Wrist, s_Elevator, 
-                 Position.STANDINGCONEINTAKE, () -> GamePiece.CONE));
+                                new SetPosition(s_Wrist, s_Elevator, Position.CUBEINTAKE, () -> GamePiece.CUBE));
+                eventMap.put("setStandingConeIntakePosition", new SetPosition(s_Wrist, s_Elevator,
+                                Position.STANDINGCONEINTAKE, () -> GamePiece.CONE));
 
-                 eventMap.put("setTippedConeIntakePosition", new SetPosition(s_Wrist, s_Elevator, 
-                 Position.TIPPEDCONEINTAKE, () -> GamePiece.CONE));
-                
-                eventMap.put("coneDeposit", new OuttakePiece(s_Intake, .3,()-> GamePiece.CONE, EjectSpeed.NORMAL));
-                eventMap.put("cubeDeposit", new OuttakePiece(s_Intake, .3, ()-> GamePiece.CUBE, EjectSpeed.NORMAL));
+                eventMap.put("setTippedConeIntakePosition", new SetPosition(s_Wrist, s_Elevator,
+                                Position.TIPPEDCONEINTAKE, () -> GamePiece.CONE));
 
-                eventMap.put("runCubeIntake3", new OuttakePiece(s_Intake, 3, ()-> GamePiece.CONE, EjectSpeed.NORMAL));
-                eventMap.put("runConeIntake3", new OuttakePiece(s_Intake, 3, ()-> GamePiece.CUBE, EjectSpeed.NORMAL));
+                eventMap.put("coneDeposit", new OuttakePiece(s_Intake, .3, () -> GamePiece.CONE, EjectSpeed.NORMAL));
+                eventMap.put("cubeDeposit", new OuttakePiece(s_Intake, .3, () -> GamePiece.CUBE, EjectSpeed.NORMAL));
+
+                eventMap.put("runCubeIntake3", new OuttakePiece(s_Intake, 3, () -> GamePiece.CONE, EjectSpeed.NORMAL));
+                eventMap.put("runConeIntake3", new OuttakePiece(s_Intake, 3, () -> GamePiece.CUBE, EjectSpeed.NORMAL));
 
                 eventMap.put("wait1Seconds", new WaitCommand(1));
 
@@ -183,25 +185,32 @@ public class RobotContainer {
                 /* Driver Buttons */
                 driver.y().onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
                 driver.x().onTrue(new AutoBalancing(s_Swerve));
-                driver.rightTrigger().onTrue(new OuttakePiece(s_Intake, .5, () -> getGamePiece() , EjectSpeed.NORMAL));
+                driver.rightTrigger().onTrue(new OuttakePiece(s_Intake, .5, () -> getGamePiece(), EjectSpeed.NORMAL));
 
                 /* Operator Buttons */
-                operator.povUp().onTrue(new SequentialCommandGroup(new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
-                        new SetPosition(s_Wrist, s_Elevator, Position.STANDINGCONEINTAKE, () -> GamePiece.CONE)));
+                operator.povUp().onTrue(
+                                new SequentialCommandGroup(new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
+                                                new SetPosition(s_Wrist, s_Elevator, Position.STANDINGCONEINTAKE,
+                                                                () -> GamePiece.CONE)));
 
-                operator.povLeft().onTrue(new SequentialCommandGroup(new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
-                        new SetPosition(s_Wrist, s_Elevator, Position.CUBEINTAKE, () -> GamePiece.CUBE)));
+                operator.povLeft().onTrue(new SequentialCommandGroup(
+                                new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
+                                new SetPosition(s_Wrist, s_Elevator, Position.CUBEINTAKE, () -> GamePiece.CUBE)));
 
-                operator.povDown().onTrue(new SequentialCommandGroup(new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
-                        new SetPosition(s_Wrist, s_Elevator, Position.TIPPEDCONEINTAKE, () -> GamePiece.CONE)));
+                operator.povDown().onTrue(new SequentialCommandGroup(
+                                new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
+                                new SetPosition(s_Wrist, s_Elevator, Position.TIPPEDCONEINTAKE, () -> GamePiece.CONE)));
 
-                operator.povRight().onTrue(new SequentialCommandGroup(new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
-                        new SetPosition(s_Wrist, s_Elevator, Position.HUMANPLAYERINTAKE, () -> GamePiece.CONE)));
+                operator.povRight()
+                                .onTrue(new SequentialCommandGroup(
+                                                new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
+                                                new SetPosition(s_Wrist, s_Elevator, Position.HUMANPLAYERINTAKE,
+                                                                () -> GamePiece.CONE)));
 
                 operator.leftBumper()
                                 .onTrue(new SetPosition(s_Wrist, s_Elevator, Position.STANDBY, () -> getGamePiece()));
 
-                operator.leftTrigger().onTrue(new OuttakePiece(s_Intake, .5, () -> getGamePiece() , EjectSpeed.NORMAL));
+                operator.leftTrigger().onTrue(new OuttakePiece(s_Intake, .5, () -> getGamePiece(), EjectSpeed.NORMAL));
                 operator.x().onTrue(new OuttakePiece(s_Intake, .5, () -> getGamePiece(), EjectSpeed.FAST));
 
                 operator.rightBumper().onTrue(new InstantCommand(() -> s_LEDs.toggleHPSignal()));
@@ -229,11 +238,11 @@ public class RobotContainer {
                 s_Swerve.resetToAbsolute();
         }
 
-        public static GamePiece getGamePiece(){
+        public static GamePiece getGamePiece() {
                 return gamePiece;
         }
 
-        public static void setGamePiece(GamePiece piece){
+        public static void setGamePiece(GamePiece piece) {
                 gamePiece = piece;
         }
 

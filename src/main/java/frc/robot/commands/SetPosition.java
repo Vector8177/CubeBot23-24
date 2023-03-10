@@ -2,8 +2,6 @@ package frc.robot.commands;
 
 import java.util.function.Supplier;
 
-import org.photonvision.PhotonPoseEstimator.PoseStrategy;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.Position;
 import frc.robot.Constants.GamePiece;
@@ -21,16 +19,17 @@ public class SetPosition extends CommandBase {
         this.s_Elevator = s_Elevator;
         this.position = position;
         this.gamePiece = gamePiece;
-        
+
     }
 
-    public void execute(){
+    @Override
+    public void execute() {
 
         switch (position) {
             case HIGH:
                 if (gamePiece.get() == GamePiece.CONE) {
-                    s_Wrist.setPosition(Position.CONEHIGH.getWrist()); 
-                    s_Elevator.setPosition(Position.CONEHIGH.getElev());                      
+                    s_Wrist.setPosition(Position.CONEHIGH.getWrist());
+                    s_Elevator.setPosition(Position.CONEHIGH.getElev());
                 } else if (gamePiece.get() == GamePiece.CUBE) {
                     s_Wrist.setPosition(Position.CUBEHIGH.getWrist());
                     s_Elevator.setPosition(Position.CUBEHIGH.getElev());
@@ -46,24 +45,24 @@ public class SetPosition extends CommandBase {
                     s_Elevator.setPosition(Position.CUBEMID.getElev());
                 }
                 break;
-            
+
             default:
                 s_Wrist.setPosition(position.getWrist());
                 s_Elevator.setPosition(position.getElev());
                 break;
-            
+
         }
         /*
-        if(sequential) {
-            addCommands(setElevatorPose, setWristPose);
-        }
-        else {
-            addCommands(new ParallelCommandGroup(setElevatorPose, setWristPose));
-        }
+         * if(sequential) {
+         * addCommands(setElevatorPose, setWristPose);
+         * }
+         * else {
+         * addCommands(new ParallelCommandGroup(setElevatorPose, setWristPose));
+         * }
          */
     }
 
-
+    @Override
     public boolean isFinished() {
         return s_Wrist.atSetpoint() && s_Elevator.atSetpoint();
     }
