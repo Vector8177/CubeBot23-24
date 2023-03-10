@@ -203,7 +203,7 @@ public final class Constants {
     CUBEMID(1.427, 16.5),
     LOW(.5236, .25),
     STANDBY(1.1765, .25),
-    CUBEINTAKE(0.05, 0.3),
+    CUBEINTAKE(0.0, 0.3),
     STANDINGCONEINTAKE(5.106, 14.380),
     TIPPEDCONEINTAKE(5.572, 1.333),
     HUMANPLAYERINTAKE(.8763, 1.5);
@@ -342,11 +342,11 @@ public final class Constants {
     }
 
     public static final class VectorWave {
-      public static final HSV hsv = HSV.googleColorPickerHSV(14, 99, 100);
+      public static final HSV hsv = HSV.googleColorPickerHSV(8, 100, 100);
 
-      public static final int pauseBetween = 5;
-      public static final int length = 20;
-      public static final double spread = 4;
+      public static final int pauseBetween = 10;
+      public static final int length = 30;
+      public static final double spread = 10;
       public static final double speed = .25;
     }
 
