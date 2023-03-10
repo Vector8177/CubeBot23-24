@@ -18,9 +18,9 @@ public class TeleopSwerve extends CommandBase {
   private BooleanSupplier leftBumper;
   private BooleanSupplier rightBumper;
 
-  private SlewRateLimiter translationLimiter = new SlewRateLimiter(4.5);
-  private SlewRateLimiter strafeLimiter = new SlewRateLimiter(4.5);
-  private SlewRateLimiter rotationLimiter = new SlewRateLimiter(4.5);
+  private SlewRateLimiter translationLimiter = new SlewRateLimiter(3.0);
+  private SlewRateLimiter strafeLimiter = new SlewRateLimiter(3.0);
+  private SlewRateLimiter rotationLimiter = new SlewRateLimiter(3.0);
 
   /**
    * The constructor initializes the class variables.

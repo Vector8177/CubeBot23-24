@@ -79,8 +79,8 @@ public final class Constants {
     public static final double angleConversionFactor = 360.0 / angleGearRatio;
 
     /* Swerve Profiling Values */
-    public static final double maxSpeed = 4.5; // meters per second
-    public static final double maxSpeedMinLimit = 2; // meters per second when speed is limited by driver minimally
+    public static final double maxSpeed = 3.0; // meters per second
+    public static final double maxSpeedMinLimit = 4.5; // meters per second when speed is limited by driver minimally
     public static final double maxSpeedMaxLimit = .75; // meters per second when speed is limited by driver maximum
 
     public static final double maxAngularVelocity = 5;
@@ -196,7 +196,7 @@ public final class Constants {
   public enum Position {
 
     HIGH(0, 0),
-    CONEHIGH(.104327, 35),
+    CONEHIGH(.134327, 35),
     CUBEHIGH(1.55, 35),
     MID(0, 0),
     CONEMID(.104327, 23),
@@ -346,7 +346,7 @@ public final class Constants {
 
       public static final int pauseBetween = 10;
       public static final int length = 30;
-      public static final double spread = 10;
+      public static final double spread = 4;
       public static final double speed = .25;
     }
 
