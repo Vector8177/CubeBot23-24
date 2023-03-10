@@ -125,6 +125,10 @@ public class Swerve extends SubsystemBase {
         : Rotation2d.fromDegrees(gyro.getYaw());
   }
 
+  public Rotation2d getRoll(){
+    return Rotation2d.fromDegrees(gyro.getRoll());
+  }
+
   public PhotonVisionWrapper getCamera() {
     return pcw;
   }
@@ -146,6 +150,7 @@ public class Swerve extends SubsystemBase {
 
     SmartDashboard.putNumber("Pigeon2 Yaw", gyro.getYaw());
     SmartDashboard.putNumber("Pigeon2 Pitch", getPitch().getDegrees());
+    SmartDashboard.putNumber("Pigeon2 Roll", getRoll().getDegrees());
 
     for (SwerveModule mod : mSwerveMods) {
       SmartDashboard.putNumber(

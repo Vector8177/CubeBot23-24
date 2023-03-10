@@ -2,13 +2,13 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 1.7141042853514281,
-        "y": 5.024474763235241
+        "x": 2.029028629485831,
+        "y": 5.038789506150441
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.17420806270184,
-        "y": 4.795438876592039
+        "x": 3.4891324068362444,
+        "y": 4.809753619507239
       },
       "holonomicAngle": 180.0,
       "isReversal": false,
@@ -17,6 +17,7 @@
       "isStopPoint": false,
       "stopEvent": {
         "names": [
+          "setStandbyPosition",
           "setCone3Position",
           "coneDeposit",
           "setStandbyPosition"
@@ -28,16 +29,16 @@
     },
     {
       "anchorPoint": {
-        "x": 6.924670706484271,
-        "y": 4.637976704524838
+        "x": 6.89604122065387,
+        "y": 4.451885046627237
       },
       "prevControl": {
-        "x": 5.163957327914656,
-        "y": 4.609347218694437
+        "x": 5.221216299575456,
+        "y": 4.824068362422439
       },
       "nextControl": {
-        "x": 5.163957327914656,
-        "y": 4.609347218694437
+        "x": 5.221216299575456,
+        "y": 4.824068362422439
       },
       "holonomicAngle": 0.0,
       "isReversal": true,
@@ -53,12 +54,12 @@
     },
     {
       "anchorPoint": {
-        "x": 1.7713632570122286,
-        "y": 4.423255560796836
+        "x": 2.01471388657063,
+        "y": 4.394626074966436
       },
       "prevControl": {
-        "x": 5.235531042490656,
-        "y": 4.909956819913639
+        "x": 4.691570811713053,
+        "y": 4.90995681991364
       },
       "nextControl": null,
       "holonomicAngle": -180.0,
@@ -68,11 +69,12 @@
       "isStopPoint": false,
       "stopEvent": {
         "names": [
+          "setStandbyPosition",
           "setCube3Position",
-          "wait1Seconds",
-          "depositCube"
+          "cubeDeposit",
+          "setStandbyPosition"
         ],
-        "executionBehavior": "parallel",
+        "executionBehavior": "sequential",
         "waitBehavior": "none",
         "waitTime": 0
       }
@@ -83,7 +85,7 @@
   "isReversed": null,
   "markers": [
     {
-      "position": 0.9090909090909093,
+      "position": 0.5818181818181818,
       "names": [
         "setCubeIntakePosition",
         "runCubeIntake3"

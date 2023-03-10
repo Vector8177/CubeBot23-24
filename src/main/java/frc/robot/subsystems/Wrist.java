@@ -92,6 +92,10 @@ public class Wrist extends SubsystemBase {
 
     }
 
+    public double getEncoderPosition(){
+        return absoluteEncoder.getPosition();
+    }
+
     public void setMotor(double voltage) {
         wristMotor.setVoltage(voltage);
     }

@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.Position;
 import frc.robot.Constants.Intake.EjectSpeed;
+import frc.robot.Constants.LEDs.LEDMode;
 import frc.robot.autos.AutoBalancing;
 import frc.robot.Constants.GamePiece;
 import frc.robot.commands.*;
@@ -79,9 +80,14 @@ public class RobotContainer {
                 eventMap.put("setCone3Position",
                                 new SequentialCommandGroup(
                                                 s_Elevator.setPose(Position.CONEHIGH.getElev()),
-                                                s_Wrist.setPose(Position.CONEHIGH.getWrist())));
+                                                new WaitCommand(.5),
+                                                s_Wrist.setPose(Position.CONEHIGH.getWrist()+.05),
+                                                new WaitCommand(1)));
                 eventMap.put("setCube3Position",
-                                new SetPosition(s_Wrist, s_Elevator, Position.HIGH, () -> GamePiece.CUBE));
+                        new SequentialCommandGroup(
+                                s_Wrist.setPose(Position.CUBEHIGH.getWrist()),
+                                s_Elevator.setPose(Position.CUBEHIGH.getElev()),
+                                new WaitCommand(1)));
 
                 eventMap.put("setCubeIntakePosition",
                                 new SetPosition(s_Wrist, s_Elevator, Position.CUBEINTAKE, () -> GamePiece.CUBE));
@@ -99,7 +105,7 @@ public class RobotContainer {
 
                 eventMap.put("wait1Seconds", new WaitCommand(1));
 
-                eventMap.put("AutoBalance", new AutoBalancing(s_Swerve));
+                eventMap.put("AutoBalance", new AutoBalancing(s_Swerve, true));
         }
 
         private final PathPlannerTrajectory moveForward = PathPlanner.loadPath("Move Forward",
@@ -111,16 +117,16 @@ public class RobotContainer {
                         Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
 
         private final PathPlannerTrajectory autoBalance = PathPlanner.loadPath("Autobalance",
-                        .75,
+                        1,
                         3);
 
         private final PathPlannerTrajectory backnForth = PathPlanner.loadPath("BacknForth",
                         Constants.Autonomous.kMaxSpeedMetersPerSecond,
                         Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
 
-        private final PathPlannerTrajectory cubeConeDeposit = PathPlanner.loadPath("cubeConeDeposit",
-                        Constants.Autonomous.kMaxSpeedMetersPerSecond,
-                        Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
+        private final PathPlannerTrajectory coneCubeDeposit = PathPlanner.loadPath("coneCubeDeposit",
+                        3,
+                        1);
 
         /**
          * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -184,7 +190,7 @@ public class RobotContainer {
         private void configureButtonBindings() {
                 /* Driver Buttons */
                 driver.y().onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
-                driver.x().onTrue(new AutoBalancing(s_Swerve));
+                driver.x().onTrue(new AutoBalancing(s_Swerve, true));
                 driver.rightTrigger().onTrue(new OuttakePiece(s_Intake, .5, () -> getGamePiece(), EjectSpeed.NORMAL));
 
                 /* Operator Buttons */
@@ -226,7 +232,7 @@ public class RobotContainer {
                 autoChooser.setDefaultOption("Move forward", moveForward);
                 autoChooser.addOption("S curve", sCurve);
                 autoChooser.addOption("Auto balance", autoBalance);
-                autoChooser.addOption("Cone and Cube", cubeConeDeposit);
+                autoChooser.addOption("Cone and Cube", coneCubeDeposit);
                 autoChooser.addOption("Back and Forth", backnForth);
                 SmartDashboard.putData(autoChooser);
         }
@@ -236,6 +242,7 @@ public class RobotContainer {
          */
         public void disabledInit() {
                 s_Swerve.resetToAbsolute();
+                s_LEDs.setLEDMode(LEDMode.VECTORWAVE);
         }
 
         public static GamePiece getGamePiece() {

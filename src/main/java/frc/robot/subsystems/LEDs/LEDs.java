@@ -35,7 +35,7 @@ public class LEDs extends SubsystemBase {
         this.rainbow = new Rainbow(m_ledBuffer);
         this.vectorWave = new VectorWave(m_ledBuffer);
         this.purpleFlash = new Flash(m_ledBuffer, HSV.googleColorPickerHSV(263, 73, 96));
-        this.yellowFlash = new Flash(m_ledBuffer, HSV.googleColorPickerHSV(55, 91, 100));
+        this.yellowFlash = new Flash(m_ledBuffer, HSV.googleColorPickerHSV(35, 100, 100));
 
         m_led.setLength(m_ledBuffer.getLength());
         m_led.setData(m_ledBuffer);

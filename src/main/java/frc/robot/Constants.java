@@ -69,9 +69,9 @@ public final class Constants {
     public static final double driveKFF = 0.0;
 
     /* Drive Motor Characterization Values */
-    public static final double driveKS = 0.11979;
-    public static final double driveKV = 2.3823;
-    public static final double driveKA = 0.30034;
+    public static final double driveKS = 0.16059;
+    public static final double driveKV = 2.4135;
+    public static final double driveKA = 0.41807;
 
     /* Drive Motor Conversion Factors */
     public static final double driveConversionPositionFactor = (wheelDiameter * Math.PI) / driveGearRatio;
@@ -159,7 +159,7 @@ public final class Constants {
     public static final int wristMotorId = 61;
     public static final double maxMotorVoltage = 2.5;
 
-    public static double kP = 2.0;
+    public static double kP = 2.2;
     public static double kI = 0.0;
     public static double kD = 0.2;
 
@@ -335,23 +335,23 @@ public final class Constants {
     public static final int id = 9;
     public static final int length = 18;
 
-    public static final LEDMode defaultMode = LEDMode.RAINBOW;
+    public static final LEDMode defaultMode = LEDMode.VECTORWAVE;
 
     public static final class Flash {
       public static final double speed = 5;
     }
 
     public static final class VectorWave {
-      public static final HSV hsv = HSV.googleColorPickerHSV(30, 77, 100);
+      public static final HSV hsv = HSV.googleColorPickerHSV(14, 99, 100);
 
       public static final int pauseBetween = 5;
       public static final int length = 20;
       public static final double spread = 4;
-      public static final double speed = .5;
+      public static final double speed = .25;
     }
 
     public static final class OrangeDot {
-      public static final HSV hsv = HSV.googleColorPickerHSV(30, 77, 100);
+      public static final HSV hsv = HSV.googleColorPickerHSV(20, 99, 100);
 
       public static final int pauseBetween = 10;
       public static final int length = 0;

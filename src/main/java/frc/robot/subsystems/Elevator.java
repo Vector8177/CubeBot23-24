@@ -77,7 +77,7 @@ public class Elevator extends SubsystemBase {
         return pidController.getPositionTolerance() >= Math.abs(currentPosition - distance);
     }
 
-    private double getEncoderPosition() {
+    public double getEncoderPosition() {
         return (elevatorMotorLeft.getEncoder().getPosition() + elevatorMotorRight.getEncoder().getPosition()) / 2;
     }
 
