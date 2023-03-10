@@ -4,7 +4,13 @@
 
 package frc.robot;
 
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.lib.config.CTREConfigs;
@@ -30,6 +36,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    SmartDashboard.putString("Last time deployed",new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime()) );
     ctreConfigs = new CTREConfigs();
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
@@ -97,7 +104,7 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-
+    
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
