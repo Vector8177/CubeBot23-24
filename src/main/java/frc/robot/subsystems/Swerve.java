@@ -22,14 +22,14 @@ import frc.robot.Constants;
 public class Swerve extends SubsystemBase {
     private Pigeon2 gyro;
 
-    private PhotonVisionWrapper pcw;
-
     private SwerveDrivePoseEstimator swervePoseEstimator;
     private SwerveModule[] mSwerveMods;
 
+    private final PhotonVisionWrapper pcw;
+
     private Field2d field;
 
-    public Swerve() {
+    public Swerve(PhotonVisionWrapper pcw) {
         gyro = new Pigeon2(Constants.Swerve.pigeonID);
         zeroGyro();
 
@@ -43,7 +43,7 @@ public class Swerve extends SubsystemBase {
         swervePoseEstimator = new SwerveDrivePoseEstimator(Constants.Swerve.swerveKinematics, getYaw(), getPositions(),
                 new Pose2d());
 
-        pcw = new PhotonVisionWrapper();
+        this.pcw = pcw;
 
         field = new Field2d();
         SmartDashboard.putData(field);

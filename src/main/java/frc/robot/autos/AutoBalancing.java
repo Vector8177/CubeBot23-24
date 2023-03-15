@@ -27,34 +27,15 @@ public class AutoBalancing extends CommandBase {
 
     @Override
     public void execute() {
-        if(!sideways && Math.abs(s_Swerve.getPitch().getDegrees()) < 7 && phase1){
-            phase1 = false;
-            timer.start();
-            } else if(sideways && Math.abs(s_Swerve.getRoll().getDegrees()) < 7 && phase1){
-                phase1 = false;
-                timer.start();
-            }
-        if(phase1){
             if(!sideways){
             double translationVal = s_Swerve.getPitch().getDegrees() > 0 ? -.25 : .25;
             s_Swerve.drive(
                     new Translation2d(translationVal, 0).times(Constants.Swerve.maxSpeed), 0, true, false);
             } else{
-                double translationVal = s_Swerve.getRoll().getDegrees() > 0 ? -.15 : .15;
+                double translationVal = s_Swerve.getRoll().getDegrees() > 0 ? -.145 : .145;
             s_Swerve.drive(
-                    new Translation2d(translationVal, 0).times(Constants.Swerve.maxSpeed), 0, true, false);
+                    new Translation2d(translationVal, 0).times(Constants.Swerve.maxSpeed), 0, false, false);
             }
-        } else{
-            if(!sideways){
-                double translationVal = s_Swerve.getPitch().getDegrees() > 0 ? -.25 : .25;
-                s_Swerve.drive(
-                        new Translation2d(translationVal, 0).times(Constants.Swerve.maxSpeed), 0, true, false);
-                } else{
-                    double translationVal = s_Swerve.getRoll().getDegrees() > 0 ? -.15 : .15;
-                s_Swerve.drive(
-                        new Translation2d(translationVal, 0).times(Constants.Swerve.maxSpeed), 0, true, false);
-            }
-        }
     }
 
     @Override
@@ -65,6 +46,6 @@ public class AutoBalancing extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return timer.get() > 2;
+        return Math.abs(s_Swerve.getPitch().getDegrees()) < 7; 
     }
 }

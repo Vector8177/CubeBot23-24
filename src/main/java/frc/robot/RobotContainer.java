@@ -48,7 +48,8 @@ public class RobotContainer {
     private static final int intakeTrigger = XboxController.Axis.kRightTrigger.value;
 
     /* Subsystems */
-    private final Swerve s_Swerve = new Swerve();
+    private final PhotonVisionWrapper s_Vision = new PhotonVisionWrapper();
+    private final Swerve s_Swerve = new Swerve(s_Vision);
     private final Intake s_Intake = new Intake();
     private final Elevator s_Elevator = new Elevator();
     private final Wrist s_Wrist = new Wrist();

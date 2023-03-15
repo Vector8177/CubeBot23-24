@@ -298,8 +298,8 @@ public final class Constants {
         public static final double kPYController = 1;
         public static final double kPThetaController = 1;
 
-        public static final double kPGridLineUp = .1;
-        public static final double gridLineUpPosition = 1.78;
+        public static final double kPGridLineUp = .35;
+        public static final double gridLineUpPosition = 1.98;
     }
 
     public static final class PhotonVision {
