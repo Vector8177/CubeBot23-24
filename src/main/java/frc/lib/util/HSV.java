@@ -22,9 +22,9 @@ public class HSV {
      * @return HSV
      */
     public static HSV googleColorPickerHSV(int h, int s, int v) {
-        int nH = (int) (((double)h / 360.0) * 179);
-        int nS = (int) (((double)s / 100.0) * 255);
-        int nV = (int) (((double)v / 100.0) * 255);
+        int nH = (int) ((h / 360.0) * 179);
+        int nS = (int) ((s / 100.0) * 255);
+        int nV = (int) ((v / 100.0) * 255);
         return new HSV(nH, nS, nV);
     }
 }

@@ -9,32 +9,32 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
 
 public class executeTrajectory extends SequentialCommandGroup {
-  public executeTrajectory(Swerve s_Swerve, PathPlannerTrajectory trajectory, boolean setInitialPose) {
+    public executeTrajectory(Swerve s_Swerve, PathPlannerTrajectory trajectory, boolean setInitialPose) {
 
-    s_Swerve.getField().getObject("Field").setTrajectory(trajectory);
+        s_Swerve.getField().getObject("Field").setTrajectory(trajectory);
 
-    PIDController thetaController = new PIDController(
-        Constants.Autonomous.kPThetaController,
-        0,
-        0);
+        PIDController thetaController = new PIDController(
+                Constants.Autonomous.kPThetaController,
+                0,
+                0);
 
-    PPSwerveControllerCommand swerveControllerCommand = new PPSwerveControllerCommand(
-        trajectory,
-        s_Swerve::getPose,
-        Constants.Swerve.swerveKinematics,
-        new PIDController(Constants.Autonomous.kPXController, 0, 0),
-        new PIDController(Constants.Autonomous.kPYController, 0, 0),
-        thetaController,
-        s_Swerve::setModuleStates,
-        s_Swerve);
+        PPSwerveControllerCommand swerveControllerCommand = new PPSwerveControllerCommand(
+                trajectory,
+                s_Swerve::getPose,
+                Constants.Swerve.swerveKinematics,
+                new PIDController(Constants.Autonomous.kPXController, 0, 0),
+                new PIDController(Constants.Autonomous.kPYController, 0, 0),
+                thetaController,
+                s_Swerve::setModuleStates,
+                s_Swerve);
 
-    if (setInitialPose) {
-      addCommands(
-          new InstantCommand(() -> s_Swerve.resetOdometry(trajectory.getInitialHolonomicPose())),
-          swerveControllerCommand);
-    } else {
-      addCommands(
-          swerveControllerCommand);
+        if (setInitialPose) {
+            addCommands(
+                    new InstantCommand(() -> s_Swerve.resetOdometry(trajectory.getInitialHolonomicPose())),
+                    swerveControllerCommand);
+        } else {
+            addCommands(
+                    swerveControllerCommand);
+        }
     }
-  }
 }
