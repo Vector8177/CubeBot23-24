@@ -154,6 +154,8 @@ public final class Constants {
 
         public static final double maxMotorVoltage = 5;
 
+        public static final int currentLimit = 30; 
+
     }
 
     public static final class Wrist {
@@ -171,6 +173,8 @@ public final class Constants {
 
         public static final double motorGearRatio = 1 / 32.0;
         public static final double absoluteEncoderOffset = 5.412927;
+
+        public static final int currentLimit = 30; 
     }
 
     public static final class Intake {
@@ -185,7 +189,7 @@ public final class Constants {
         public static final double coneShootSpeed = 12;
         public static final double cubeOuttakeSpeed = 7;
 
-        public static final double maxCurrentIntake = 80;
+        public static final int currentLimit = 30; 
 
         public enum EjectSpeed {
             FAST,
