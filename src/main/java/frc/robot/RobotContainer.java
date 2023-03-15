@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -156,7 +157,8 @@ public class RobotContainer {
                         () -> -driver.getRawAxis(rotationAxis),
                         () -> driver.povDown().getAsBoolean(),
                         () -> driver.leftBumper().getAsBoolean(),
-                        () -> driver.rightBumper().getAsBoolean()));
+                        () -> driver.rightBumper().getAsBoolean(),
+                        () -> driver.a().getAsBoolean()));
 
         s_Elevator.setDefaultCommand(
                 new TeleopElevator(
@@ -262,6 +264,9 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // Executes the autonomous command chosen in smart dashboard
         s_Swerve.getField().getObject("Field").setTrajectory(autoChooser.getSelected());
-        return autoBuilder.fullAuto(autoChooser.getSelected());
+        return new ParallelCommandGroup(
+                new InstantCommand(
+                        () -> s_Swerve.setGyro(autoChooser.getSelected().getInitialHolonomicPose().getRotation())),
+                autoBuilder.fullAuto(autoChooser.getSelected()));
     }
 }

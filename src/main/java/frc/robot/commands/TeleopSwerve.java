@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -17,10 +18,13 @@ public class TeleopSwerve extends CommandBase {
     private BooleanSupplier robotCentricSup;
     private BooleanSupplier leftBumper;
     private BooleanSupplier rightBumper;
+    private BooleanSupplier gridLineUp;
 
     private SlewRateLimiter translationLimiter = new SlewRateLimiter(3.0);
     private SlewRateLimiter strafeLimiter = new SlewRateLimiter(3.0);
     private SlewRateLimiter rotationLimiter = new SlewRateLimiter(3.0);
+
+    private PIDController translationController;
 
     /**
      * The constructor initializes the class variables.
@@ -39,7 +43,8 @@ public class TeleopSwerve extends CommandBase {
             DoubleSupplier rotationSup,
             BooleanSupplier robotCentricSup,
             BooleanSupplier leftBumper,
-            BooleanSupplier rightBumper) {
+            BooleanSupplier rightBumper,
+            BooleanSupplier gridLineUp) {
         this.s_Swerve = s_Swerve;
         addRequirements(s_Swerve);
 
@@ -49,6 +54,12 @@ public class TeleopSwerve extends CommandBase {
         this.robotCentricSup = robotCentricSup;
         this.leftBumper = leftBumper;
         this.rightBumper = rightBumper;
+        this.gridLineUp = gridLineUp;
+    }
+
+    @Override
+    public void initialize() {
+        translationController = new PIDController(Constants.Autonomous.kPGridLineUp, 0, 0);
     }
 
     /**
@@ -58,12 +69,23 @@ public class TeleopSwerve extends CommandBase {
     @Override
     public void execute() {
         /* Get Values, Deadband */
-        double translationVal = translationLimiter
-                .calculate(MathUtil.applyDeadband(translationSup.getAsDouble(), Constants.Swerve.stickDeadband));
+        double translationVal;
         double strafeVal = strafeLimiter
                 .calculate(MathUtil.applyDeadband(strafeSup.getAsDouble(), Constants.Swerve.stickDeadband));
         double rotationVal = rotationLimiter
                 .calculate(MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.Swerve.stickDeadband));
+
+        if (gridLineUp.getAsBoolean()) {
+            translationVal = translationLimiter.calculate(
+                    MathUtil.clamp(
+                            translationController.calculate(s_Swerve.getPose().getX(),
+                                    Constants.Autonomous.gridLineUpPosition),
+                            -1,
+                            1));
+        } else {
+            translationVal = translationLimiter
+                    .calculate(MathUtil.applyDeadband(translationSup.getAsDouble(), Constants.Swerve.stickDeadband));
+        }
 
         s_Swerve.drive(
                 new Translation2d(translationVal, strafeVal).times(
@@ -75,5 +97,6 @@ public class TeleopSwerve extends CommandBase {
                                 : Constants.Swerve.maxAngularVelocity),
                 !robotCentricSup.getAsBoolean(),
                 false);
+
     }
 }
