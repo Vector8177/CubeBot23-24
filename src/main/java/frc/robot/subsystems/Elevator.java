@@ -37,6 +37,8 @@ public class Elevator extends SubsystemBase {
 
         elevatorMotorRight.follow(elevatorMotorLeft, true);
 
+        elevatorMotorLeft.setSmartCurrentLimit(Constants.Elevator.currentLimit); 
+        elevatorMotorRight.setSmartCurrentLimit(Constants.Elevator.currentLimit); 
         // elevatorRightController = new CANCoder(Constants.Elevator.canConderRightId);
 
         // The motors will follow each other
