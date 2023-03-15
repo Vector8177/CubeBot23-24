@@ -63,6 +63,8 @@ public class Wrist extends SubsystemBase {
         relativeEncoder.setPosition(absoluteEncoder.getPosition());
 
         setPosition(Position.STANDBY.getWrist());
+
+        wristMotor.setSmartCurrentLimit(Constants.Intake.currentLimit); 
     }
 
     public void resetRelativeEncoder() {
