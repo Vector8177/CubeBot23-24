@@ -300,7 +300,9 @@ public final class Constants {
         public static final double kPThetaController = 1;
 
         public static final double kPGridLineUp = .35;
+        public static final double kPThetaGridLineUp = .35;
         public static final double gridLineUpPosition = 1.98;
+        public static final double gridLineUpAngle = 180;
     }
 
     public static final class PhotonVision {

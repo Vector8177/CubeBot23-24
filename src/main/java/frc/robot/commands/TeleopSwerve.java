@@ -29,6 +29,7 @@ public class TeleopSwerve extends CommandBase {
     private SlewRateLimiter rotationLimiter = new SlewRateLimiter(3.0);
 
     private PIDController translationController;
+    private PIDController rotationController;
 
     private LEDMode previousMode;
 
@@ -71,6 +72,11 @@ public class TeleopSwerve extends CommandBase {
     public void initialize() {
         translationController = new PIDController(Constants.Autonomous.kPGridLineUp, 0, 0);
         translationController.setTolerance(.1);
+
+        rotationController = new PIDController(Constants.Autonomous.kPThetaGridLineUp, 0, 0);
+        rotationController.setTolerance(.1);
+        rotationController.enableContinuousInput(0, 360);
+
     }
 
     /**
@@ -87,11 +93,9 @@ public class TeleopSwerve extends CommandBase {
 
         /* Get Values, Deadband */
         double translationVal;
+        double rotationVal;
         double strafeVal = strafeLimiter
                 .calculate(MathUtil.applyDeadband(strafeSup.getAsDouble(),
-                        Constants.Swerve.stickDeadband));
-        double rotationVal = rotationLimiter
-                .calculate(MathUtil.applyDeadband(rotationSup.getAsDouble(),
                         Constants.Swerve.stickDeadband));
 
         if (gridLineUp.getAsBoolean()) {
@@ -102,7 +106,14 @@ public class TeleopSwerve extends CommandBase {
                             -1,
                             1));
 
-            if (translationController.atSetpoint()) {
+            rotationVal = rotationLimiter.calculate(
+                    MathUtil.clamp(
+                            rotationController.calculate(s_Swerve.getYaw().getDegrees(),
+                                    Constants.Autonomous.gridLineUpAngle),
+                            -1,
+                            1));
+
+            if (translationController.atSetpoint() && rotationController.atSetpoint()) {
                 s_LEDs.setLEDMode(LEDMode.GREENFLASH);
             } else {
                 s_LEDs.setLEDMode(LEDMode.REDFLASH);
@@ -111,6 +122,10 @@ public class TeleopSwerve extends CommandBase {
         } else {
             if (s_LEDs.getLEDMode() != previousMode)
                 s_LEDs.setLEDMode(previousMode);
+
+            rotationVal = rotationLimiter
+                    .calculate(MathUtil.applyDeadband(rotationSup.getAsDouble(),
+                            Constants.Swerve.stickDeadband));
             translationVal = translationLimiter
                     .calculate(MathUtil.applyDeadband(translationSup.getAsDouble(),
                             Constants.Swerve.stickDeadband));
