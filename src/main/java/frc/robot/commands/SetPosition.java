@@ -2,7 +2,6 @@ package frc.robot.commands;
 
 import java.util.function.Supplier;
 
-import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.Position;
@@ -24,7 +23,7 @@ public class SetPosition extends CommandBase {
         this.gamePiece = gamePiece;
         this.timer = new Timer();
 
-        addRequirements(s_Wrist,s_Elevator);
+        addRequirements(s_Wrist, s_Elevator);
 
     }
 

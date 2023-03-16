@@ -6,12 +6,16 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.Constants.LEDs.LEDMode;
 import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.LEDs.LEDs;
+
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 public class TeleopSwerve extends CommandBase {
     private Swerve s_Swerve;
+    private LEDs s_LEDs;
     private DoubleSupplier translationSup;
     private DoubleSupplier strafeSup;
     private DoubleSupplier rotationSup;
@@ -26,6 +30,8 @@ public class TeleopSwerve extends CommandBase {
 
     private PIDController translationController;
 
+    private LEDMode previousMode;
+
     /**
      * The constructor initializes the class variables.
      * 
@@ -38,6 +44,7 @@ public class TeleopSwerve extends CommandBase {
      */
     public TeleopSwerve(
             Swerve s_Swerve,
+            LEDs s_LEDs,
             DoubleSupplier translationSup,
             DoubleSupplier strafeSup,
             DoubleSupplier rotationSup,
@@ -46,6 +53,7 @@ public class TeleopSwerve extends CommandBase {
             BooleanSupplier rightBumper,
             BooleanSupplier gridLineUp) {
         this.s_Swerve = s_Swerve;
+        this.s_LEDs = s_LEDs;
         addRequirements(s_Swerve);
 
         this.translationSup = translationSup;
@@ -55,11 +63,14 @@ public class TeleopSwerve extends CommandBase {
         this.leftBumper = leftBumper;
         this.rightBumper = rightBumper;
         this.gridLineUp = gridLineUp;
+
+        this.previousMode = s_LEDs.getLEDMode();
     }
 
     @Override
     public void initialize() {
         translationController = new PIDController(Constants.Autonomous.kPGridLineUp, 0, 0);
+        translationController.setTolerance(.1);
     }
 
     /**
@@ -68,12 +79,20 @@ public class TeleopSwerve extends CommandBase {
 
     @Override
     public void execute() {
+        if (s_LEDs.getLEDMode() != LEDMode.GREENFLASH &&
+                s_LEDs.getLEDMode() != LEDMode.REDFLASH &&
+                s_LEDs.getLEDMode() != previousMode) {
+            previousMode = s_LEDs.getLEDMode();
+        }
+
         /* Get Values, Deadband */
         double translationVal;
         double strafeVal = strafeLimiter
-                .calculate(MathUtil.applyDeadband(strafeSup.getAsDouble(), Constants.Swerve.stickDeadband));
+                .calculate(MathUtil.applyDeadband(strafeSup.getAsDouble(),
+                        Constants.Swerve.stickDeadband));
         double rotationVal = rotationLimiter
-                .calculate(MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.Swerve.stickDeadband));
+                .calculate(MathUtil.applyDeadband(rotationSup.getAsDouble(),
+                        Constants.Swerve.stickDeadband));
 
         if (gridLineUp.getAsBoolean()) {
             translationVal = translationLimiter.calculate(
@@ -82,18 +101,30 @@ public class TeleopSwerve extends CommandBase {
                                     Constants.Autonomous.gridLineUpPosition),
                             -1,
                             1));
+
+            if (translationController.atSetpoint()) {
+                s_LEDs.setLEDMode(LEDMode.GREENFLASH);
+            } else {
+                s_LEDs.setLEDMode(LEDMode.REDFLASH);
+            }
+
         } else {
+            if (s_LEDs.getLEDMode() != previousMode)
+                s_LEDs.setLEDMode(previousMode);
             translationVal = translationLimiter
-                    .calculate(MathUtil.applyDeadband(translationSup.getAsDouble(), Constants.Swerve.stickDeadband));
+                    .calculate(MathUtil.applyDeadband(translationSup.getAsDouble(),
+                            Constants.Swerve.stickDeadband));
         }
 
         s_Swerve.drive(
                 new Translation2d(translationVal, strafeVal).times(
                         leftBumper.getAsBoolean() ? Constants.Swerve.maxSpeedMaxLimit
-                                : rightBumper.getAsBoolean() ? Constants.Swerve.maxSpeedMinLimit
+                                : rightBumper.getAsBoolean()
+                                        ? Constants.Swerve.maxSpeedMinLimit
                                         : Constants.Swerve.maxSpeed),
                 rotationVal * (leftBumper.getAsBoolean() ? Constants.Swerve.maxAngularVelocityMaxLimit
-                        : rightBumper.getAsBoolean() ? Constants.Swerve.maxAngularVelocityMinLimit
+                        : rightBumper.getAsBoolean()
+                                ? Constants.Swerve.maxAngularVelocityMinLimit
                                 : Constants.Swerve.maxAngularVelocity),
                 !robotCentricSup.getAsBoolean(),
                 false);

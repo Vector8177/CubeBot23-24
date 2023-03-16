@@ -1,11 +1,8 @@
 package frc.robot;
 
-import java.util.ArrayList;
-
 import com.pathplanner.lib.PathConstraints;
 import com.revrobotics.CANSparkMax.IdleMode;
 
-import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -154,7 +151,7 @@ public final class Constants {
 
         public static final double maxMotorVoltage = 5;
 
-        public static final int currentLimit = 30; 
+        public static final int currentLimit = 30;
 
     }
 
@@ -174,7 +171,7 @@ public final class Constants {
         public static final double motorGearRatio = 1 / 32.0;
         public static final double absoluteEncoderOffset = 5.412927;
 
-        public static final int currentLimit = 30; 
+        public static final int currentLimit = 30;
     }
 
     public static final class Intake {
@@ -189,7 +186,7 @@ public final class Constants {
         public static final double coneShootSpeed = 12;
         public static final double cubeOuttakeSpeed = 7;
 
-        public static final int currentLimit = 30; 
+        public static final int currentLimit = 30;
 
         public enum EjectSpeed {
             FAST,
@@ -316,29 +313,6 @@ public final class Constants {
                         Units.degreesToRadians(5)));
     }
 
-    public static final class AprilTags {
-        public static final AprilTag tag1 = new AprilTag(1, FieldConstants.aprilTags.get(1));
-        public static final AprilTag tag2 = new AprilTag(2, FieldConstants.aprilTags.get(2));
-        public static final AprilTag tag3 = new AprilTag(3, FieldConstants.aprilTags.get(3));
-        public static final AprilTag tag4 = new AprilTag(4, FieldConstants.aprilTags.get(4));
-        public static final AprilTag tag5 = new AprilTag(5, FieldConstants.aprilTags.get(5));
-        public static final AprilTag tag6 = new AprilTag(6, FieldConstants.aprilTags.get(6));
-        public static final AprilTag tag7 = new AprilTag(7, FieldConstants.aprilTags.get(7));
-        public static final AprilTag tag8 = new AprilTag(8, FieldConstants.aprilTags.get(8));
-        public static final ArrayList<AprilTag> aprilTagList = new ArrayList<>();
-
-        static {
-            aprilTagList.add(tag1);
-            aprilTagList.add(tag2);
-            aprilTagList.add(tag3);
-            aprilTagList.add(tag4);
-            aprilTagList.add(tag5);
-            aprilTagList.add(tag6);
-            aprilTagList.add(tag7);
-            aprilTagList.add(tag8);
-        }
-    }
-
     public static final class LEDs {
         public static final int id = 9;
         public static final int length = 18;
@@ -372,7 +346,9 @@ public final class Constants {
             VECTORWAVE("Vector Wave"),
             RAINBOW("Rainbow"),
             PURPLEFLASH("Purple Flash"),
-            YELLOWFLASH("Yellow Flash");
+            YELLOWFLASH("Yellow Flash"),
+            GREENFLASH("Green Flash"),
+            REDFLASH("Red Flash");
 
             private String name;
 

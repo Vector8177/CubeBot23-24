@@ -143,6 +143,7 @@ public class Swerve extends SubsystemBase {
 
     @Override
     public void periodic() {
+        swervePoseEstimator.update(getYaw(), getPositions());
 
         Optional<EstimatedRobotPose> result = pcw.getEstimatedGlobalPose(getPose());
 
@@ -151,7 +152,7 @@ public class Swerve extends SubsystemBase {
             swervePoseEstimator.addVisionMeasurement(
                     camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
         }
-        swervePoseEstimator.update(getYaw(), getPositions());
+
         field.setRobotPose(getPose());
 
         SmartDashboard.putNumber("Pigeon2 Yaw", gyro.getYaw());
