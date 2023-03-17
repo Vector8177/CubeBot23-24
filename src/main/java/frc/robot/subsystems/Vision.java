@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
 
-public class PhotonVisionWrapper extends SubsystemBase {
+public class Vision extends SubsystemBase {
     private PhotonCamera camera;
     private PhotonPoseEstimator positionEstimation;
     private AprilTagFieldLayout aprilTagLayout;
@@ -27,7 +27,7 @@ public class PhotonVisionWrapper extends SubsystemBase {
     /**
      * TODO
      */
-    public PhotonVisionWrapper() {
+    public Vision() {
         camera = new PhotonCamera(Constants.PhotonVision.photonVisionName);
         try {
             aprilTagLayout = AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();

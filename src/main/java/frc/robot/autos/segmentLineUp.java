@@ -8,12 +8,9 @@ import com.pathplanner.lib.PathPoint;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
-import frc.robot.subsystems.Swerve;
 
-public class segmentLineUp extends SequentialCommandGroup {
+public class segmentLineUp {
 
     /**
      * 
@@ -21,7 +18,7 @@ public class segmentLineUp extends SequentialCommandGroup {
      * @param segment    the segment TODO
      * @param startPoint
      */
-    public segmentLineUp(Swerve s_Swerve, Constants.SEGMENT segment, Supplier<PathPoint> startPoint) {
+    public static PathPlannerTrajectory getTrajectory(Constants.SEGMENT segment, Supplier<PathPoint> startPoint) {
         PathPoint lineUpPoint = startPoint.get();
 
         switch (segment) {
@@ -77,10 +74,6 @@ public class segmentLineUp extends SequentialCommandGroup {
                 startPoint.get(),
                 lineUpPoint);
 
-        trajectoryToSegment = PathPlannerTrajectory.transformTrajectoryForAlliance(trajectoryToSegment,
-                DriverStation.getAlliance());
-
-        addCommands(
-                new executeTrajectory(s_Swerve, trajectoryToSegment, false));
+        return trajectoryToSegment;
     }
 }

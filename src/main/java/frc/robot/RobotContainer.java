@@ -34,8 +34,8 @@ import frc.robot.subsystems.LEDs.LEDs;
 
 public class RobotContainer {
     /* Controllers */
-    public final CommandXboxController driver = new CommandXboxController(0);
-    public final CommandXboxController operator = new CommandXboxController(1);
+    private final CommandXboxController driver = new CommandXboxController(0);
+    private final CommandXboxController operator = new CommandXboxController(1);
 
     /* Drive Controls */
     private static final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -48,7 +48,7 @@ public class RobotContainer {
     private static final int intakeTrigger = XboxController.Axis.kRightTrigger.value;
 
     /* Subsystems */
-    private final PhotonVisionWrapper s_Vision = new PhotonVisionWrapper();
+    private final Vision s_Vision = new Vision();
     private final Swerve s_Swerve = new Swerve(s_Vision);
     private final Intake s_Intake = new Intake();
     private final Elevator s_Elevator = new Elevator();

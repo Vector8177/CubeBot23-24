@@ -25,11 +25,11 @@ public class Swerve extends SubsystemBase {
     private SwerveDrivePoseEstimator swervePoseEstimator;
     private SwerveModule[] mSwerveMods;
 
-    private final PhotonVisionWrapper pcw;
+    private final Vision pcw;
 
     private Field2d field;
 
-    public Swerve(PhotonVisionWrapper pcw) {
+    public Swerve(Vision pcw) {
         gyro = new Pigeon2(Constants.Swerve.pigeonID);
         zeroGyro();
 
@@ -137,7 +137,7 @@ public class Swerve extends SubsystemBase {
         return Rotation2d.fromDegrees(gyro.getRoll());
     }
 
-    public PhotonVisionWrapper getCamera() {
+    public Vision getCamera() {
         return pcw;
     }
 
