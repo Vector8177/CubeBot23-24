@@ -6,6 +6,7 @@ package frc.robot;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
@@ -20,6 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SelectCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -224,8 +226,18 @@ public class RobotContainer {
         operator.x().onTrue(new OuttakePiece(s_Intake, .5, () -> getGamePiece(), EjectSpeed.FAST));
 
         operator.rightBumper().onTrue(new InstantCommand(() -> s_LEDs.toggleHPSignal()));
-
-        operator.y().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.HIGH, () -> getGamePiece()));
+        
+        
+        operator.y().onTrue(new SelectCommand(
+                Map.ofEntries(
+                    Map.entry(GamePiece.CUBE, new SetPosition(s_Wrist, s_Elevator, Position.HIGH, () -> getGamePiece())),
+                    Map.entry(GamePiece.CONE, new SequentialCommandGroup(
+                        s_Wrist.setPose(Position.STANDBY.getWrist()), 
+                        s_Elevator.setPose(Position.CONEHIGH.getElev()), 
+                        s_Wrist.setPose(Position.CONEHIGH.getWrist())))), 
+                        () -> gamePiece));
+                        
+                        
         operator.b().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.MID, () -> getGamePiece()));
         operator.a().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.LOW, () -> getGamePiece()));
 

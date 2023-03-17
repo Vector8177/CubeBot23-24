@@ -70,11 +70,11 @@ public class TeleopSwerve extends CommandBase {
 
     @Override
     public void initialize() {
-        translationController = new PIDController(Constants.Autonomous.kPGridLineUp, 0, 0);
+        translationController = new PIDController(Constants.Autonomous.kPGridLineUp, Constants.Autonomous.kIGridLineUp, 0);
         translationController.setTolerance(.1);
 
         rotationController = new PIDController(Constants.Autonomous.kPThetaGridLineUp, 0, 0);
-        rotationController.setTolerance(.1);
+        rotationController.setTolerance(2);
         rotationController.enableContinuousInput(0, 360);
 
     }
@@ -99,19 +99,22 @@ public class TeleopSwerve extends CommandBase {
                         Constants.Swerve.stickDeadband));
 
         if (gridLineUp.getAsBoolean()) {
-            translationVal = translationLimiter.calculate(
+                
+            translationVal = 
                     MathUtil.clamp(
                             translationController.calculate(s_Swerve.getPose().getX(),
                                     Constants.Autonomous.gridLineUpPosition),
                             -1,
-                            1));
+                            1);
 
-            rotationVal = rotationLimiter.calculate(
+            rotationVal = 
                     MathUtil.clamp(
                             rotationController.calculate(s_Swerve.getYaw().getDegrees(),
                                     Constants.Autonomous.gridLineUpAngle),
                             -1,
-                            1));
+                            1);
+
+        if(translationController.atSetpoint()) translationVal = 0;
 
             if (translationController.atSetpoint() && rotationController.atSetpoint()) {
                 s_LEDs.setLEDMode(LEDMode.GREENFLASH);
@@ -123,16 +126,14 @@ public class TeleopSwerve extends CommandBase {
             if (s_LEDs.getLEDMode() != previousMode)
                 s_LEDs.setLEDMode(previousMode);
 
-            rotationVal = rotationLimiter
-                    .calculate(MathUtil.applyDeadband(rotationSup.getAsDouble(),
-                            Constants.Swerve.stickDeadband));
-            translationVal = translationLimiter
-                    .calculate(MathUtil.applyDeadband(translationSup.getAsDouble(),
-                            Constants.Swerve.stickDeadband));
+            rotationVal = MathUtil.applyDeadband(rotationSup.getAsDouble(),
+                            Constants.Swerve.stickDeadband);
+            translationVal = MathUtil.applyDeadband(translationSup.getAsDouble(),
+                            Constants.Swerve.stickDeadband);
         }
 
         s_Swerve.drive(
-                new Translation2d(translationVal, strafeVal).times(
+                new Translation2d(translationLimiter.calculate(translationVal), strafeVal).times(
                         leftBumper.getAsBoolean() ? Constants.Swerve.maxSpeedMaxLimit
                                 : rightBumper.getAsBoolean()
                                         ? Constants.Swerve.maxSpeedMinLimit

@@ -157,21 +157,21 @@ public final class Constants {
 
     public static final class Wrist {
         public static final int wristMotorId = 61;
-        public static final double maxMotorVoltage = 2.5;
+        public static final double maxMotorVoltage = 10.0;
 
         public static double kP = 2.2;
-        public static double kI = 0.0;
-        public static double kD = 0.2;
+        public static double kI = 0.2;
+        public static double kD = 0.0;
 
         public static double kS = 0.11237;
         public static double kV = 0.56387;
         public static double kA = 0.041488;
-        public static double kG = 0.56416;
+        public static double kG = 0.76416;
 
         public static final double motorGearRatio = 1 / 32.0;
         public static final double absoluteEncoderOffset = 5.412927;
 
-        public static final int currentLimit = 30;
+        public static final int currentLimit = 40;
     }
 
     public static final class Intake {
@@ -197,14 +197,14 @@ public final class Constants {
     public enum Position {
 
         HIGH(0, 0),
-        CONEHIGH(.134327, 35),
+        CONEHIGH(.067, 35),
         CUBEHIGH(1.55, 35),
         MID(0, 0),
-        CONEMID(.104327, 23),
+        CONEMID(5.81731, 35),
         CUBEMID(1.427, 16.5),
         LOW(.5236, .25),
         STANDBY(1.1765, .25),
-        CUBEINTAKE(0.0, 0.3),
+        CUBEINTAKE(.1, 0.3),
         STANDINGCONEINTAKE(5.106, 14.380),
         TIPPEDCONEINTAKE(5.572, 1.333),
         HUMANPLAYERINTAKE(.8763, 1.5);
@@ -299,8 +299,9 @@ public final class Constants {
         public static final double kPYController = 1;
         public static final double kPThetaController = 1;
 
-        public static final double kPGridLineUp = .35;
-        public static final double kPThetaGridLineUp = .35;
+        public static final double kPGridLineUp = 0.5;
+        public static final double kIGridLineUp = 0.0;
+        public static final double kPThetaGridLineUp = .025;
         public static final double gridLineUpPosition = 1.98;
         public static final double gridLineUpAngle = 180;
     }
