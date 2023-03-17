@@ -24,48 +24,48 @@ public class segmentLineUp {
         switch (segment) {
             case CONE_1:
                 lineUpPoint = new PathPoint(
-                        new Translation2d(1.75, 4.93),
-                        Rotation2d.fromDegrees(180), Rotation2d.fromDegrees(90));
+                        new Translation2d(1.98, 4.93),
+                        Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(180));
                 break;
             case CONE_2:
                 lineUpPoint = new PathPoint(
-                        new Translation2d(1.75, 3.89),
-                        Rotation2d.fromDegrees(180), Rotation2d.fromDegrees(90));
+                        new Translation2d(1.98, 3.89),
+                        Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(180));
                 break;
             case CONE_3:
                 lineUpPoint = new PathPoint(
-                        new Translation2d(1.75, 3.25),
-                        Rotation2d.fromDegrees(180), Rotation2d.fromDegrees(90));
+                        new Translation2d(1.98, 3.25),
+                        Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(180));
                 break;
             case CONE_4:
                 lineUpPoint = new PathPoint(
-                        new Translation2d(1.75, 2.2),
-                        Rotation2d.fromDegrees(180), Rotation2d.fromDegrees(90));
+                        new Translation2d(1.98, 2.2),
+                        Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(180));
                 break;
             case CONE_5:
                 lineUpPoint = new PathPoint(
-                        new Translation2d(1.75, 1.6),
-                        Rotation2d.fromDegrees(180), Rotation2d.fromDegrees(90));
+                        new Translation2d(1.98, 1.6),
+                        Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(180));
                 break;
             case CONE_6:
                 lineUpPoint = new PathPoint(
-                        new Translation2d(1.75, .47),
-                        Rotation2d.fromDegrees(180), Rotation2d.fromDegrees(90));
+                        new Translation2d(1.98, .47),
+                        Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(180));
                 break;
             case CUBE_1:
                 lineUpPoint = new PathPoint(
-                        new Translation2d(1.75, 4.43),
-                        Rotation2d.fromDegrees(180), Rotation2d.fromDegrees(90));
+                        new Translation2d(1.98, 4.43),
+                        Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(180));
                 break;
             case CUBE_2:
                 lineUpPoint = new PathPoint(
-                        new Translation2d(1.75, 2.74),
-                        Rotation2d.fromDegrees(180), Rotation2d.fromDegrees(90));
+                        new Translation2d(1.98, 2.74),
+                        Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(180));
                 break;
             case CUBE_3:
                 lineUpPoint = new PathPoint(
-                        new Translation2d(1.75, 1.05),
-                        Rotation2d.fromDegrees(180), Rotation2d.fromDegrees(90));
+                        new Translation2d(1.98, 1.05),
+                        Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(180));
                 break;
         }
 
