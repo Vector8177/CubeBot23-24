@@ -25,6 +25,8 @@ public class Swerve extends SubsystemBase {
     private SwerveDrivePoseEstimator swervePoseEstimator;
     private SwerveModule[] mSwerveMods;
 
+    private ChassisSpeeds chassisSpeeds;
+
     private final Vision pcw;
 
     private Field2d field;
@@ -46,15 +48,16 @@ public class Swerve extends SubsystemBase {
         this.pcw = pcw;
 
         field = new Field2d();
+        chassisSpeeds = new ChassisSpeeds();
         SmartDashboard.putData(field);
     }
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
-        SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(
-                fieldRelative
-                        ? ChassisSpeeds.fromFieldRelativeSpeeds(
-                                translation.getX(), translation.getY(), rotation, getYaw())
-                        : new ChassisSpeeds(translation.getX(), translation.getY(), rotation));
+        chassisSpeeds = fieldRelative
+                ? ChassisSpeeds.fromFieldRelativeSpeeds(
+                        translation.getX(), translation.getY(), rotation, getYaw())
+                : new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
+        SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(chassisSpeeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.maxSpeed);
 
         for (SwerveModule mod : mSwerveMods) {
@@ -124,7 +127,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public PathPoint getPoint() {
-        return new PathPoint(getPose().getTranslation(), getPose().getRotation());
+        return PathPoint.fromCurrentHolonomicState(getPose(), chassisSpeeds);
     }
 
     public Rotation2d getYaw() {

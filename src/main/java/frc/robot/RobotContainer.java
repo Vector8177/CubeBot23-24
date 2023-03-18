@@ -6,7 +6,6 @@ package frc.robot;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
 
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;

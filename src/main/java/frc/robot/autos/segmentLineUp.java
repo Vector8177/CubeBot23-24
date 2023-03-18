@@ -67,13 +67,16 @@ public class segmentLineUp {
                         new Translation2d(1.98, 1.05),
                         Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(180));
                 break;
+            case HUMANPLAYER:
+                lineUpPoint = new PathPoint(
+                        new Translation2d(14.40, 7.59),
+                        Rotation2d.fromDegrees(90), Rotation2d.fromDegrees(90));
+                break;
         }
 
-        PathPlannerTrajectory trajectoryToSegment = PathPlanner.generatePath(
+        return PathPlanner.generatePath(
                 Constants.Autonomous.constraints,
                 startPoint.get(),
                 lineUpPoint);
-
-        return trajectoryToSegment;
     }
 }

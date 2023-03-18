@@ -26,7 +26,7 @@ public class TeleopSwerve extends CommandBase {
 
     private SlewRateLimiter translationLimiter = new SlewRateLimiter(3.0);
     private SlewRateLimiter strafeLimiter = new SlewRateLimiter(3.0);
-    private SlewRateLimiter rotationLimiter = new SlewRateLimiter(3.0);
+    // private SlewRateLimiter rotationLimiter = new SlewRateLimiter(3.0);
 
     private PIDController translationController;
     private PIDController rotationController;
@@ -70,7 +70,8 @@ public class TeleopSwerve extends CommandBase {
 
     @Override
     public void initialize() {
-        translationController = new PIDController(Constants.Autonomous.kPGridLineUp, Constants.Autonomous.kIGridLineUp, 0);
+        translationController = new PIDController(Constants.Autonomous.kPGridLineUp, Constants.Autonomous.kIGridLineUp,
+                0);
         translationController.setTolerance(.1);
 
         rotationController = new PIDController(Constants.Autonomous.kPThetaGridLineUp, 0, 0);
@@ -99,22 +100,21 @@ public class TeleopSwerve extends CommandBase {
                         Constants.Swerve.stickDeadband));
 
         if (gridLineUp.getAsBoolean()) {
-                
-            translationVal = 
-                    MathUtil.clamp(
-                            translationController.calculate(s_Swerve.getPose().getX(),
-                                    Constants.Autonomous.gridLineUpPosition),
-                            -1,
-                            1);
 
-            rotationVal = 
-                    MathUtil.clamp(
-                            rotationController.calculate(s_Swerve.getYaw().getDegrees(),
-                                    Constants.Autonomous.gridLineUpAngle),
-                            -1,
-                            1);
+            translationVal = MathUtil.clamp(
+                    translationController.calculate(s_Swerve.getPose().getX(),
+                            Constants.Autonomous.gridLineUpPosition),
+                    -1,
+                    1);
 
-        if(translationController.atSetpoint()) translationVal = 0;
+            rotationVal = MathUtil.clamp(
+                    rotationController.calculate(s_Swerve.getYaw().getDegrees(),
+                            Constants.Autonomous.gridLineUpAngle),
+                    -1,
+                    1);
+
+            if (translationController.atSetpoint())
+                translationVal = 0;
 
             if (translationController.atSetpoint() && rotationController.atSetpoint()) {
                 s_LEDs.setLEDMode(LEDMode.GREENFLASH);
@@ -127,9 +127,9 @@ public class TeleopSwerve extends CommandBase {
                 s_LEDs.setLEDMode(previousMode);
 
             rotationVal = MathUtil.applyDeadband(rotationSup.getAsDouble(),
-                            Constants.Swerve.stickDeadband);
+                    Constants.Swerve.stickDeadband);
             translationVal = MathUtil.applyDeadband(translationSup.getAsDouble(),
-                            Constants.Swerve.stickDeadband);
+                    Constants.Swerve.stickDeadband);
         }
 
         s_Swerve.drive(
