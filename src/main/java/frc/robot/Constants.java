@@ -159,14 +159,61 @@ public final class Constants {
         public static final int wristMotorId = 61;
         public static final double maxMotorVoltage = 10.0;
 
-        public static double kP = 2.2;
-        public static double kI = 0.2;
-        public static double kD = 0.0;
+        public enum PIDFFmode {
+            WEIGHTED(
+                    Wrist.weightedP,
+                    Wrist.weightedI,
+                    Wrist.weightedD,
+                    Wrist.weightedS,
+                    Wrist.weightedV,
+                    Wrist.weightedA,
+                    Wrist.weightedG),
+            UNWEIGHTED(
+                    Wrist.unweightedP,
+                    Wrist.unweightedI,
+                    Wrist.unweightedD,
+                    Wrist.unweightedS,
+                    Wrist.unweightedV,
+                    Wrist.unweightedA,
+                    Wrist.unweightedG);
 
-        public static double kS = 0.11237;
-        public static double kV = 0.56387;
-        public static double kA = 0.041488;
-        public static double kG = 0.76416;
+            public double kP;
+            public double kI;
+            public double kD;
+            public double kS;
+            public double kV;
+            public double kA;
+            public double kG;
+
+            private PIDFFmode(double kP, double kI, double kD, double kS, double kV, double kA, double kG) {
+                this.kP = kP;
+                this.kI = kI;
+                this.kD = kD;
+                this.kS = kS;
+                this.kV = kV;
+                this.kA = kA;
+                this.kG = kG;
+            }
+
+        }
+
+        public static double weightedP = 2.2;
+        public static double weightedI = 0.2;
+        public static double weightedD = 0.0;
+
+        public static double weightedS = 0.11237;
+        public static double weightedV = 0.56387;
+        public static double weightedA = 0.041488;
+        public static double weightedG = 0.76416;
+
+        public static double unweightedP = 2.2;
+        public static double unweightedI = 0.2;
+        public static double unweightedD = 0.0;
+
+        public static double unweightedS = 0.11237;
+        public static double unweightedV = 0.56387;
+        public static double unweightedA = 0.041488;
+        public static double unweightedG = 0.76416;
 
         public static final double motorGearRatio = 1 / 32.0;
         public static final double absoluteEncoderOffset = 5.412927;
@@ -179,6 +226,8 @@ public final class Constants {
 
         public static final int pdpChannel = 2; // update number later
 
+        public static final double stoppedRPMThreshold = 1;
+
         public static final double coneIntakeSpeed = 8;
         public static final double cubeIntakeSpeed = 4;
 
@@ -189,8 +238,14 @@ public final class Constants {
         public static final int currentLimit = 30;
 
         public enum EjectSpeed {
-            FAST,
-            NORMAL
+            FAST(12),
+            NORMAL(7);
+
+            public double speed;
+
+            EjectSpeed(double speed) {
+                this.speed = speed;
+            }
         }
     }
 
