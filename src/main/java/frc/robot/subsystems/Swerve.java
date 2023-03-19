@@ -22,14 +22,16 @@ import frc.robot.Constants;
 public class Swerve extends SubsystemBase {
     private Pigeon2 gyro;
 
-    private PhotonVisionWrapper pcw;
-
     private SwerveDrivePoseEstimator swervePoseEstimator;
     private SwerveModule[] mSwerveMods;
 
+    private ChassisSpeeds chassisSpeeds;
+
+    private final Vision pcw;
+
     private Field2d field;
 
-    public Swerve() {
+    public Swerve(Vision pcw) {
         gyro = new Pigeon2(Constants.Swerve.pigeonID);
         zeroGyro();
 
@@ -43,18 +45,19 @@ public class Swerve extends SubsystemBase {
         swervePoseEstimator = new SwerveDrivePoseEstimator(Constants.Swerve.swerveKinematics, getYaw(), getPositions(),
                 new Pose2d());
 
-        pcw = new PhotonVisionWrapper();
+        this.pcw = pcw;
 
         field = new Field2d();
+        chassisSpeeds = new ChassisSpeeds();
         SmartDashboard.putData(field);
     }
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
-        SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(
-                fieldRelative
-                        ? ChassisSpeeds.fromFieldRelativeSpeeds(
-                                translation.getX(), translation.getY(), rotation, getYaw())
-                        : new ChassisSpeeds(translation.getX(), translation.getY(), rotation));
+        chassisSpeeds = fieldRelative
+                ? ChassisSpeeds.fromFieldRelativeSpeeds(
+                        translation.getX(), translation.getY(), rotation, getYaw())
+                : new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
+        SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(chassisSpeeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.maxSpeed);
 
         for (SwerveModule mod : mSwerveMods) {
@@ -115,12 +118,16 @@ public class Swerve extends SubsystemBase {
         gyro.setYaw(0);
     }
 
+    public void setGyro(Rotation2d angle) {
+        gyro.setYaw(angle.getDegrees());
+    }
+
     public Rotation2d getPitch() {
         return Rotation2d.fromDegrees(gyro.getPitch());
     }
 
     public PathPoint getPoint() {
-        return new PathPoint(getPose().getTranslation(), getPose().getRotation());
+        return PathPoint.fromCurrentHolonomicState(getPose(), chassisSpeeds);
     }
 
     public Rotation2d getYaw() {
@@ -133,12 +140,13 @@ public class Swerve extends SubsystemBase {
         return Rotation2d.fromDegrees(gyro.getRoll());
     }
 
-    public PhotonVisionWrapper getCamera() {
+    public Vision getCamera() {
         return pcw;
     }
 
     @Override
     public void periodic() {
+        swervePoseEstimator.update(getYaw(), getPositions());
 
         Optional<EstimatedRobotPose> result = pcw.getEstimatedGlobalPose(getPose());
 
@@ -147,7 +155,7 @@ public class Swerve extends SubsystemBase {
             swervePoseEstimator.addVisionMeasurement(
                     camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
         }
-        swervePoseEstimator.update(getYaw(), getPositions());
+
         field.setRobotPose(getPose());
 
         SmartDashboard.putNumber("Pigeon2 Yaw", gyro.getYaw());

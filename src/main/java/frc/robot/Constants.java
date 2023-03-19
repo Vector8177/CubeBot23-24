@@ -1,11 +1,8 @@
 package frc.robot;
 
-import java.util.ArrayList;
-
 import com.pathplanner.lib.PathConstraints;
 import com.revrobotics.CANSparkMax.IdleMode;
 
-import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -154,27 +151,27 @@ public final class Constants {
 
         public static final double maxMotorVoltage = 5;
 
-        public static final int currentLimit = 30; 
+        public static final int currentLimit = 30;
 
     }
 
     public static final class Wrist {
         public static final int wristMotorId = 61;
-        public static final double maxMotorVoltage = 2.5;
+        public static final double maxMotorVoltage = 10.0;
 
         public static double kP = 2.2;
-        public static double kI = 0.0;
-        public static double kD = 0.2;
+        public static double kI = 0.2;
+        public static double kD = 0.0;
 
         public static double kS = 0.11237;
         public static double kV = 0.56387;
         public static double kA = 0.041488;
-        public static double kG = 0.56416;
+        public static double kG = 0.76416;
 
         public static final double motorGearRatio = 1 / 32.0;
         public static final double absoluteEncoderOffset = 5.412927;
 
-        public static final int currentLimit = 30; 
+        public static final int currentLimit = 40;
     }
 
     public static final class Intake {
@@ -189,7 +186,7 @@ public final class Constants {
         public static final double coneShootSpeed = 12;
         public static final double cubeOuttakeSpeed = 7;
 
-        public static final int currentLimit = 30; 
+        public static final int currentLimit = 30;
 
         public enum EjectSpeed {
             FAST,
@@ -200,14 +197,14 @@ public final class Constants {
     public enum Position {
 
         HIGH(0, 0),
-        CONEHIGH(.134327, 35),
+        CONEHIGH(.067, 35),
         CUBEHIGH(1.55, 35),
         MID(0, 0),
-        CONEMID(.104327, 23),
+        CONEMID(5.81731, 35),
         CUBEMID(1.427, 16.5),
         LOW(.5236, .25),
         STANDBY(1.1765, .25),
-        CUBEINTAKE(0.0, 0.3),
+        CUBEINTAKE(.1, 0.3),
         STANDINGCONEINTAKE(5.106, 14.380),
         TIPPEDCONEINTAKE(5.572, 1.333),
         HUMANPLAYERINTAKE(.8763, 1.5);
@@ -246,7 +243,7 @@ public final class Constants {
 
     public enum SEGMENT { // Numbers in order of segment from left to right (driver station POV)
         CONE_1(0), CONE_2(31.8), CONE_3(35.2), CONE_4(-1), CONE_5(-1), CONE_6(-1),
-        CUBE_1(0), CUBE_2(20.6), CUBE_3(35.2);
+        CUBE_1(0), CUBE_2(20.6), CUBE_3(35.2), HUMANPLAYER(-1);
 
         // intake Ground Cube: 0
         // intake Cone Upright: 12
@@ -301,6 +298,12 @@ public final class Constants {
         public static final double kPXController = 1;
         public static final double kPYController = 1;
         public static final double kPThetaController = 1;
+
+        public static final double kPGridLineUp = 0.5;
+        public static final double kIGridLineUp = 0.0;
+        public static final double kPThetaGridLineUp = .025;
+        public static final double gridLineUpPosition = 1.98;
+        public static final double gridLineUpAngle = 180;
     }
 
     public static final class PhotonVision {
@@ -311,29 +314,6 @@ public final class Constants {
                 new Rotation3d(
                         0, Units.degreesToRadians(15),
                         Units.degreesToRadians(5)));
-    }
-
-    public static final class AprilTags {
-        public static final AprilTag tag1 = new AprilTag(1, FieldConstants.aprilTags.get(1));
-        public static final AprilTag tag2 = new AprilTag(2, FieldConstants.aprilTags.get(2));
-        public static final AprilTag tag3 = new AprilTag(3, FieldConstants.aprilTags.get(3));
-        public static final AprilTag tag4 = new AprilTag(4, FieldConstants.aprilTags.get(4));
-        public static final AprilTag tag5 = new AprilTag(5, FieldConstants.aprilTags.get(5));
-        public static final AprilTag tag6 = new AprilTag(6, FieldConstants.aprilTags.get(6));
-        public static final AprilTag tag7 = new AprilTag(7, FieldConstants.aprilTags.get(7));
-        public static final AprilTag tag8 = new AprilTag(8, FieldConstants.aprilTags.get(8));
-        public static final ArrayList<AprilTag> aprilTagList = new ArrayList<>();
-
-        static {
-            aprilTagList.add(tag1);
-            aprilTagList.add(tag2);
-            aprilTagList.add(tag3);
-            aprilTagList.add(tag4);
-            aprilTagList.add(tag5);
-            aprilTagList.add(tag6);
-            aprilTagList.add(tag7);
-            aprilTagList.add(tag8);
-        }
     }
 
     public static final class LEDs {
@@ -369,7 +349,9 @@ public final class Constants {
             VECTORWAVE("Vector Wave"),
             RAINBOW("Rainbow"),
             PURPLEFLASH("Purple Flash"),
-            YELLOWFLASH("Yellow Flash");
+            YELLOWFLASH("Yellow Flash"),
+            GREENFLASH("Green Flash"),
+            REDFLASH("Red Flash");
 
             private String name;
 

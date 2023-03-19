@@ -19,6 +19,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SelectCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -33,8 +35,8 @@ import frc.robot.subsystems.LEDs.LEDs;
 
 public class RobotContainer {
     /* Controllers */
-    public final CommandXboxController driver = new CommandXboxController(0);
-    public final CommandXboxController operator = new CommandXboxController(1);
+    private final CommandXboxController driver = new CommandXboxController(0);
+    private final CommandXboxController operator = new CommandXboxController(1);
 
     /* Drive Controls */
     private static final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -47,7 +49,8 @@ public class RobotContainer {
     private static final int intakeTrigger = XboxController.Axis.kRightTrigger.value;
 
     /* Subsystems */
-    private final Swerve s_Swerve = new Swerve();
+    private final Vision s_Vision = new Vision();
+    private final Swerve s_Swerve = new Swerve(s_Vision);
     private final Intake s_Intake = new Intake();
     private final Elevator s_Elevator = new Elevator();
     private final Wrist s_Wrist = new Wrist();
@@ -151,12 +154,14 @@ public class RobotContainer {
         s_Swerve.setDefaultCommand(
                 new TeleopSwerve(
                         s_Swerve,
+                        s_LEDs,
                         () -> -driver.getRawAxis(translationAxis),
                         () -> -driver.getRawAxis(strafeAxis),
                         () -> -driver.getRawAxis(rotationAxis),
                         () -> driver.povDown().getAsBoolean(),
                         () -> driver.leftBumper().getAsBoolean(),
-                        () -> driver.rightBumper().getAsBoolean()));
+                        () -> driver.rightBumper().getAsBoolean(),
+                        () -> driver.a().getAsBoolean()));
 
         s_Elevator.setDefaultCommand(
                 new TeleopElevator(
@@ -220,8 +225,18 @@ public class RobotContainer {
         operator.x().onTrue(new OuttakePiece(s_Intake, .5, () -> getGamePiece(), EjectSpeed.FAST));
 
         operator.rightBumper().onTrue(new InstantCommand(() -> s_LEDs.toggleHPSignal()));
-
-        operator.y().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.HIGH, () -> getGamePiece()));
+        
+        
+        operator.y().onTrue(new SelectCommand(
+                Map.ofEntries(
+                    Map.entry(GamePiece.CUBE, new SetPosition(s_Wrist, s_Elevator, Position.HIGH, () -> getGamePiece())),
+                    Map.entry(GamePiece.CONE, new SequentialCommandGroup(
+                        s_Wrist.setPose(Position.STANDBY.getWrist()), 
+                        s_Elevator.setPose(Position.CONEHIGH.getElev()), 
+                        s_Wrist.setPose(Position.CONEHIGH.getWrist())))), 
+                        () -> gamePiece));
+                        
+                        
         operator.b().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.MID, () -> getGamePiece()));
         operator.a().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.LOW, () -> getGamePiece()));
 
@@ -262,6 +277,9 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // Executes the autonomous command chosen in smart dashboard
         s_Swerve.getField().getObject("Field").setTrajectory(autoChooser.getSelected());
-        return autoBuilder.fullAuto(autoChooser.getSelected());
+        return new ParallelCommandGroup(
+                new InstantCommand(
+                        () -> s_Swerve.setGyro(autoChooser.getSelected().getInitialHolonomicPose().getRotation())),
+                autoBuilder.fullAuto(autoChooser.getSelected()));
     }
 }

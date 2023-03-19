@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -43,6 +44,7 @@ public class Wrist extends SubsystemBase {
 
         wristMotor = new CANSparkMax(Constants.Wrist.wristMotorId, MotorType.kBrushless);
         wristMotor.setInverted(true);
+        wristMotor.setIdleMode(IdleMode.kBrake);
 
         absoluteEncoder = wristMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
         absoluteEncoder.setInverted(true);
@@ -64,7 +66,7 @@ public class Wrist extends SubsystemBase {
 
         setPosition(Position.STANDBY.getWrist());
 
-        wristMotor.setSmartCurrentLimit(Constants.Intake.currentLimit); 
+        wristMotor.setSmartCurrentLimit(Constants.Wrist.currentLimit); 
     }
 
     public void resetRelativeEncoder() {
@@ -79,14 +81,17 @@ public class Wrist extends SubsystemBase {
         SmartDashboard.putBoolean("Wrist at setpoint", atSetpoint());
         SmartDashboard.putNumber("Wrist Absolute Position", absoluteEncoder.getPosition());
         SmartDashboard.putNumber("Wrist Goal position", currentPosition);
-
-        double pidMotorSpeed = pidController.calculate(absoluteEncoder.getPosition(), currentPosition);
-
+        
+        double pidMotorSpeed = pidController.calculate(absoluteEncoder.getPosition(), currentPosition) + feedForward.calculate(currentPosition, 0) ;
+        SmartDashboard.putNumber("Motor power wrist", pidMotorSpeed);
         setMotor(
                 MathUtil.clamp(
-                        (pidMotorSpeed) + feedForward.calculate(currentPosition, 0),
-                        -Constants.Wrist.maxMotorVoltage,
-                        Constants.Wrist.maxMotorVoltage));
+                        (pidMotorSpeed)
+                        ,-Constants.Wrist.maxMotorVoltage,
+                        Constants.Wrist.maxMotorVoltage)
+                        );
+                        
+        
     }
 
     public void resetEncoder() {

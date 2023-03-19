@@ -25,6 +25,8 @@ public class LEDs extends SubsystemBase {
     private final VectorWave vectorWave;
     private final Flash purpleFlash;
     private final Flash yellowFlash;
+    private final Flash greenFlash;
+    private final Flash redFlash;
 
     public LEDs() {
         this.mode = Constants.LEDs.defaultMode;
@@ -36,6 +38,8 @@ public class LEDs extends SubsystemBase {
         this.vectorWave = new VectorWave(m_ledBuffer);
         this.purpleFlash = new Flash(m_ledBuffer, HSV.googleColorPickerHSV(263, 73, 96));
         this.yellowFlash = new Flash(m_ledBuffer, HSV.googleColorPickerHSV(35, 100, 100));
+        this.greenFlash = new Flash(m_ledBuffer, HSV.googleColorPickerHSV(113, 100, 100));
+        this.redFlash = new Flash(m_ledBuffer, HSV.googleColorPickerHSV(0, 100, 100));
 
         m_led.setLength(m_ledBuffer.getLength());
         m_led.setData(m_ledBuffer);
@@ -60,6 +64,12 @@ public class LEDs extends SubsystemBase {
             case YELLOWFLASH:
                 yellowFlash.execute();
                 break;
+            case GREENFLASH:
+                greenFlash.execute();
+                break;
+            case REDFLASH:
+                redFlash.execute();
+                break;
         }
         m_led.setData(m_ledBuffer);
         SmartDashboard.putString("LED Mode", mode.toString());
@@ -67,6 +77,10 @@ public class LEDs extends SubsystemBase {
 
     public void setLEDMode(LEDMode mode) {
         this.mode = mode;
+    }
+
+    public LEDMode getLEDMode() {
+        return mode;
     }
 
     public void toggleHPSignal() {
