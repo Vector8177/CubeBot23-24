@@ -333,9 +333,6 @@ public class RobotContainer {
                 new InstantCommand(
                         () -> s_Swerve.getField().getObject("Field").setTrajectory(
                                 autoChooser.getSelected())),
-                new InstantCommand(
-                        () -> s_Swerve.setGyro(autoChooser.getSelected()
-                                .getInitialHolonomicPose().getRotation())),
                 autoBuilder.fullAuto(autoChooser.getSelected()));
     }
 }

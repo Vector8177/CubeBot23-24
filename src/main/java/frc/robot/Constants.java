@@ -179,13 +179,13 @@ public final class Constants {
                     Wrist.unweightedA,
                     Wrist.unweightedG);
 
-            public double kP;
-            public double kI;
-            public double kD;
-            public double kS;
-            public double kV;
-            public double kA;
-            public double kG;
+            public final double kP;
+            public final double kI;
+            public final double kD;
+            public final double kS;
+            public final double kV;
+            public final double kA;
+            public final double kG;
 
             private PIDFFmode(double kP, double kI, double kD, double kS, double kV, double kA, double kG) {
                 this.kP = kP;
@@ -243,7 +243,7 @@ public final class Constants {
             FAST(12),
             NORMAL(7);
 
-            public double speed;
+            public final double speed;
 
             EjectSpeed(double speed) {
                 this.speed = speed;
