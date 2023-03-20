@@ -10,8 +10,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
+import frc.VectorTools.util.HSV;
 import frc.lib.config.SwerveModuleConstants;
-import frc.lib.util.HSV;
 
 public final class Constants {
 
@@ -76,14 +76,16 @@ public final class Constants {
         public static final double angleConversionFactor = 360.0 / angleGearRatio;
 
         /* Swerve Profiling Values */
-        public static final double maxSpeed = 3.0; // meters per second
-        public static final double maxSpeedMinLimit = 4.5; // meters per second when speed is limited by driver
-                                                           // minimally
-        public static final double maxSpeedMaxLimit = .75; // meters per second when speed is limited by driver maximum
+        public static final double speedLimit = 3.0; // Base Meters Per Second Speed
+        public static final double slowSpeedLimit = 0.75; // Slow Meters Per Second Speed
+        public static final double fastSpeedLimit = 4.5; // Fast Meters Per Second Speed
 
-        public static final double maxAngularVelocity = 5;
-        public static final double maxAngularVelocityMinLimit = 3.5;
-        public static final double maxAngularVelocityMaxLimit = 1.25;
+        public static final double accelerationLimit = 3.0;
+        public static final double fastAccelerationLimit = 5.0;
+
+        public static final double angularVelocityLimit = 5;
+        public static final double slowAngularVelocityLimit = 1.25;
+        public static final double fastAngularVelocityLimit = 6;
 
         /* Swerve Limiting Values */
         public static final double autoCenterLimit = .3;
@@ -198,8 +200,8 @@ public final class Constants {
         }
 
         public static double weightedP = 2.2;
-        public static double weightedI = 0.2;
-        public static double weightedD = 0.0;
+        public static double weightedI = 0.0;
+        public static double weightedD = 0.2;
 
         public static double weightedS = 0.11237;
         public static double weightedV = 0.56387;
@@ -207,8 +209,8 @@ public final class Constants {
         public static double weightedG = 0.76416;
 
         public static double unweightedP = 2.2;
-        public static double unweightedI = 0.2;
-        public static double unweightedD = 0.0;
+        public static double unweightedI = 0.0;
+        public static double unweightedD = 0.2;
 
         public static double unweightedS = 0.11237;
         public static double unweightedV = 0.56387;

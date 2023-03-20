@@ -2,9 +2,9 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.VectorTools.util.SlewRateLimiter;
 import frc.robot.Constants;
 import frc.robot.Constants.LEDs.LEDMode;
 import frc.robot.subsystems.Swerve;
@@ -24,14 +24,20 @@ public class TeleopSwerve extends CommandBase {
     private BooleanSupplier rightBumper;
     private BooleanSupplier gridLineUp;
 
-    private SlewRateLimiter translationLimiter = new SlewRateLimiter(3.0);
-    private SlewRateLimiter strafeLimiter = new SlewRateLimiter(3.0);
+    private SlewRateLimiter translationLimiter;
+    private SlewRateLimiter strafeLimiter;
     // private SlewRateLimiter rotationLimiter = new SlewRateLimiter(3.0);
 
     private PIDController translationController;
     private PIDController rotationController;
 
     private LEDMode previousMode;
+
+    private enum Speed {
+        FAST,
+        NORMAL,
+        SLOW
+    }
 
     /**
      * The constructor initializes the class variables.
@@ -70,7 +76,11 @@ public class TeleopSwerve extends CommandBase {
 
     @Override
     public void initialize() {
-        translationController = new PIDController(Constants.Autonomous.kPGridLineUp, Constants.Autonomous.kIGridLineUp,
+        translationLimiter = new SlewRateLimiter(3.0);
+        strafeLimiter = new SlewRateLimiter(3.0);
+
+        translationController = new PIDController(Constants.Autonomous.kPGridLineUp,
+                Constants.Autonomous.kIGridLineUp,
                 0);
         translationController.setTolerance(.1);
 
@@ -86,6 +96,36 @@ public class TeleopSwerve extends CommandBase {
 
     @Override
     public void execute() {
+        /* Set Speeds based on button input */
+        Speed speed = leftBumper.getAsBoolean() ? Speed.SLOW
+                : rightBumper.getAsBoolean()
+                        ? Speed.FAST
+                        : Speed.NORMAL;
+
+        double speedLimit = Constants.Swerve.speedLimit;
+        double angularSpeedLimit = Constants.Swerve.angularVelocityLimit;
+
+        switch (speed) {
+            case FAST:
+                translationLimiter.setRateLimit(Constants.Swerve.fastAccelerationLimit);
+                strafeLimiter.setRateLimit(Constants.Swerve.fastAccelerationLimit);
+
+                speedLimit = Constants.Swerve.fastSpeedLimit;
+                angularSpeedLimit = Constants.Swerve.fastAngularVelocityLimit;
+                break;
+            case SLOW:
+                translationLimiter.setRateLimit(Constants.Swerve.accelerationLimit);
+                strafeLimiter.setRateLimit(Constants.Swerve.accelerationLimit);
+
+                speedLimit = Constants.Swerve.slowSpeedLimit;
+                angularSpeedLimit = Constants.Swerve.slowAngularVelocityLimit;
+                break;
+            default:
+                translationLimiter.setRateLimit(Constants.Swerve.accelerationLimit);
+                strafeLimiter.setRateLimit(Constants.Swerve.accelerationLimit);
+                break;
+        }
+
         if (s_LEDs.getLEDMode() != LEDMode.GREENFLASH &&
                 s_LEDs.getLEDMode() != LEDMode.REDFLASH &&
                 s_LEDs.getLEDMode() != previousMode) {
@@ -133,15 +173,9 @@ public class TeleopSwerve extends CommandBase {
         }
 
         s_Swerve.drive(
-                new Translation2d(translationLimiter.calculate(translationVal), strafeVal).times(
-                        leftBumper.getAsBoolean() ? Constants.Swerve.maxSpeedMaxLimit
-                                : rightBumper.getAsBoolean()
-                                        ? Constants.Swerve.maxSpeedMinLimit
-                                        : Constants.Swerve.maxSpeed),
-                rotationVal * (leftBumper.getAsBoolean() ? Constants.Swerve.maxAngularVelocityMaxLimit
-                        : rightBumper.getAsBoolean()
-                                ? Constants.Swerve.maxAngularVelocityMinLimit
-                                : Constants.Swerve.maxAngularVelocity),
+                new Translation2d(translationLimiter.calculate(translationVal), strafeVal)
+                        .times(speedLimit),
+                rotationVal * (angularSpeedLimit),
                 !robotCentricSup.getAsBoolean(),
                 false);
 

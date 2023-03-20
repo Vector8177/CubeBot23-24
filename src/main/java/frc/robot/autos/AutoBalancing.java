@@ -2,7 +2,6 @@ package frc.robot.autos;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
 
 public class AutoBalancing extends CommandBase {
@@ -23,20 +22,20 @@ public class AutoBalancing extends CommandBase {
     @Override
     public void execute() {
         if (!sideways) {
-            double translationVal = s_Swerve.getPitch().getDegrees() > 0 ? -.25 : .25;
+            double translationVal = s_Swerve.getPitch().getDegrees() > 0 ? -.75 : .75;
             s_Swerve.drive(
-                    new Translation2d(translationVal, 0).times(Constants.Swerve.maxSpeed), 0, true, false);
+                    new Translation2d(translationVal, 0), 0, true, false);
         } else {
-            double translationVal = s_Swerve.getRoll().getDegrees() > 0 ? -.145 : .145;
+            double translationVal = s_Swerve.getRoll().getDegrees() > 0 ? -.435 : .435;
             s_Swerve.drive(
-                    new Translation2d(translationVal, 0).times(Constants.Swerve.maxSpeed), 0, false, false);
+                    new Translation2d(translationVal, 0), 0, false, false);
         }
     }
 
     @Override
     public void end(boolean interrupted) {
         s_Swerve.drive(
-                new Translation2d(0, .1).times(Constants.Swerve.maxSpeed), 0, true, false);
+                new Translation2d(0, .3), 0, true, false);
     }
 
     @Override
