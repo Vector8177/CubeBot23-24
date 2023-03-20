@@ -59,7 +59,7 @@ public class Elevator extends SubsystemBase {
         elevatorMotorRight.getEncoder().setPosition(0);
     }
 
-    public Command setPose(double position) {
+    public Command setPositionCMD(double position) {
         return run(() -> setPosition(position)).until(() -> atSetpoint());
     }
 

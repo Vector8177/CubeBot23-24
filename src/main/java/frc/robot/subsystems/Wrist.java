@@ -98,6 +98,12 @@ public class Wrist extends SubsystemBase {
     public void setPIDFFMode(PIDFFmode mode) {
         pidController.setPID(mode.kP, mode.kI, mode.kD);
         feedForward = new ArmFeedforward(mode.kS, mode.kG, mode.kV, mode.kA);
+        if(mode == PIDFFmode.WEIGHTED){
+        SmartDashboard.putNumber("PIDFF", 1);
+        } else{
+            SmartDashboard.putNumber("PIDFF", 0);
+        }
+        
     }
 
     public void resetEncoder() {
@@ -113,7 +119,7 @@ public class Wrist extends SubsystemBase {
         wristMotor.setVoltage(voltage);
     }
 
-    public Command setPose(double position) {
+    public Command setPositionCMD(double position) {
         return run(() -> setPosition(position)).until(() -> atSetpoint());
     }
 

@@ -86,14 +86,14 @@ public class RobotContainer {
                 new SetPosition(s_Wrist, s_Elevator, Position.STANDBY, () -> gamePiece));
         eventMap.put("setCone3Position",
                 new SequentialCommandGroup(
-                        s_Elevator.setPose(Position.CONEHIGH.getElev()),
+                        s_Elevator.setPositionCMD(Position.CONEHIGH.getElev()),
                         new WaitCommand(.5),
-                        s_Wrist.setPose(Position.CONEHIGH.getWrist() + .05),
+                        s_Wrist.setPositionCMD(Position.CONEHIGH.getWrist() + .05),
                         new WaitCommand(1)));
         eventMap.put("setCube3Position",
                 new SequentialCommandGroup(
-                        s_Wrist.setPose(Position.CUBEHIGH.getWrist()),
-                        s_Elevator.setPose(Position.CUBEHIGH.getElev()),
+                        s_Wrist.setPositionCMD(Position.CUBEHIGH.getWrist()),
+                        s_Elevator.setPositionCMD(Position.CUBEHIGH.getElev()),
                         new WaitCommand(1)));
 
         eventMap.put("setCubeIntakePosition",
@@ -285,9 +285,9 @@ public class RobotContainer {
                                 new SetPosition(s_Wrist, s_Elevator, Position.HIGH,
                                         () -> getGamePiece())),
                         Map.entry(GamePiece.CONE, new SequentialCommandGroup(
-                                s_Wrist.setPose(Position.STANDBY.getWrist()),
-                                s_Elevator.setPose(Position.CONEHIGH.getElev()),
-                                s_Wrist.setPose(Position.CONEHIGH.getWrist())))),
+                                s_Wrist.setPositionCMD(Position.STANDBY.getWrist()),
+                                s_Elevator.setPositionCMD(Position.CONEHIGH.getElev()),
+                                s_Wrist.setPositionCMD(Position.CONEHIGH.getWrist())))),
                 () -> gamePiece));
 
         operator.b().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.MID, () -> getGamePiece()));

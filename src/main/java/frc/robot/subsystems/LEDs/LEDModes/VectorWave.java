@@ -22,7 +22,7 @@ public class VectorWave extends LEDModeBase {
                     (int) ((1 / LEDs.VectorWave.spread) * (Math.abs(vectorWaveMiddleIndex - i)) * hsv.v)
                             - LEDs.VectorWave.length,
                     0,
-                    hsv.v);
+                    hsv.v - 10) + 10;
 
             if (m_ledBuffer.getLength() / 2 > i) {
                 m_ledBuffer.setHSV(i, hsv.h, hsv.s, value);

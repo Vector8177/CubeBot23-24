@@ -199,14 +199,14 @@ public final class Constants {
 
         }
 
-        public static double weightedP = 2.2;
+        public static double weightedP = 2.8;
         public static double weightedI = 0.0;
         public static double weightedD = 0.2;
 
-        public static double weightedS = 0.11237;
-        public static double weightedV = 0.56387;
-        public static double weightedA = 0.041488;
-        public static double weightedG = 0.76416;
+        public static double weightedS = 0.4361;
+        public static double weightedV = 0.79036;
+        public static double weightedA = 0.0;
+        public static double weightedG = 0.86416;
 
         public static double unweightedP = 2.2;
         public static double unweightedI = 0.0;
@@ -228,12 +228,12 @@ public final class Constants {
 
         public static final int pdpChannel = 2; // update number later
 
-        public static final double stoppedRPMThreshold = 1;
+        public static final double stoppedRPMThreshold = .01;
 
         public static final double coneIntakeSpeed = 8;
         public static final double cubeIntakeSpeed = 4;
 
-        public static final double coneOuttakeSpeed = 7;
+        public static final double coneOuttakeSpeed = 4;
         public static final double coneShootSpeed = 12;
         public static final double cubeOuttakeSpeed = 7;
 
@@ -356,7 +356,7 @@ public final class Constants {
         public static final double kPYController = 1;
         public static final double kPThetaController = 1;
 
-        public static final double kPGridLineUp = 0.5;
+        public static final double kPGridLineUp = 0.35;
         public static final double kIGridLineUp = 0.0;
         public static final double kPThetaGridLineUp = .025;
         public static final double gridLineUpPosition = 1.98;
