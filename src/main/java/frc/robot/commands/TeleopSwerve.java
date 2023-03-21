@@ -82,10 +82,10 @@ public class TeleopSwerve extends CommandBase {
         translationController = new PIDController(Constants.Autonomous.kPGridLineUp,
                 Constants.Autonomous.kIGridLineUp,
                 0);
-        translationController.setTolerance(.01);
+        translationController.setTolerance(Constants.Autonomous.gridLineUpTolerance);
 
         rotationController = new PIDController(Constants.Autonomous.kPThetaGridLineUp, 0, 0);
-        rotationController.setTolerance(2);
+        rotationController.setTolerance(Constants.Autonomous.thetaGridLineUpTolerance);
         rotationController.enableContinuousInput(0, 360);
 
     }

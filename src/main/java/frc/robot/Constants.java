@@ -356,11 +356,16 @@ public final class Constants {
         public static final double kPYController = 1;
         public static final double kPThetaController = 1;
 
+        /* Constants for line up */
         public static final double kPGridLineUp = 0.35;
         public static final double kIGridLineUp = 0.0;
-        public static final double kPThetaGridLineUp = .025;
+        public static final double gridLineUpTolerance = 0.1;
+
+        public static final double kPThetaGridLineUp = 0.025;
+        public static final double thetaGridLineUpTolerance = 2.0;
+
         public static final double gridLineUpPosition = 1.98;
-        public static final double gridLineUpAngle = 180;
+        public static final double gridLineUpAngle = 180.0;
     }
 
     public static final class PhotonVision {
