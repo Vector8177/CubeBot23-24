@@ -64,6 +64,12 @@ public class Elevator extends SubsystemBase {
     }
 
     public void setPosition(double position) {
+        if(position > 35) {
+            position = 35;
+        }
+        else if(position < 0.1) {
+            position = 0.1;
+        }
         currentPosition = position;
     }
 
