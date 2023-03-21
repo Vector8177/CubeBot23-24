@@ -208,7 +208,7 @@ public final class Constants {
         public static double weightedA = 0.0;
         public static double weightedG = 0.86416;
 
-        public static double unweightedP = 2.2;
+        public static double unweightedP = 2.0;
         public static double unweightedI = 0.0;
         public static double unweightedD = 0.2;
 
@@ -231,7 +231,7 @@ public final class Constants {
         public static final double stoppedRPMThreshold = .01;
 
         public static final double coneIntakeSpeed = 8;
-        public static final double cubeIntakeSpeed = 4;
+        public static final double cubeIntakeSpeed = 5;
 
         public static final double coneOuttakeSpeed = 4;
         public static final double coneShootSpeed = 12;
@@ -261,8 +261,8 @@ public final class Constants {
         CUBEMID(1.427, 16.5),
         LOW(.5236, .25),
         STANDBY(1.1765, .25),
-        CUBEINTAKE(.1, 0.3),
-        STANDINGCONEINTAKE(5.106, 14.380),
+        CUBEINTAKE(-0.05, 0.25),
+        STANDINGCONEINTAKE(5.106, 14.0),
         TIPPEDCONEINTAKE(5.572, 1.333),
         HUMANPLAYERINTAKE(.8763, 1.5);
 
@@ -352,19 +352,19 @@ public final class Constants {
         public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
         public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
-        public static final double kPXController = 1;
-        public static final double kPYController = 1;
+        public static final double kPXController = 1.5;
+        public static final double kPYController = 1.5;
         public static final double kPThetaController = 1;
 
         /* Constants for line up */
         public static final double kPGridLineUp = 0.35;
         public static final double kIGridLineUp = 0.0;
-        public static final double gridLineUpTolerance = 0.1;
+        public static final double gridLineUpTolerance = 0.05;
 
         public static final double kPThetaGridLineUp = 0.025;
         public static final double thetaGridLineUpTolerance = 2.0;
 
-        public static final double gridLineUpPosition = 1.98;
+        public static final double gridLineUpPosition = 2.00;
         public static final double gridLineUpAngle = 180.0;
     }
 

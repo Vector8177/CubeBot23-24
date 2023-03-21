@@ -26,9 +26,9 @@ public class AutoBalancing extends CommandBase {
             s_Swerve.drive(
                     new Translation2d(translationVal, 0), 0, true, false);
         } else {
-            double translationVal = s_Swerve.getRoll().getDegrees() > 0 ? -.435 : .435;
+            double translationVal = s_Swerve.getRoll().getDegrees() > 0 ? .435 : -.435;
             s_Swerve.drive(
-                    new Translation2d(translationVal, 0), 0, false, false);
+                    new Translation2d(0, translationVal), 0, false, false);
         }
     }
 
@@ -40,6 +40,6 @@ public class AutoBalancing extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return Math.abs(s_Swerve.getPitch().getDegrees()) < 7;
+        return Math.abs(s_Swerve.getRoll().getDegrees()) < 7;
     }
 }

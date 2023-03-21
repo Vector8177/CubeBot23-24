@@ -2,13 +2,13 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 2.029028629485831,
-        "y": 5.038789506150441
+        "x": 1.97176965782503,
+        "y": 4.96721579157444
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.4891324068362444,
-        "y": 4.809753619507239
+        "x": 3.4318734351754436,
+        "y": 4.738179904931238
       },
       "holonomicAngle": 180.0,
       "isReversal": false,
@@ -19,8 +19,7 @@
         "names": [
           "setStandbyPosition",
           "setCone3Position",
-          "coneDeposit",
-          "setStandbyPosition"
+          "coneDeposit"
         ],
         "executionBehavior": "sequential",
         "waitBehavior": "after",
@@ -54,12 +53,12 @@
     },
     {
       "anchorPoint": {
-        "x": 2.01471388657063,
-        "y": 4.394626074966436
+        "x": 1.97176965782503,
+        "y": 4.308737617475235
       },
       "prevControl": {
-        "x": 4.691570811713053,
-        "y": 4.90995681991364
+        "x": 4.648626582967453,
+        "y": 4.824068362422439
       },
       "nextControl": null,
       "holonomicAngle": -180.0,
@@ -69,8 +68,6 @@
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "setStandbyPosition",
-          "setCube3Position",
           "cubeDeposit",
           "setStandbyPosition"
         ],
@@ -89,6 +86,18 @@
       "names": [
         "setCubeIntakePosition",
         "runCubeIntake3"
+      ]
+    },
+    {
+      "position": 1.509090909090912,
+      "names": [
+        "setCube3Position"
+      ]
+    },
+    {
+      "position": 0.018181818181818153,
+      "names": [
+        "setStandbyPosition"
       ]
     }
   ]

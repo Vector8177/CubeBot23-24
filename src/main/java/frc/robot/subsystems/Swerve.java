@@ -90,7 +90,7 @@ public class Swerve extends SubsystemBase {
 
     public void resetOdometry(Pose2d pose) {
         swervePoseEstimator.resetPosition(getYaw(), getPositions(), pose);
-        setGyro(pose.getRotation());
+        
     }
 
     public void resetToAbsolute() {
@@ -149,6 +149,7 @@ public class Swerve extends SubsystemBase {
     public void periodic() {
         swervePoseEstimator.update(getYaw(), getPositions());
 
+/*
         Optional<EstimatedRobotPose> result = pcw.getEstimatedGlobalPose(getPose());
 
         if (result.isPresent()) {
@@ -156,6 +157,7 @@ public class Swerve extends SubsystemBase {
             swervePoseEstimator.addVisionMeasurement(
                     camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
         }
+        */
 
         field.setRobotPose(getPose());
 
