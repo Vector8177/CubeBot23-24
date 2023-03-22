@@ -137,7 +137,7 @@ public class RobotContainer {
             1,
             3);
 
-    private final PathPlannerTrajectory coneCubeBalance = PathPlanner.loadPath("coneCubeBalance", 5, 1.5);
+    private final PathPlannerTrajectory coneCubeBalance = PathPlanner.loadPath("coneCubeBalance", 3.5, 1.5);
 
     private final PathPlannerTrajectory backnForth = PathPlanner.loadPath("BacknForth",
             Constants.Autonomous.kMaxSpeedMetersPerSecond,

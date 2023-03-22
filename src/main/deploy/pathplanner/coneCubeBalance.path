@@ -29,16 +29,16 @@
     },
     {
       "anchorPoint": {
-        "x": 6.872404065092828,
-        "y": 4.554907045757152
+        "x": 6.83878224899307,
+        "y": 4.423255560796836
       },
       "prevControl": {
-        "x": 5.37484083000703,
-        "y": 4.781548651556885
+        "x": 5.3412190139072715,
+        "y": 4.649897166596569
       },
       "nextControl": {
-        "x": 5.37484083000703,
-        "y": 4.781548651556885
+        "x": 5.3412190139072715,
+        "y": 4.649897166596569
       },
       "holonomicAngle": 0.0,
       "isReversal": true,
@@ -113,6 +113,13 @@
       "names": [
         "setCubeIntakePosition",
         "runCubeIntake3"
+      ]
+    },
+    {
+      "position": 1.3363636363636378,
+      "names": [
+        "setStandbyPosition",
+        "setCubeIntakePosition"
       ]
     }
   ]
