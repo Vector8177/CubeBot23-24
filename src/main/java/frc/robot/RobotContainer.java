@@ -84,6 +84,7 @@ public class RobotContainer {
 
         eventMap.put("setStandbyPosition",
                 new SetPosition(s_Wrist, s_Elevator, Position.STANDBY, () -> gamePiece));
+
         eventMap.put("setCone3Position",
                 new SequentialCommandGroup(
                         s_Elevator.setPositionCMD(Position.CONEHIGH.getElev()),
@@ -97,17 +98,20 @@ public class RobotContainer {
                         s_Elevator.setPositionCMD(Position.CUBEHIGH.getElev()),
                         new WaitCommand(1)));
 
-        eventMap.put("setCubeIntakePosition", new SequentialCommandGroup(
-                new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
-                new SetPosition(s_Wrist, s_Elevator, Position.CUBEINTAKE, () -> GamePiece.CUBE)));
+        eventMap.put("setCubeIntakePosition", 
+                new SequentialCommandGroup(
+                        new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
+                        new SetPosition(s_Wrist, s_Elevator, Position.CUBEINTAKE, () -> GamePiece.CUBE)));
 
-        eventMap.put("setStandingConeIntakePosition", new SequentialCommandGroup(
-                new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
-                new SetPosition(s_Wrist, s_Elevator, Position.STANDINGCONEINTAKE, () -> GamePiece.CONE)));
+        eventMap.put("setStandingConeIntakePosition", 
+                new SequentialCommandGroup(
+                        new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
+                        new SetPosition(s_Wrist, s_Elevator, Position.STANDINGCONEINTAKE, () -> GamePiece.CONE)));
 
-        eventMap.put("setTippedConeIntakePosition",new SequentialCommandGroup(
-                new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
-                new SetPosition(s_Wrist, s_Elevator, Position.TIPPEDCONEINTAKE, () -> GamePiece.CONE)));
+        eventMap.put("setTippedConeIntakePosition",
+                new SequentialCommandGroup(
+                        new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
+                        new SetPosition(s_Wrist, s_Elevator, Position.TIPPEDCONEINTAKE, () -> GamePiece.CONE)));
 
         eventMap.put("coneDeposit",
                 new SequentialCommandGroup(
@@ -119,11 +123,11 @@ public class RobotContainer {
 
         eventMap.put("runCubeIntake3",
                 new TimedIntake(s_Intake, 3, GamePiece.CUBE, EjectSpeed.NORMAL, Direction.INTAKE));
+
         eventMap.put("runConeIntake3",
                 new SequentialCommandGroup(
                         new InstantCommand(() -> s_Wrist.setPIDFFMode(PIDFFmode.WEIGHTED)),
-                        new TimedIntake(s_Intake, 3, GamePiece.CUBE, EjectSpeed.NORMAL,
-                                Direction.INTAKE)));
+                        new TimedIntake(s_Intake, 3, GamePiece.CUBE, EjectSpeed.NORMAL, Direction.INTAKE)));
 
         eventMap.put("wait1Seconds", new WaitCommand(1));
 
@@ -134,23 +138,32 @@ public class RobotContainer {
             Constants.Autonomous.kMaxSpeedMetersPerSecond,
             Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
 
-    private final PathPlannerTrajectory sCurve = PathPlanner.loadPath("S Curve",
-            Constants.Autonomous.kMaxSpeedMetersPerSecond,
-            Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
-
     private final PathPlannerTrajectory autoBalance = PathPlanner.loadPath("Autobalance",
             1,
             3);
 
-    private final PathPlannerTrajectory coneCubeBalance = PathPlanner.loadPath("coneCubeBalance", 3.5, 1.5);
-
-    private final PathPlannerTrajectory backnForth = PathPlanner.loadPath("BacknForth",
-            Constants.Autonomous.kMaxSpeedMetersPerSecond,
-            Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
+    private final PathPlannerTrajectory coneCubeBalance = PathPlanner.loadPath("coneCubeBalance", 
+            3.5, 
+            1.5);
 
     private final PathPlannerTrajectory coneCubeDeposit = PathPlanner.loadPath("coneCubeDeposit",
             3,
             1);
+
+    private final PathPlannerTrajectory csConeCubeBalance = PathPlanner.loadPath("csConeCubeBalance", 
+            3.0, 
+            2.0);
+
+        // Unused Path Planner Paths
+        /* 
+        private final PathPlannerTrajectory backnForth = PathPlanner.loadPath("BacknForth",
+            Constants.Autonomous.kMaxSpeedMetersPerSecond,
+            Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
+            
+        private final PathPlannerTrajectory sCurve = PathPlanner.loadPath("S Curve",
+            Constants.Autonomous.kMaxSpeedMetersPerSecond,
+            Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
+        */
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -301,12 +314,15 @@ public class RobotContainer {
 
     private void configureSmartDashboard() {
         // Autonomous Mode Chooser
-        autoChooser.setDefaultOption("Move forward", moveForward);
-        autoChooser.addOption("Cone Cube Balance", coneCubeBalance);
-        autoChooser.addOption("S curve", sCurve);
-        autoChooser.addOption("Auto balance", autoBalance);
-        autoChooser.addOption("Cone and Cube", coneCubeDeposit);
-        autoChooser.addOption("Back and Forth", backnForth);
+        autoChooser.setDefaultOption("Move Forward", moveForward);
+        autoChooser.addOption("Cone PCube Balance", coneCubeBalance);
+        autoChooser.addOption("Auto Balance", autoBalance);
+        autoChooser.addOption("L3 Cone+Cube", coneCubeDeposit);
+        autoChooser.addOption("Charge Station Cone PCube Balance", csConeCubeBalance);
+
+        //autoChooser.addOption("Back and Forth", backnForth);
+        //autoChooser.addOption("S curve", sCurve);
+
         SmartDashboard.putData(autoChooser);
     }
 

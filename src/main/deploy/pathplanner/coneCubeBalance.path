@@ -107,6 +107,9 @@
       }
     }
   ],
+  "maxVelocity": 3.5,
+  "maxAcceleration": 1.5,
+  "isReversed": null,
   "markers": [
     {
       "position": 0.7090909090909092,
@@ -118,8 +121,7 @@
     {
       "position": 1.3363636363636378,
       "names": [
-        "setStandbyPosition",
-        "setCubeIntakePosition"
+        "setStandbyPosition"
       ]
     }
   ]
