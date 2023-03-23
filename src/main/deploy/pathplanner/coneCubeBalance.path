@@ -7,8 +7,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.4891324068362444,
-        "y": 4.809753619507239
+        "x": 3.32547227372035,
+        "y": 4.535888644731026
       },
       "holonomicAngle": 180.0,
       "isReversal": false,
@@ -29,16 +29,16 @@
     },
     {
       "anchorPoint": {
-        "x": 6.89604122065387,
-        "y": 4.451885046627237
+        "x": 6.872404065092828,
+        "y": 4.554907045757152
       },
       "prevControl": {
-        "x": 5.221216299575456,
-        "y": 4.824068362422439
+        "x": 5.37484083000703,
+        "y": 4.781548651556885
       },
       "nextControl": {
-        "x": 5.221216299575456,
-        "y": 4.824068362422439
+        "x": 5.37484083000703,
+        "y": 4.781548651556885
       },
       "holonomicAngle": 0.0,
       "isReversal": true,
@@ -54,15 +54,18 @@
     },
     {
       "anchorPoint": {
-        "x": 2.01471388657063,
-        "y": 4.394626074966436
+        "x": 5.379459584541946,
+        "y": 2.786195750327444
       },
       "prevControl": {
-        "x": 4.691570811713053,
-        "y": 4.90995681991364
+        "x": 5.5411159932640155,
+        "y": 3.176072971363025
       },
-      "nextControl": null,
-      "holonomicAngle": -180.0,
+      "nextControl": {
+        "x": 5.344906957842686,
+        "y": 2.7028629447586394
+      },
+      "holonomicAngle": 90.3924307093409,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -78,18 +81,29 @@
         "waitBehavior": "none",
         "waitTime": 0
       }
+    },
+    {
+      "anchorPoint": {
+        "x": 3.8770059034780004,
+        "y": 2.6911037451968145
+      },
+      "prevControl": {
+        "x": 4.580686741444659,
+        "y": 2.738649747762129
+      },
+      "nextControl": null,
+      "holonomicAngle": 90.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
     }
   ],
-  "maxVelocity": 4.0,
-  "maxAcceleration": null,
-  "isReversed": null,
-  "markers": [
-    {
-      "position": 0.5818181818181818,
-      "names": [
-        "setCubeIntakePosition",
-        "runCubeIntake3"
-      ]
-    }
-  ]
+  "markers": []
 }

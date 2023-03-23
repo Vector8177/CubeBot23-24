@@ -1,7 +1,5 @@
 package frc.robot.commands;
 
-import java.util.function.Supplier;
-
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
@@ -9,29 +7,28 @@ import frc.robot.Constants.GamePiece;
 import frc.robot.Constants.Intake.EjectSpeed;
 import frc.robot.subsystems.Intake;
 
-public class OuttakePiece extends CommandBase {
+public class TimedIntake extends CommandBase {
 
     private double time;
     private final Intake s_Intake;
     private Timer timer;
     private EjectSpeed eject;
-    private Supplier<GamePiece> gamePiece;
+    private GamePiece gamePiece;
+    private Direction direction;
 
-    public OuttakePiece(Intake s_Intake, double time, EjectSpeed eject) {
-        this.time = time;
-        this.eject = eject;
-        this.s_Intake = s_Intake;
-        this.timer = new Timer();
-
-        addRequirements(s_Intake);
+    public enum Direction {
+        INTAKE,
+        OUTTAKE
     }
 
-    public OuttakePiece(Intake s_Intake, double time, Supplier<GamePiece> gamePiece, EjectSpeed eject) {
+    public TimedIntake(Intake s_Intake, double time, GamePiece gamePiece, EjectSpeed eject,
+            Direction direction) {
         this.time = time;
         this.eject = eject;
         this.s_Intake = s_Intake;
-        this.gamePiece =  gamePiece;
+        this.gamePiece = gamePiece;
         this.timer = new Timer();
+        this.direction = direction;
 
         addRequirements(s_Intake);
     }
@@ -44,15 +41,22 @@ public class OuttakePiece extends CommandBase {
 
     @Override
     public void execute() {
-        switch (gamePiece.get()) {
+        switch (gamePiece) {
             case CONE:
-                s_Intake.setMotor((eject == EjectSpeed.NORMAL) ? Constants.Intake.coneOuttakeSpeed
-                        : Constants.Intake.coneShootSpeed);
+                if (direction == Direction.INTAKE) {
+                    s_Intake.setMotor(-eject.speed);
+                } else {
+                    s_Intake.setMotor(eject.speed);
+                }
                 break;
             case CUBE:
-                s_Intake.setMotor(-Constants.Intake.cubeOuttakeSpeed);
+                if (direction == Direction.INTAKE) {
+                    s_Intake.setMotor(Constants.Intake.cubeOuttakeSpeed);
+                } else {
+                    s_Intake.setMotor(-Constants.Intake.cubeOuttakeSpeed);
+                }
                 break;
-            
+
         }
 
     }

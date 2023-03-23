@@ -10,8 +10,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
+import frc.VectorTools.util.HSV;
 import frc.lib.config.SwerveModuleConstants;
-import frc.lib.util.HSV;
 
 public final class Constants {
 
@@ -76,14 +76,16 @@ public final class Constants {
         public static final double angleConversionFactor = 360.0 / angleGearRatio;
 
         /* Swerve Profiling Values */
-        public static final double maxSpeed = 3.0; // meters per second
-        public static final double maxSpeedMinLimit = 4.5; // meters per second when speed is limited by driver
-                                                           // minimally
-        public static final double maxSpeedMaxLimit = .75; // meters per second when speed is limited by driver maximum
+        public static final double speedLimit = 3.0; // Base Meters Per Second Speed
+        public static final double slowSpeedLimit = 0.75; // Slow Meters Per Second Speed
+        public static final double fastSpeedLimit = 4.5; // Fast Meters Per Second Speed
 
-        public static final double maxAngularVelocity = 5;
-        public static final double maxAngularVelocityMinLimit = 3.5;
-        public static final double maxAngularVelocityMaxLimit = 1.25;
+        public static final double accelerationLimit = 3.0;
+        public static final double fastAccelerationLimit = 5.0;
+
+        public static final double angularVelocityLimit = 5;
+        public static final double slowAngularVelocityLimit = 1.25;
+        public static final double fastAngularVelocityLimit = 6;
 
         /* Swerve Limiting Values */
         public static final double autoCenterLimit = .3;
@@ -159,14 +161,61 @@ public final class Constants {
         public static final int wristMotorId = 61;
         public static final double maxMotorVoltage = 10.0;
 
-        public static double kP = 2.2;
-        public static double kI = 0.2;
-        public static double kD = 0.0;
+        public enum PIDFFmode {
+            WEIGHTED(
+                    Wrist.weightedP,
+                    Wrist.weightedI,
+                    Wrist.weightedD,
+                    Wrist.weightedS,
+                    Wrist.weightedV,
+                    Wrist.weightedA,
+                    Wrist.weightedG),
+            UNWEIGHTED(
+                    Wrist.unweightedP,
+                    Wrist.unweightedI,
+                    Wrist.unweightedD,
+                    Wrist.unweightedS,
+                    Wrist.unweightedV,
+                    Wrist.unweightedA,
+                    Wrist.unweightedG);
 
-        public static double kS = 0.11237;
-        public static double kV = 0.56387;
-        public static double kA = 0.041488;
-        public static double kG = 0.76416;
+            public final double kP;
+            public final double kI;
+            public final double kD;
+            public final double kS;
+            public final double kV;
+            public final double kA;
+            public final double kG;
+
+            private PIDFFmode(double kP, double kI, double kD, double kS, double kV, double kA, double kG) {
+                this.kP = kP;
+                this.kI = kI;
+                this.kD = kD;
+                this.kS = kS;
+                this.kV = kV;
+                this.kA = kA;
+                this.kG = kG;
+            }
+
+        }
+
+        public static double weightedP = 2.8;
+        public static double weightedI = 0.0;
+        public static double weightedD = 0.2;
+
+        public static double weightedS = 0.4361;
+        public static double weightedV = 0.79036;
+        public static double weightedA = 0.0;
+        public static double weightedG = 0.86416;
+
+        public static double unweightedP = 2.2;
+        public static double unweightedI = 0.0;
+        public static double unweightedD = 0.2;
+
+        public static double unweightedS = 0.11237;
+        public static double unweightedV = 0.56387;
+        public static double unweightedA = 0.041488;
+        public static double unweightedG = 0.76416;
 
         public static final double motorGearRatio = 1 / 32.0;
         public static final double absoluteEncoderOffset = 5.412927;
@@ -179,18 +228,26 @@ public final class Constants {
 
         public static final int pdpChannel = 2; // update number later
 
+        public static final double stoppedRPMThreshold = .01;
+
         public static final double coneIntakeSpeed = 8;
         public static final double cubeIntakeSpeed = 4;
 
-        public static final double coneOuttakeSpeed = 7;
+        public static final double coneOuttakeSpeed = 4;
         public static final double coneShootSpeed = 12;
         public static final double cubeOuttakeSpeed = 7;
 
         public static final int currentLimit = 30;
 
         public enum EjectSpeed {
-            FAST,
-            NORMAL
+            FAST(12),
+            NORMAL(7);
+
+            public final double speed;
+
+            EjectSpeed(double speed) {
+                this.speed = speed;
+            }
         }
     }
 
@@ -299,11 +356,16 @@ public final class Constants {
         public static final double kPYController = 1;
         public static final double kPThetaController = 1;
 
-        public static final double kPGridLineUp = 0.5;
+        /* Constants for line up */
+        public static final double kPGridLineUp = 0.35;
         public static final double kIGridLineUp = 0.0;
-        public static final double kPThetaGridLineUp = .025;
+        public static final double gridLineUpTolerance = 0.1;
+
+        public static final double kPThetaGridLineUp = 0.025;
+        public static final double thetaGridLineUpTolerance = 2.0;
+
         public static final double gridLineUpPosition = 1.98;
-        public static final double gridLineUpAngle = 180;
+        public static final double gridLineUpAngle = 180.0;
     }
 
     public static final class PhotonVision {

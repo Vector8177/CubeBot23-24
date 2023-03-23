@@ -2,7 +2,7 @@ package frc.robot.subsystems.LEDs.LEDModes;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
-import frc.lib.util.HSV;
+import frc.VectorTools.util.HSV;
 import frc.robot.Constants.LEDs;
 
 public class Flash extends LEDModeBase {

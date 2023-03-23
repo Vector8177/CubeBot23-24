@@ -1,4 +1,4 @@
-package frc.lib.util;
+package frc.VectorTools.util;
 
 public class HSV {
     public int h;

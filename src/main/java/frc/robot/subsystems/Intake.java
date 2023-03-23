@@ -18,7 +18,6 @@ public class Intake extends SubsystemBase {
     private final RelativeEncoder intakeEncoder;
 
     /* Game Piece Currently In Robot */
-    
 
     /**
      * Constructor for intake subsystem.
@@ -27,18 +26,18 @@ public class Intake extends SubsystemBase {
         intakeMotor = new CANSparkMax(Constants.Intake.motorId, MotorType.kBrushless);
         intakeEncoder = intakeMotor.getEncoder();
 
-        intakeMotor.setSmartCurrentLimit(Constants.Intake.currentLimit); 
+        intakeMotor.setSmartCurrentLimit(Constants.Intake.currentLimit);
 
     }
-/* 
-    public void setGamePiece(GamePiece piece) {
-        gamePiece = piece;
-    }
-
-    public GamePiece getGamePiece() {
-        return gamePiece;
-    }
-    */
+    /*
+     * public void setGamePiece(GamePiece piece) {
+     * gamePiece = piece;
+     * }
+     * 
+     * public GamePiece getGamePiece() {
+     * return gamePiece;
+     * }
+     */
 
     public void setMotor(double speed) {
         intakeMotor.setVoltage(speed);
@@ -48,13 +47,18 @@ public class Intake extends SubsystemBase {
         return intakeMotor.getOutputCurrent();
     }
 
+    public double getVelocity() {
+        return intakeEncoder.getVelocity();
+    }
+
     @Override
     public void periodic() {
         // returns in amps
         // double intakeCurrent = pdm.getCurrent(Constants.IntakeConstants.pdpChannel);
         double intakeCurrent = intakeMotor.getOutputCurrent();
         SmartDashboard.putNumber("Intake Current", intakeCurrent);
-        //SmartDashboard.putNumber("Gamepiece", getGamePiece().getDirection());
+        SmartDashboard.putNumber("Intake Velocity", getVelocity());
+        // SmartDashboard.putNumber("Gamepiece", getGamePiece().getDirection());
 
     }
 

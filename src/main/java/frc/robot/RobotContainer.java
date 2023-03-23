@@ -25,11 +25,15 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.Position;
+import frc.robot.Constants.SEGMENT;
 import frc.robot.Constants.Intake.EjectSpeed;
 import frc.robot.Constants.LEDs.LEDMode;
+import frc.robot.Constants.Wrist.PIDFFmode;
 import frc.robot.autos.AutoBalancing;
+import frc.robot.autos.segmentLineUp;
 import frc.robot.Constants.GamePiece;
 import frc.robot.commands.*;
+import frc.robot.commands.TimedIntake.Direction;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.LEDs.LEDs;
 
@@ -82,14 +86,14 @@ public class RobotContainer {
                 new SetPosition(s_Wrist, s_Elevator, Position.STANDBY, () -> gamePiece));
         eventMap.put("setCone3Position",
                 new SequentialCommandGroup(
-                        s_Elevator.setPose(Position.CONEHIGH.getElev()),
+                        s_Elevator.setPositionCMD(Position.CONEHIGH.getElev()),
                         new WaitCommand(.5),
-                        s_Wrist.setPose(Position.CONEHIGH.getWrist() + .05),
+                        s_Wrist.setPositionCMD(Position.CONEHIGH.getWrist() + .05),
                         new WaitCommand(1)));
         eventMap.put("setCube3Position",
                 new SequentialCommandGroup(
-                        s_Wrist.setPose(Position.CUBEHIGH.getWrist()),
-                        s_Elevator.setPose(Position.CUBEHIGH.getElev()),
+                        s_Wrist.setPositionCMD(Position.CUBEHIGH.getWrist()),
+                        s_Elevator.setPositionCMD(Position.CUBEHIGH.getElev()),
                         new WaitCommand(1)));
 
         eventMap.put("setCubeIntakePosition",
@@ -100,11 +104,21 @@ public class RobotContainer {
         eventMap.put("setTippedConeIntakePosition", new SetPosition(s_Wrist, s_Elevator,
                 Position.TIPPEDCONEINTAKE, () -> GamePiece.CONE));
 
-        eventMap.put("coneDeposit", new OuttakePiece(s_Intake, .3, () -> GamePiece.CONE, EjectSpeed.NORMAL));
-        eventMap.put("cubeDeposit", new OuttakePiece(s_Intake, .3, () -> GamePiece.CUBE, EjectSpeed.NORMAL));
+        eventMap.put("coneDeposit",
+                new SequentialCommandGroup(
+                        new InstantCommand(() -> s_Wrist.setPIDFFMode(PIDFFmode.UNWEIGHTED)),
+                        new TimedIntake(s_Intake, .3, GamePiece.CONE, EjectSpeed.NORMAL,
+                                Direction.OUTTAKE)));
+        eventMap.put("cubeDeposit",
+                new TimedIntake(s_Intake, .3, GamePiece.CUBE, EjectSpeed.NORMAL, Direction.OUTTAKE));
 
-        eventMap.put("runCubeIntake3", new OuttakePiece(s_Intake, 3, () -> GamePiece.CONE, EjectSpeed.NORMAL));
-        eventMap.put("runConeIntake3", new OuttakePiece(s_Intake, 3, () -> GamePiece.CUBE, EjectSpeed.NORMAL));
+        eventMap.put("runCubeIntake3",
+                new TimedIntake(s_Intake, 3, GamePiece.CONE, EjectSpeed.NORMAL, Direction.INTAKE));
+        eventMap.put("runConeIntake3",
+                new SequentialCommandGroup(
+                        new InstantCommand(() -> s_Wrist.setPIDFFMode(PIDFFmode.WEIGHTED)),
+                        new TimedIntake(s_Intake, 3, GamePiece.CUBE, EjectSpeed.NORMAL,
+                                Direction.INTAKE)));
 
         eventMap.put("wait1Seconds", new WaitCommand(1));
 
@@ -174,7 +188,7 @@ public class RobotContainer {
                         () -> operator.getRawAxis(wristAxis)));
 
         s_Intake.setDefaultCommand(
-                new TeleopIntake(s_Intake,
+                new TeleopIntake(s_Intake, s_Wrist,
                         () -> operator.getRawAxis(intakeTrigger)));
     }
 
@@ -196,7 +210,24 @@ public class RobotContainer {
         /* Driver Buttons */
         driver.y().onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
         driver.x().onTrue(new AutoBalancing(s_Swerve, true));
-        driver.rightTrigger().onTrue(new OuttakePiece(s_Intake, .5, () -> getGamePiece(), EjectSpeed.NORMAL));
+        driver.b().whileTrue(
+                autoBuilder.followPath(
+                        segmentLineUp.getTrajectory(SEGMENT.HUMANPLAYER,
+                                () -> s_Swerve.getPose())));
+        driver.rightTrigger().onTrue(new SelectCommand(
+                Map.ofEntries(
+                        Map.entry(GamePiece.CUBE,
+                                new TimedIntake(s_Intake, .5, GamePiece.CUBE,
+                                        EjectSpeed.NORMAL, Direction.OUTTAKE)),
+                        Map.entry(GamePiece.CONE,
+                                new SequentialCommandGroup(
+                                        new InstantCommand(() -> s_Wrist
+                                                .setPIDFFMode(PIDFFmode.UNWEIGHTED)),
+                                        new TimedIntake(s_Intake, .5,
+                                                GamePiece.CONE,
+                                                EjectSpeed.NORMAL,
+                                                Direction.OUTTAKE)))),
+                () -> gamePiece));
 
         /* Operator Buttons */
         operator.povUp().onTrue(
@@ -221,22 +252,44 @@ public class RobotContainer {
         operator.leftBumper()
                 .onTrue(new SetPosition(s_Wrist, s_Elevator, Position.STANDBY, () -> getGamePiece()));
 
-        operator.leftTrigger().onTrue(new OuttakePiece(s_Intake, .5, () -> getGamePiece(), EjectSpeed.NORMAL));
-        operator.x().onTrue(new OuttakePiece(s_Intake, .5, () -> getGamePiece(), EjectSpeed.FAST));
+        operator.leftTrigger().onTrue(new SelectCommand(
+                Map.ofEntries(
+                        Map.entry(GamePiece.CUBE,
+                                new TimedIntake(s_Intake, .5, GamePiece.CUBE,
+                                        EjectSpeed.NORMAL, Direction.OUTTAKE)),
+                        Map.entry(GamePiece.CONE,
+                                new SequentialCommandGroup(
+                                        new InstantCommand(() -> s_Wrist
+                                                .setPIDFFMode(PIDFFmode.UNWEIGHTED)),
+                                        new TimedIntake(s_Intake, .5,
+                                                GamePiece.CONE,
+                                                EjectSpeed.NORMAL,
+                                                Direction.OUTTAKE)))),
+                () -> gamePiece));
+
+        operator.x().onTrue(new SelectCommand(
+                Map.ofEntries(
+                        Map.entry(GamePiece.CUBE,
+                                new TimedIntake(s_Intake, .5, GamePiece.CUBE,
+                                        EjectSpeed.FAST, Direction.OUTTAKE)),
+                        Map.entry(GamePiece.CONE,
+                                new TimedIntake(s_Intake, .5, GamePiece.CONE,
+                                        EjectSpeed.FAST, Direction.OUTTAKE))),
+                () -> gamePiece));
 
         operator.rightBumper().onTrue(new InstantCommand(() -> s_LEDs.toggleHPSignal()));
-        
-        
+
         operator.y().onTrue(new SelectCommand(
                 Map.ofEntries(
-                    Map.entry(GamePiece.CUBE, new SetPosition(s_Wrist, s_Elevator, Position.HIGH, () -> getGamePiece())),
-                    Map.entry(GamePiece.CONE, new SequentialCommandGroup(
-                        s_Wrist.setPose(Position.STANDBY.getWrist()), 
-                        s_Elevator.setPose(Position.CONEHIGH.getElev()), 
-                        s_Wrist.setPose(Position.CONEHIGH.getWrist())))), 
-                        () -> gamePiece));
-                        
-                        
+                        Map.entry(GamePiece.CUBE,
+                                new SetPosition(s_Wrist, s_Elevator, Position.HIGH,
+                                        () -> getGamePiece())),
+                        Map.entry(GamePiece.CONE, new SequentialCommandGroup(
+                                s_Wrist.setPositionCMD(Position.STANDBY.getWrist()),
+                                s_Elevator.setPositionCMD(Position.CONEHIGH.getElev()),
+                                s_Wrist.setPositionCMD(Position.CONEHIGH.getWrist())))),
+                () -> gamePiece));
+
         operator.b().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.MID, () -> getGamePiece()));
         operator.a().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.LOW, () -> getGamePiece()));
 
@@ -276,10 +329,10 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
         // Executes the autonomous command chosen in smart dashboard
-        s_Swerve.getField().getObject("Field").setTrajectory(autoChooser.getSelected());
         return new ParallelCommandGroup(
                 new InstantCommand(
-                        () -> s_Swerve.setGyro(autoChooser.getSelected().getInitialHolonomicPose().getRotation())),
+                        () -> s_Swerve.getField().getObject("Field").setTrajectory(
+                                autoChooser.getSelected())),
                 autoBuilder.fullAuto(autoChooser.getSelected()));
     }
 }
