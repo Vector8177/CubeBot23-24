@@ -68,11 +68,10 @@
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
-      "isStopPoint": false,
+      "isStopPoint": true,
       "stopEvent": {
         "names": [
-          "cubeDeposit",
-          "setStandbyPosition"
+          "cubeDeposit"
         ],
         "executionBehavior": "sequential",
         "waitBehavior": "none",
@@ -102,8 +101,8 @@
       }
     }
   ],
-  "maxVelocity": 4.0,
-  "maxAcceleration": null,
+  "maxVelocity": 3.0,
+  "maxAcceleration": 1.5,
   "isReversed": null,
   "markers": [
     {
@@ -121,6 +120,12 @@
     },
     {
       "position": 0.018181818181818153,
+      "names": [
+        "setStandbyPosition"
+      ]
+    },
+    {
+      "position": 2.088813920454547,
       "names": [
         "setStandbyPosition"
       ]

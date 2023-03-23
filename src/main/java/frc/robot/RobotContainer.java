@@ -148,7 +148,7 @@ public class RobotContainer {
 
     private final PathPlannerTrajectory coneCubeDeposit = PathPlanner.loadPath("coneCubeDeposit",
             3,
-            1);
+            1.5);
 
     private final PathPlannerTrajectory csConeCubeBalance = PathPlanner.loadPath("csConeCubeBalance", 
             3.0, 

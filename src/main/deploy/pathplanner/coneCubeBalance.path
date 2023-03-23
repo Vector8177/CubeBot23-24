@@ -7,8 +7,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.239583816229149,
-        "y": 4.464314930155025
+        "x": 3.2407249414049724,
+        "y": 4.5300486783608305
       },
       "holonomicAngle": 180.0,
       "isReversal": false,
@@ -19,8 +19,7 @@
         "names": [
           "setStandbyPosition",
           "setCone3Position",
-          "coneDeposit",
-          "setStandbyPosition"
+          "coneDeposit"
         ],
         "executionBehavior": "sequential",
         "waitBehavior": "after",
@@ -33,12 +32,12 @@
         "y": 4.423255560796836
       },
       "prevControl": {
-        "x": 5.3412190139072715,
-        "y": 4.649897166596569
+        "x": 5.358488636138949,
+        "y": 4.7435660730228655
       },
       "nextControl": {
-        "x": 5.3412190139072715,
-        "y": 4.649897166596569
+        "x": 5.358488636138949,
+        "y": 4.7435660730228655
       },
       "holonomicAngle": 0.0,
       "isReversal": true,
@@ -54,18 +53,18 @@
     },
     {
       "anchorPoint": {
-        "x": 5.59339961537066,
-        "y": 2.8056896113792225
+        "x": 5.607358514492478,
+        "y": 2.881636357396967
       },
       "prevControl": {
-        "x": 5.755056024092729,
-        "y": 3.1955668324148037
+        "x": 5.9360077164604705,
+        "y": 3.075247389080109
       },
       "nextControl": {
-        "x": 5.5588469886714,
-        "y": 2.722356805810418
+        "x": 5.52963131557891,
+        "y": 2.8358463689187285
       },
-      "holonomicAngle": 90.3924307093409,
+      "holonomicAngle": 90.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -84,12 +83,12 @@
     },
     {
       "anchorPoint": {
-        "x": 3.8770059034780004,
-        "y": 2.6911037451968145
+        "x": 3.9798384957922615,
+        "y": 2.8819748900725353
       },
       "prevControl": {
-        "x": 4.580686741444659,
-        "y": 2.738649747762129
+        "x": 4.68351933375892,
+        "y": 2.92952089263785
       },
       "nextControl": null,
       "holonomicAngle": 90.0,
@@ -120,6 +119,12 @@
     },
     {
       "position": 1.3363636363636378,
+      "names": [
+        "setStandbyPosition"
+      ]
+    },
+    {
+      "position": 0.018536931818181793,
       "names": [
         "setStandbyPosition"
       ]
