@@ -88,9 +88,9 @@ public class RobotContainer {
                 new SequentialCommandGroup(
                         s_Elevator.setPositionCMD(Position.CONEHIGH.getElev()),
                         new WaitCommand(1),
-                        s_Wrist.setPositionCMD(Position.CONEHIGH.getWrist() + .05),
+                        s_Wrist.setPositionCMD(Position.CONEHIGH.getWrist()),
                         new WaitCommand(1)));
-                        
+
         eventMap.put("setCube3Position",
                 new SequentialCommandGroup(
                         s_Wrist.setPositionCMD(Position.CUBEHIGH.getWrist()),

@@ -254,7 +254,7 @@ public final class Constants {
     public enum Position {
 
         HIGH(0, 0),
-        CONEHIGH(.18, 35),
+        CONEHIGH(.19, 35),
         CUBEHIGH(1.55, 35),
         MID(0, 0),
         CONEMID(5.81731, 35),
