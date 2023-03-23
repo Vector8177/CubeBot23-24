@@ -32,12 +32,12 @@
         "y": 4.451885046627237
       },
       "prevControl": {
-        "x": 5.221216299575456,
-        "y": 4.824068362422439
+        "x": 4.283639050283468,
+        "y": 5.004782388813436
       },
       "nextControl": {
-        "x": 5.221216299575456,
-        "y": 4.824068362422439
+        "x": 4.283639050283468,
+        "y": 5.004782388813436
       },
       "holonomicAngle": 0.0,
       "isReversal": true,
@@ -57,21 +57,46 @@
         "y": 4.308737617475235
       },
       "prevControl": {
-        "x": 4.648626582967453,
-        "y": 4.824068362422439
+        "x": 3.136410995541133,
+        "y": 4.976101687444878
       },
-      "nextControl": null,
+      "nextControl": {
+        "x": 1.8701670472383547,
+        "y": 4.250517176962936
+      },
       "holonomicAngle": -180.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
-      "isStopPoint": false,
+      "isStopPoint": true,
       "stopEvent": {
         "names": [
           "cubeDeposit",
           "setStandbyPosition"
         ],
         "executionBehavior": "sequential",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 6.893582874822279,
+        "y": 4.445508712126548
+      },
+      "prevControl": {
+        "x": 3.0073478393826205,
+        "y": 5.377631506604695
+      },
+      "nextControl": null,
+      "holonomicAngle": 0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
         "waitBehavior": "none",
         "waitTime": 0
       }
