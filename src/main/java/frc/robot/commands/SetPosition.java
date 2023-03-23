@@ -56,6 +56,16 @@ public class SetPosition extends CommandBase {
                     s_Elevator.setPosition(Position.CUBEMID.getElev());
                 }
                 break;
+            
+            case LOW:
+                if (gamePiece.get() == GamePiece.CONE) {
+                    s_Wrist.setPosition(Position.CONELOW.getWrist());
+                    s_Elevator.setPosition(Position.CONELOW.getElev());
+                } else if (gamePiece.get() == GamePiece.CUBE) {
+                    s_Wrist.setPosition(Position.CUBELOW.getWrist());
+                    s_Elevator.setPosition(Position.CUBELOW.getElev());
+                }
+                break;
 
             default:
                 s_Wrist.setPosition(position.getWrist());
@@ -63,14 +73,6 @@ public class SetPosition extends CommandBase {
                 break;
 
         }
-        /*
-         * if(sequential) {
-         * addCommands(setElevatorPose, setWristPose);
-         * }
-         * else {
-         * addCommands(new ParallelCommandGroup(setElevatorPose, setWristPose));
-         * }
-         */
     }
 
     @Override
