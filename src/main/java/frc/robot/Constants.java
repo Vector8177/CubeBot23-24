@@ -228,7 +228,7 @@ public final class Constants {
 
         public static final int pdpChannel = 2; // update number later
 
-        public static final double stoppedRPMThreshold = 0.05;
+        public static final double stoppedRPMThreshold = 1;
 
         public static final double coneIntakeSpeed = 8;
         public static final double cubeIntakeSpeed = 5;
@@ -257,7 +257,7 @@ public final class Constants {
     public enum Position {
 
         HIGH(0, 0),
-        CONEHIGH(.19, 35),
+        CONEHIGH(.19, 34.5),
         CUBEHIGH(1.55, 35),
         MID(0, 0),
         CONEMID(5.81731, 35),
@@ -357,9 +357,9 @@ public final class Constants {
         public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
         public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
-        public static final double kPXController = 1.5;
-        public static final double kPYController = 1.5;
-        public static final double kPThetaController = 0.6;
+        public static final double kPXController = 1.9;
+        public static final double kPYController = 1.9;
+        public static final double kPThetaController = 1.5;
 
         /* Constants for line up */
         public static final double kPGridLineUp = 0.6;

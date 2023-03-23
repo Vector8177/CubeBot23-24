@@ -14,6 +14,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -149,7 +150,7 @@ public class Swerve extends SubsystemBase {
     public void periodic() {
         swervePoseEstimator.update(getYaw(), getPositions());
 
-
+        if(!DriverStation.isAutonomous()){
         Optional<EstimatedRobotPose> result = pcw.getEstimatedGlobalPose(getPose());
 
         if (result.isPresent()) {
@@ -157,6 +158,7 @@ public class Swerve extends SubsystemBase {
             swervePoseEstimator.addVisionMeasurement(
                     camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
         }
+    }
         
 
         field.setRobotPose(getPose());

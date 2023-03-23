@@ -87,13 +87,14 @@ public class RobotContainer {
 
         eventMap.put("setCone3Position",
                 new SequentialCommandGroup(
+                        new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
                         s_Elevator.setPositionCMD(Position.CONEHIGH.getElev()),
-                        new WaitCommand(1),
-                        s_Wrist.setPositionCMD(Position.CONEHIGH.getWrist()),
-                        new WaitCommand(1)));
+                        s_Wrist.setPositionCMD(Position.CONEHIGH.getWrist()).raceWith(new WaitCommand(1)),
+                        new WaitCommand(1.5)));
 
         eventMap.put("setCube3Position",
                 new SequentialCommandGroup(
+                        new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
                         s_Wrist.setPositionCMD(Position.CUBEHIGH.getWrist()),
                         s_Elevator.setPositionCMD(Position.CUBEHIGH.getElev()),
                         new WaitCommand(1)));
@@ -148,7 +149,7 @@ public class RobotContainer {
 
     private final PathPlannerTrajectory coneCubeDeposit = PathPlanner.loadPath("coneCubeDeposit",
             3,
-            1.5);
+            1);
 
     private final PathPlannerTrajectory csConeCubeBalance = PathPlanner.loadPath("csConeCubeBalance", 
             3.0, 

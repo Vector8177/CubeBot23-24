@@ -978,6 +978,19 @@
               "imageWidth": -1,
               "imageHeight": -1
             }
+          },
+          "8,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PIDFF",
+              "_title": "/SmartDashboard/PIDFF",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }
