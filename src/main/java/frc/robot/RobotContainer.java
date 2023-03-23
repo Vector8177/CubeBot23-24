@@ -230,7 +230,13 @@ public class RobotContainer {
         /* Driver Buttons */
         driver.y().onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
         driver.x().onTrue(new AutoBalancing(s_Swerve, true));
-        operator.rightBumper().onTrue(new SelectCommand(
+        /*
+        driver.b().whileTrue(
+                autoBuilder.followPath(
+                        segmentLineUp.getTrajectory(SEGMENT.HUMANPLAYER,
+                                () -> s_Swerve.getPose())));
+        */
+        driver.leftTrigger().onTrue(new SelectCommand(
                 Map.ofEntries(
                         Map.entry(GamePiece.CUBE,
                                 new TimedIntake(s_Intake, .5, GamePiece.CUBE,
@@ -239,12 +245,6 @@ public class RobotContainer {
                                 new TimedIntake(s_Intake, .5, GamePiece.CONE,
                                         EjectSpeed.CONEFAST, Direction.OUTTAKE))),
                 () -> gamePiece));
-        /*
-        driver.b().whileTrue(
-                autoBuilder.followPath(
-                        segmentLineUp.getTrajectory(SEGMENT.HUMANPLAYER,
-                                () -> s_Swerve.getPose())));
-        */
         driver.rightTrigger().onTrue(new SelectCommand(
                 Map.ofEntries(
                         Map.entry(GamePiece.CUBE,

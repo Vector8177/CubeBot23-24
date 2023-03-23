@@ -41,6 +41,8 @@ public class TeleopIntake extends CommandBase {
                 Math.abs(s_Intake.getVelocity()) < Constants.Intake.stoppedRPMThreshold
                 && RobotContainer.gamePiece == GamePiece.CONE) {
             s_Wrist.setPIDFFMode(PIDFFmode.WEIGHTED);
+        } else {
+            s_Wrist.setPIDFFMode(PIDFFmode.UNWEIGHTED);
         }
     }
 }
