@@ -182,6 +182,9 @@ public class RobotContainer {
 
         // Configure autonomous routines
         configureAutonomousPaths();
+
+        // Set Initial Rotation To Face Field
+        s_Swerve.setGyro(180);
     }
 
     private void setDefaultCommands() {

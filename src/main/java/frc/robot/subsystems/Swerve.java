@@ -119,8 +119,8 @@ public class Swerve extends SubsystemBase {
         gyro.setYaw(0);
     }
 
-    public void setGyro(Rotation2d angle) {
-        gyro.setYaw(angle.getDegrees());
+    public void setGyro(double angle) {
+        gyro.setYaw(angle); // Angle in Degrees
     }
 
     public Rotation2d getPitch() {
