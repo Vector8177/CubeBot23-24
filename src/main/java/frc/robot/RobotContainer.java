@@ -152,7 +152,7 @@ public class RobotContainer {
 
     private final PathPlannerTrajectory csConeCubeBalance = PathPlanner.loadPath("csConeCubeBalance", 
             3.0, 
-            2.0);
+            1.5);
 
         // Unused Path Planner Paths
         /* 
