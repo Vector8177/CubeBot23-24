@@ -240,8 +240,11 @@ public final class Constants {
         public static final int currentLimit = 30;
 
         public enum EjectSpeed {
-            FAST(12),
-            NORMAL(7);
+            CUBEFAST(18),
+            CUBENORMAL(6),
+            CONEFAST(20),
+            CONENORMAL(4),
+            CONEINTAKE(8);
 
             public final double speed;
 
