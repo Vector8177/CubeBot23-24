@@ -90,19 +90,24 @@ public class RobotContainer {
                         new WaitCommand(1),
                         s_Wrist.setPositionCMD(Position.CONEHIGH.getWrist() + .05),
                         new WaitCommand(1)));
+                        
         eventMap.put("setCube3Position",
                 new SequentialCommandGroup(
                         s_Wrist.setPositionCMD(Position.CUBEHIGH.getWrist()),
                         s_Elevator.setPositionCMD(Position.CUBEHIGH.getElev()),
                         new WaitCommand(1)));
 
-        eventMap.put("setCubeIntakePosition",
-                new SetPosition(s_Wrist, s_Elevator, Position.CUBEINTAKE, () -> GamePiece.CUBE));
-        eventMap.put("setStandingConeIntakePosition", new SetPosition(s_Wrist, s_Elevator,
-                Position.STANDINGCONEINTAKE, () -> GamePiece.CONE));
+        eventMap.put("setCubeIntakePosition", new SequentialCommandGroup(
+                new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
+                new SetPosition(s_Wrist, s_Elevator, Position.CUBEINTAKE, () -> GamePiece.CUBE)));
 
-        eventMap.put("setTippedConeIntakePosition", new SetPosition(s_Wrist, s_Elevator,
-                Position.TIPPEDCONEINTAKE, () -> GamePiece.CONE));
+        eventMap.put("setStandingConeIntakePosition", new SequentialCommandGroup(
+                new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
+                new SetPosition(s_Wrist, s_Elevator, Position.STANDINGCONEINTAKE, () -> GamePiece.CONE)));
+
+        eventMap.put("setTippedConeIntakePosition",new SequentialCommandGroup(
+                new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
+                new SetPosition(s_Wrist, s_Elevator, Position.TIPPEDCONEINTAKE, () -> GamePiece.CONE)));
 
         eventMap.put("coneDeposit",
                 new SequentialCommandGroup(
@@ -232,10 +237,9 @@ public class RobotContainer {
                 () -> gamePiece));
 
         /* Operator Buttons */
-        operator.povUp().onTrue(
-                new SequentialCommandGroup(new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
-                        new SetPosition(s_Wrist, s_Elevator, Position.STANDINGCONEINTAKE,
-                                () -> GamePiece.CONE)));
+        operator.povUp().onTrue(new SequentialCommandGroup(
+                new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
+                new SetPosition(s_Wrist, s_Elevator, Position.STANDINGCONEINTAKE, () -> GamePiece.CONE)));
 
         operator.povLeft().onTrue(new SequentialCommandGroup(
                 new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
@@ -245,11 +249,9 @@ public class RobotContainer {
                 new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
                 new SetPosition(s_Wrist, s_Elevator, Position.TIPPEDCONEINTAKE, () -> GamePiece.CONE)));
 
-        operator.povRight()
-                .onTrue(new SequentialCommandGroup(
-                        new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
-                        new SetPosition(s_Wrist, s_Elevator, Position.HUMANPLAYERINTAKE,
-                                () -> GamePiece.CONE)));
+        operator.povRight().onTrue(new SequentialCommandGroup(
+                new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
+                new SetPosition(s_Wrist, s_Elevator, Position.HUMANPLAYERINTAKE, () -> GamePiece.CONE)));
 
         operator.leftBumper()
                 .onTrue(new SetPosition(s_Wrist, s_Elevator, Position.STANDBY, () -> getGamePiece()));

@@ -203,14 +203,10 @@ public final class Constants {
         public static double weightedI = 0.0;
         public static double weightedD = 0.2;
 
-        public static double weightedS = (0.11237+0.4361)/2;
-        //0.4361
-        public static double weightedV = (0.56387+0.79036)/2;
-        //0.79036
-        public static double weightedA = 0.041488/2;
-        //0.0
-        public static double weightedG = (0.76416+0.86416)/2;
-        //0.86416
+        public static double weightedS = 0.274235; // Old Value: 0.4361
+        public static double weightedV = 0.67715;  // Old Value: 0.79036
+        public static double weightedA = 0.020744; // Old Value: 0.0
+        public static double weightedG = 0.81416;  // Old Value: 0.86416
 
         public static double unweightedP = 2.0;
         public static double unweightedI = 0.0;
@@ -258,7 +254,7 @@ public final class Constants {
     public enum Position {
 
         HIGH(0, 0),
-        CONEHIGH(.2, 35),
+        CONEHIGH(.18, 35),
         CUBEHIGH(1.55, 35),
         MID(0, 0),
         CONEMID(5.81731, 35),
