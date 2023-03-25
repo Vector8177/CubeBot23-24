@@ -152,8 +152,8 @@ public class RobotContainer {
             1);
 
     private final PathPlannerTrajectory csConeCubeBalance = PathPlanner.loadPath("csConeCubeBalance", 
-            3.0, 
-            1.5);
+            2.0, 
+            1.0);
 
         // Unused Path Planner Paths
         /* 
@@ -299,6 +299,10 @@ public class RobotContainer {
                                                 Direction.OUTTAKE)))),
                 () -> gamePiece));
 
+        operator.x().onTrue(new SequentialCommandGroup(
+                new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
+                new SetPosition(s_Wrist, s_Elevator, Position.DOUBSUBSTATIONINTAKE, () -> GamePiece.CONE)));
+        /*
         operator.x().onTrue(new SelectCommand(
                 Map.ofEntries(
                         Map.entry(GamePiece.CUBE,
@@ -308,7 +312,7 @@ public class RobotContainer {
                                 new TimedIntake(s_Intake, .5, GamePiece.CONE,
                                         EjectSpeed.CONEFAST, Direction.OUTTAKE))),
                 () -> gamePiece));
-
+        */
         operator.rightBumper().onTrue(new InstantCommand(() -> s_LEDs.toggleHPSignal()));
 
         operator.y().onTrue(new SelectCommand(

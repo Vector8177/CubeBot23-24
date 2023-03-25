@@ -81,7 +81,7 @@ public final class Constants {
         public static final double fastSpeedLimit = 4.5; // Fast Meters Per Second Speed
 
         public static final double accelerationLimit = 3.0;
-        public static final double fastAccelerationLimit = 5.0;
+        public static final double fastAccelerationLimit = 10.0;
 
         public static final double angularVelocityLimit = 5;
         public static final double slowAngularVelocityLimit = 1.25;
@@ -269,7 +269,8 @@ public final class Constants {
         CUBEINTAKE(-0.05, 0.25),
         STANDINGCONEINTAKE(5.106, 14.0),
         TIPPEDCONEINTAKE(5.572, 1.333),
-        HUMANPLAYERINTAKE(.8763, 1.5);
+        HUMANPLAYERINTAKE(.8763, 1.5),
+        DOUBSUBSTATIONINTAKE(0.0, 29.6);
 
         private double wristPos;
         private double elevatorPos;
