@@ -204,9 +204,9 @@ public final class Constants {
         public static double weightedD = 0.2;
 
         public static double weightedS = 0.274235; // Old Value: 0.4361
-        public static double weightedV = 0.67715;  // Old Value: 0.79036
+        public static double weightedV = 0.67715; // Old Value: 0.79036
         public static double weightedA = 0.020744; // Old Value: 0.0
-        public static double weightedG = 0.81416;  // Old Value: 0.86416
+        public static double weightedG = 0.81416; // Old Value: 0.86416
 
         public static double unweightedP = 2.0;
         public static double unweightedI = 0.0;
@@ -244,6 +244,7 @@ public final class Constants {
             CUBENORMAL(6),
             CONEFAST(20),
             CONENORMAL(4),
+            CONESLOW(2),
             CONEINTAKE(8);
 
             public final double speed;

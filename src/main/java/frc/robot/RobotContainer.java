@@ -89,7 +89,8 @@ public class RobotContainer {
                 new SequentialCommandGroup(
                         new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
                         s_Elevator.setPositionCMD(Position.CONEHIGH.getElev()),
-                        s_Wrist.setPositionCMD(Position.CONEHIGH.getWrist()).raceWith(new WaitCommand(1)),
+                        s_Wrist.setPositionCMD(Position.CONEHIGH.getWrist())
+                                .raceWith(new WaitCommand(1)),
                         new WaitCommand(1.5)));
 
         eventMap.put("setCube3Position",
@@ -99,20 +100,23 @@ public class RobotContainer {
                         s_Elevator.setPositionCMD(Position.CUBEHIGH.getElev()),
                         new WaitCommand(1)));
 
-        eventMap.put("setCubeIntakePosition", 
+        eventMap.put("setCubeIntakePosition",
                 new SequentialCommandGroup(
                         new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
-                        new SetPosition(s_Wrist, s_Elevator, Position.CUBEINTAKE, () -> GamePiece.CUBE)));
+                        new SetPosition(s_Wrist, s_Elevator, Position.CUBEINTAKE,
+                                () -> GamePiece.CUBE)));
 
-        eventMap.put("setStandingConeIntakePosition", 
+        eventMap.put("setStandingConeIntakePosition",
                 new SequentialCommandGroup(
                         new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
-                        new SetPosition(s_Wrist, s_Elevator, Position.STANDINGCONEINTAKE, () -> GamePiece.CONE)));
+                        new SetPosition(s_Wrist, s_Elevator, Position.STANDINGCONEINTAKE,
+                                () -> GamePiece.CONE)));
 
         eventMap.put("setTippedConeIntakePosition",
                 new SequentialCommandGroup(
                         new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
-                        new SetPosition(s_Wrist, s_Elevator, Position.TIPPEDCONEINTAKE, () -> GamePiece.CONE)));
+                        new SetPosition(s_Wrist, s_Elevator, Position.TIPPEDCONEINTAKE,
+                                () -> GamePiece.CONE)));
 
         eventMap.put("coneDeposit",
                 new SequentialCommandGroup(
@@ -120,7 +124,8 @@ public class RobotContainer {
                         new TimedIntake(s_Intake, .3, GamePiece.CONE, EjectSpeed.CONENORMAL,
                                 Direction.OUTTAKE)));
         eventMap.put("cubeDeposit",
-                new TimedIntake(s_Intake, .3, GamePiece.CUBE, EjectSpeed.CUBENORMAL, Direction.OUTTAKE));
+                new TimedIntake(s_Intake, .3, GamePiece.CUBE, EjectSpeed.CUBENORMAL,
+                        Direction.OUTTAKE));
 
         eventMap.put("runCubeIntake3",
                 new TimedIntake(s_Intake, 3, GamePiece.CUBE, EjectSpeed.CUBENORMAL, Direction.INTAKE));
@@ -128,7 +133,8 @@ public class RobotContainer {
         eventMap.put("runConeIntake3",
                 new SequentialCommandGroup(
                         new InstantCommand(() -> s_Wrist.setPIDFFMode(PIDFFmode.WEIGHTED)),
-                        new TimedIntake(s_Intake, 3, GamePiece.CONE, EjectSpeed.CONEINTAKE, Direction.INTAKE)));
+                        new TimedIntake(s_Intake, 3, GamePiece.CONE, EjectSpeed.CONEINTAKE,
+                                Direction.INTAKE)));
 
         eventMap.put("wait1Seconds", new WaitCommand(1));
 
@@ -143,28 +149,29 @@ public class RobotContainer {
             1,
             3);
 
-    private final PathPlannerTrajectory coneCubeBalance = PathPlanner.loadPath("coneCubeBalance", 
-            3.5, 
+    private final PathPlannerTrajectory coneCubeBalance = PathPlanner.loadPath("coneCubeBalance",
+            3.5,
             1.5);
 
     private final PathPlannerTrajectory coneCubeDeposit = PathPlanner.loadPath("coneCubeDeposit",
             3,
             1);
 
-    private final PathPlannerTrajectory csConeCubeBalance = PathPlanner.loadPath("csConeCubeBalance", 
-            2.0, 
+    private final PathPlannerTrajectory csConeCubeBalance = PathPlanner.loadPath("csConeCubeBalance",
+            2.0,
             1.0);
 
-        // Unused Path Planner Paths
-        /* 
-        private final PathPlannerTrajectory backnForth = PathPlanner.loadPath("BacknForth",
-            Constants.Autonomous.kMaxSpeedMetersPerSecond,
-            Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
-            
-        private final PathPlannerTrajectory sCurve = PathPlanner.loadPath("S Curve",
-            Constants.Autonomous.kMaxSpeedMetersPerSecond,
-            Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
-        */
+    // Unused Path Planner Paths
+    /*
+     * private final PathPlannerTrajectory backnForth =
+     * PathPlanner.loadPath("BacknForth",
+     * Constants.Autonomous.kMaxSpeedMetersPerSecond,
+     * Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
+     * 
+     * private final PathPlannerTrajectory sCurve = PathPlanner.loadPath("S Curve",
+     * Constants.Autonomous.kMaxSpeedMetersPerSecond,
+     * Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
+     */
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -235,25 +242,28 @@ public class RobotContainer {
         driver.y().onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
         driver.x().onTrue(new AutoBalancing(s_Swerve, true));
         /*
-        driver.b().whileTrue(
-                autoBuilder.followPath(
-                        segmentLineUp.getTrajectory(SEGMENT.HUMANPLAYER,
-                                () -> s_Swerve.getPose())));
-        */
+         * driver.b().whileTrue(
+         * autoBuilder.followPath(
+         * segmentLineUp.getTrajectory(SEGMENT.HUMANPLAYER,
+         * () -> s_Swerve.getPose())));
+         */
         driver.leftTrigger().onTrue(new SelectCommand(
                 Map.ofEntries(
                         Map.entry(GamePiece.CUBE,
                                 new TimedIntake(s_Intake, .5, GamePiece.CUBE,
-                                        EjectSpeed.CUBEFAST, Direction.OUTTAKE)),
+                                        EjectSpeed.CUBEFAST,
+                                        Direction.OUTTAKE)),
                         Map.entry(GamePiece.CONE,
                                 new TimedIntake(s_Intake, .5, GamePiece.CONE,
-                                        EjectSpeed.CONEFAST, Direction.OUTTAKE))),
+                                        EjectSpeed.CONEFAST,
+                                        Direction.OUTTAKE))),
                 () -> gamePiece));
         driver.rightTrigger().onTrue(new SelectCommand(
                 Map.ofEntries(
                         Map.entry(GamePiece.CUBE,
                                 new TimedIntake(s_Intake, .5, GamePiece.CUBE,
-                                        EjectSpeed.CUBENORMAL, Direction.OUTTAKE)),
+                                        EjectSpeed.CUBENORMAL,
+                                        Direction.OUTTAKE)),
                         Map.entry(GamePiece.CONE,
                                 new SequentialCommandGroup(
                                         new InstantCommand(() -> s_Wrist
@@ -267,7 +277,8 @@ public class RobotContainer {
         /* Operator Buttons */
         operator.povUp().onTrue(new SequentialCommandGroup(
                 new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
-                new SetPosition(s_Wrist, s_Elevator, Position.STANDINGCONEINTAKE, () -> GamePiece.CONE)));
+                new SetPosition(s_Wrist, s_Elevator, Position.STANDINGCONEINTAKE,
+                        () -> GamePiece.CONE)));
 
         operator.povLeft().onTrue(new SequentialCommandGroup(
                 new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
@@ -279,7 +290,8 @@ public class RobotContainer {
 
         operator.povRight().onTrue(new SequentialCommandGroup(
                 new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
-                new SetPosition(s_Wrist, s_Elevator, Position.HUMANPLAYERINTAKE, () -> GamePiece.CONE)));
+                new SetPosition(s_Wrist, s_Elevator, Position.HUMANPLAYERINTAKE,
+                        () -> GamePiece.CONE)));
 
         operator.leftBumper()
                 .onTrue(new SetPosition(s_Wrist, s_Elevator, Position.STANDBY, () -> getGamePiece()));
@@ -288,7 +300,8 @@ public class RobotContainer {
                 Map.ofEntries(
                         Map.entry(GamePiece.CUBE,
                                 new TimedIntake(s_Intake, .5, GamePiece.CUBE,
-                                        EjectSpeed.CUBENORMAL, Direction.OUTTAKE)),
+                                        EjectSpeed.CUBENORMAL,
+                                        Direction.OUTTAKE)),
                         Map.entry(GamePiece.CONE,
                                 new SequentialCommandGroup(
                                         new InstantCommand(() -> s_Wrist
@@ -296,23 +309,33 @@ public class RobotContainer {
                                         new TimedIntake(s_Intake, .5,
                                                 GamePiece.CONE,
                                                 EjectSpeed.CONENORMAL,
-                                                Direction.OUTTAKE)))),
+                                                Direction.OUTTAKE),
+                                        new ParallelCommandGroup(
+                                                new TimedIntake(s_Intake, .2,
+                                                        GamePiece.CONE,
+                                                        EjectSpeed.CONESLOW,
+                                                        Direction.OUTTAKE),
+                                                new SetPosition(s_Wrist,
+                                                        s_Elevator,
+                                                        Position.HIGH,
+                                                        () -> GamePiece.CUBE))))),
                 () -> gamePiece));
 
         operator.x().onTrue(new SequentialCommandGroup(
                 new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
-                new SetPosition(s_Wrist, s_Elevator, Position.DOUBSUBSTATIONINTAKE, () -> GamePiece.CONE)));
+                new SetPosition(s_Wrist, s_Elevator, Position.DOUBSUBSTATIONINTAKE,
+                        () -> GamePiece.CONE)));
         /*
-        operator.x().onTrue(new SelectCommand(
-                Map.ofEntries(
-                        Map.entry(GamePiece.CUBE,
-                                new TimedIntake(s_Intake, .5, GamePiece.CUBE,
-                                        EjectSpeed.CUBEFAST, Direction.OUTTAKE)),
-                        Map.entry(GamePiece.CONE,
-                                new TimedIntake(s_Intake, .5, GamePiece.CONE,
-                                        EjectSpeed.CONEFAST, Direction.OUTTAKE))),
-                () -> gamePiece));
-        */
+         * operator.x().onTrue(new SelectCommand(
+         * Map.ofEntries(
+         * Map.entry(GamePiece.CUBE,
+         * new TimedIntake(s_Intake, .5, GamePiece.CUBE,
+         * EjectSpeed.CUBEFAST, Direction.OUTTAKE)),
+         * Map.entry(GamePiece.CONE,
+         * new TimedIntake(s_Intake, .5, GamePiece.CONE,
+         * EjectSpeed.CONEFAST, Direction.OUTTAKE))),
+         * () -> gamePiece));
+         */
         operator.rightBumper().onTrue(new InstantCommand(() -> s_LEDs.toggleHPSignal()));
 
         operator.y().onTrue(new SelectCommand(
@@ -339,8 +362,8 @@ public class RobotContainer {
         autoChooser.addOption("L3 Cone+Cube", coneCubeDeposit);
         autoChooser.addOption("Charge Station Cone PCube Balance", csConeCubeBalance);
 
-        //autoChooser.addOption("Back and Forth", backnForth);
-        //autoChooser.addOption("S curve", sCurve);
+        // autoChooser.addOption("Back and Forth", backnForth);
+        // autoChooser.addOption("S curve", sCurve);
 
         SmartDashboard.putData(autoChooser);
     }
