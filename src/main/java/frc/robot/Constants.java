@@ -151,7 +151,7 @@ public final class Constants {
         public static final double elevatorKI = .2;
         public static final double elevatorKD = .05;
 
-        public static final double maxMotorVoltage = 5;
+        public static final double maxMotorVoltage = 7;
 
         public static final int currentLimit = 30;
 
@@ -258,8 +258,8 @@ public final class Constants {
     public enum Position {
 
         HIGH(0, 0),
-        CONEHIGH(.19, 34.5),
-        CUBEHIGH(1.55, 35),
+        CONEHIGH(.17, 34.5),
+        CUBEHIGH(1.55, 31),
         MID(0, 0),
         CONEMID(5.81731, 35),
         CUBEMID(1.427, 16.5),

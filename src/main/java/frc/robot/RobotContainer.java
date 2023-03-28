@@ -247,7 +247,7 @@ public class RobotContainer {
                                 new SequentialCommandGroup(
                                         new InstantCommand(() -> s_Wrist
                                                 .setPIDFFMode(PIDFFmode.UNWEIGHTED)),
-                                        new TimedIntake(s_Intake, .5,
+                                        new TimedIntake(s_Intake, .1,
                                                 GamePiece.CONE,
                                                 EjectSpeed.CONENORMAL,
                                                 Direction.OUTTAKE),
