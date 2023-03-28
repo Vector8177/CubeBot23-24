@@ -190,9 +190,6 @@ public class RobotContainer {
 
         // Configure autonomous routines
         configureAutonomousPaths();
-
-        // Set Initial Rotation To Face Field
-        s_Swerve.setGyro(180);
     }
 
     private void setDefaultCommands() {
@@ -387,7 +384,6 @@ public class RobotContainer {
      */
     public void disabledPeriodic() {
         s_Vision.updatePoseAlliance();
-        s_Swerve.resetToAbsolute();
         s_LEDs.setLEDMode(LEDMode.VECTORWAVE);
     }
 
@@ -406,6 +402,8 @@ public class RobotContainer {
      */
 
     public Command getAutonomousCommand() {
+        s_Swerve.setGyro(autoChooser.getSelected().getInitialPose().getRotation.toDegrees());
+
         // Executes the autonomous command chosen in smart dashboard
         return new ParallelCommandGroup(
                 new InstantCommand(

@@ -50,6 +50,9 @@ public class Swerve extends SubsystemBase {
 
         field = new Field2d();
         chassisSpeeds = new ChassisSpeeds();
+
+        resetToAbsolute();
+
         SmartDashboard.putData(field);
     }
 
