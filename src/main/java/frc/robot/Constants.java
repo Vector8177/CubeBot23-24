@@ -14,7 +14,15 @@ import frc.VectorTools.util.HSV;
 import frc.lib.config.SwerveModuleConstants;
 
 public final class Constants {
-
+    public static final Mode currentMode = Mode.REAL; 
+    public static enum Mode{
+        /** Replaying from a log file. */
+        REAL,
+        /** Replaying from a log file. */
+        SIM,
+        /** Replaying from a log file. */
+        REPLAY
+    }
     public static final class Swerve {
         public static final double stickDeadband = 0.1;
 
