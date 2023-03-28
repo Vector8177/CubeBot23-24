@@ -376,6 +376,10 @@ public class RobotContainer {
         s_LEDs.setLEDMode(LEDMode.VECTORWAVE);
     }
 
+    public void disabledPeriodic() {
+        s_Vision.updatePoseAlliance();
+    }
+
     public static GamePiece getGamePiece() {
         return gamePiece;
     }
