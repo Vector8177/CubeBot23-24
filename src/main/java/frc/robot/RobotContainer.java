@@ -371,13 +371,10 @@ public class RobotContainer {
     /**
      * Ran once the robot is put in disabled
      */
-    public void disabledInit() {
-        s_Swerve.resetToAbsolute();
-        s_LEDs.setLEDMode(LEDMode.VECTORWAVE);
-    }
-
     public void disabledPeriodic() {
         s_Vision.updatePoseAlliance();
+        s_Swerve.resetToAbsolute();
+        s_LEDs.setLEDMode(LEDMode.VECTORWAVE);
     }
 
     public static GamePiece getGamePiece() {
