@@ -240,7 +240,30 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         driver.y().onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
-        driver.x().onTrue(new AutoBalancing(s_Swerve, true));
+        driver.x().onTrue(new SelectCommand(
+                Map.ofEntries(
+                        Map.entry(GamePiece.CUBE,
+                                new TimedIntake(s_Intake, .5, GamePiece.CUBE,
+                                        EjectSpeed.CUBENORMAL,
+                                        Direction.OUTTAKE)),
+                        Map.entry(GamePiece.CONE,
+                                new SequentialCommandGroup(
+                                        new InstantCommand(() -> s_Wrist
+                                                .setPIDFFMode(PIDFFmode.UNWEIGHTED)),
+                                        new TimedIntake(s_Intake, .5,
+                                                GamePiece.CONE,
+                                                EjectSpeed.CONENORMAL,
+                                                Direction.OUTTAKE),
+                                        new ParallelCommandGroup(
+                                                new TimedIntake(s_Intake, .2,
+                                                        GamePiece.CONE,
+                                                        EjectSpeed.CONESLOW,
+                                                        Direction.OUTTAKE),
+                                                new SetPosition(s_Wrist,
+                                                        s_Elevator,
+                                                        Position.HIGH,
+                                                        () -> GamePiece.CUBE))))),
+                () -> gamePiece));
         /*
          * driver.b().whileTrue(
          * autoBuilder.followPath(
@@ -309,16 +332,7 @@ public class RobotContainer {
                                         new TimedIntake(s_Intake, .5,
                                                 GamePiece.CONE,
                                                 EjectSpeed.CONENORMAL,
-                                                Direction.OUTTAKE),
-                                        new ParallelCommandGroup(
-                                                new TimedIntake(s_Intake, .2,
-                                                        GamePiece.CONE,
-                                                        EjectSpeed.CONESLOW,
-                                                        Direction.OUTTAKE),
-                                                new SetPosition(s_Wrist,
-                                                        s_Elevator,
-                                                        Position.HIGH,
-                                                        () -> GamePiece.CUBE))))),
+                                                Direction.OUTTAKE)))),
                 () -> gamePiece));
 
         operator.x().onTrue(new SequentialCommandGroup(
