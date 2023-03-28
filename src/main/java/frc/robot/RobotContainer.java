@@ -252,7 +252,8 @@ public class RobotContainer {
                                                 EjectSpeed.CONENORMAL,
                                                 Direction.OUTTAKE),
                                         new ParallelCommandGroup(
-                                                new TimedIntake(s_Intake, .2,
+                                                new TimedIntake(s_Intake,
+                                                        .2,
                                                         GamePiece.CONE,
                                                         EjectSpeed.CONESLOW,
                                                         Direction.OUTTAKE),
@@ -402,7 +403,7 @@ public class RobotContainer {
      */
 
     public Command getAutonomousCommand() {
-        s_Swerve.setGyro(autoChooser.getSelected().getInitialPose().getRotation.toDegrees());
+        s_Swerve.setGyro(autoChooser.getSelected().getInitialPose().getRotation());
 
         // Executes the autonomous command chosen in smart dashboard
         return new ParallelCommandGroup(
