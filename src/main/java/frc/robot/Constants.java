@@ -376,21 +376,21 @@ public final class Constants {
     }
 
     public static final class PhotonVision {
-        public static final String leftCameraName = "OV5647";
+        public static final String leftCameraName = "velocityleft";
         public static final Transform3d leftCameraPosition = new Transform3d(
-                new Translation3d(Units.inchesToMeters(9.1505), Units.inchesToMeters(9.666),
+                new Translation3d(Units.inchesToMeters(9.1505), Units.inchesToMeters(-9.666),
                         Units.inchesToMeters(31.185)),
                 new Rotation3d(
                         0, Units.degreesToRadians(20),
-                        Units.degreesToRadians(355)));
+                        Units.degreesToRadians(5)));
 
-        public static final String rightCameraName = "OV5647";
+        public static final String rightCameraName = "velocityright";
         public static final Transform3d rightCameraPosition = new Transform3d(
                 new Translation3d(Units.inchesToMeters(9.1505), Units.inchesToMeters(9.666),
                         Units.inchesToMeters(31.185)),
                 new Rotation3d(
                         0, Units.degreesToRadians(20),
-                        Units.degreesToRadians(355)));
+                        Units.degreesToRadians(-5)));
     }
 
     public static final class LEDs {
