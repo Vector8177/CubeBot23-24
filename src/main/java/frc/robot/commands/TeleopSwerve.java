@@ -26,6 +26,8 @@ public class TeleopSwerve extends CommandBase {
 
     private SlewRateLimiter translationLimiter;
     private SlewRateLimiter strafeLimiter;
+
+    private double currentLineUpPosition;
     // private SlewRateLimiter rotationLimiter = new SlewRateLimiter(3.0);
 
     private PIDController translationController;
@@ -76,6 +78,8 @@ public class TeleopSwerve extends CommandBase {
 
     @Override
     public void initialize() {
+        currentLineUpPosition = Integer.MAX_VALUE;
+
         translationLimiter = new SlewRateLimiter(3.0);
         strafeLimiter = new SlewRateLimiter(3.0);
 
@@ -140,10 +144,12 @@ public class TeleopSwerve extends CommandBase {
                         Constants.Swerve.stickDeadband));
 
         if (gridLineUp.getAsBoolean()) {
+            if (currentLineUpPosition == Integer.MAX_VALUE)
+                currentLineUpPosition = s_Swerve.getPose().getX();
 
             translationVal = MathUtil.clamp(
                     translationController.calculate(s_Swerve.getPose().getX(),
-                            Constants.Autonomous.gridLineUpPosition),
+                            currentLineUpPosition),
                     -1,
                     1);
 
@@ -163,6 +169,7 @@ public class TeleopSwerve extends CommandBase {
             }
 
         } else {
+            currentLineUpPosition = Integer.MAX_VALUE;
             if (s_LEDs.getLEDMode() != previousMode)
                 s_LEDs.setLEDMode(previousMode);
 

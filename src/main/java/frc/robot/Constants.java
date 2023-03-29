@@ -364,33 +364,32 @@ public final class Constants {
         public static final double kPThetaController = 1.5;
 
         /* Constants for line up */
-        public static final double kPGridLineUp = 0.6;
+        public static final double kPGridLineUp = 0.8;
         public static final double kIGridLineUp = 0.0;
         public static final double gridLineUpTolerance = 0.05;
 
         public static final double kPThetaGridLineUp = 0.025;
         public static final double thetaGridLineUpTolerance = 2.0;
 
-        public static final double gridLineUpPosition = 2.00;
         public static final double gridLineUpAngle = 180.0;
     }
 
     public static final class PhotonVision {
-        public static final String leftCameraName = "velocityleft";
+        public static final String leftCameraName = "velocityleft"; // Camera to the left (Robot perspective)
         public static final Transform3d leftCameraPosition = new Transform3d(
                 new Translation3d(Units.inchesToMeters(9.1505), Units.inchesToMeters(-9.666),
                         Units.inchesToMeters(31.185)),
                 new Rotation3d(
-                        0, Units.degreesToRadians(20),
+                        0, Units.degreesToRadians(-20),
                         Units.degreesToRadians(5)));
 
-        public static final String rightCameraName = "velocityright";
+        public static final String rightCameraName = "velocityright"; // Camera to the right (Robot perspective)
         public static final Transform3d rightCameraPosition = new Transform3d(
                 new Translation3d(Units.inchesToMeters(9.1505), Units.inchesToMeters(9.666),
                         Units.inchesToMeters(31.185)),
                 new Rotation3d(
                         0, Units.degreesToRadians(20),
-                        Units.degreesToRadians(-5)));
+                        Units.degreesToRadians(5)));
     }
 
     public static final class LEDs {
