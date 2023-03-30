@@ -151,7 +151,7 @@ public final class Constants {
         public static final double elevatorKI = .2;
         public static final double elevatorKD = .05;
 
-        public static final double maxMotorVoltage = 7;
+        public static final double maxMotorVoltage = 9;
 
         public static final int currentLimit = 30;
 
@@ -259,7 +259,8 @@ public final class Constants {
 
         HIGH(0, 0),
         CONEHIGH(.17, 34.5),
-        CUBEHIGH(1.55, 31),
+        CONEHIGHUP(1.55,34.5),
+        CUBEHIGH(1.55, 34),
         MID(0, 0),
         CONEMID(5.81731, 35),
         CUBEMID(1.427, 16.5),
@@ -377,19 +378,19 @@ public final class Constants {
     public static final class PhotonVision {
         public static final String leftCameraName = "velocityleft"; // Camera to the left (Robot perspective)
         public static final Transform3d leftCameraPosition = new Transform3d(
-                new Translation3d(Units.inchesToMeters(9.1505), Units.inchesToMeters(-9.666),
-                        Units.inchesToMeters(31.185)),
-                new Rotation3d(
-                        0, Units.degreesToRadians(-20),
-                        Units.degreesToRadians(5)));
-
-        public static final String rightCameraName = "velocityright"; // Camera to the right (Robot perspective)
-        public static final Transform3d rightCameraPosition = new Transform3d(
                 new Translation3d(Units.inchesToMeters(9.1505), Units.inchesToMeters(9.666),
                         Units.inchesToMeters(31.185)),
                 new Rotation3d(
                         0, Units.degreesToRadians(20),
                         Units.degreesToRadians(5)));
+
+        public static final String rightCameraName = "velocityright"; // Camera to the right (Robot perspective)
+        public static final Transform3d rightCameraPosition = new Transform3d(
+                new Translation3d(Units.inchesToMeters(9.1505), Units.inchesToMeters(-9.666),
+                        Units.inchesToMeters(31.185)),
+                new Rotation3d(
+                        0, Units.degreesToRadians(20),
+                        Units.degreesToRadians(-5)));
     }
 
     public static final class LEDs {

@@ -255,11 +255,11 @@ public class RobotContainer {
                                                 new TimedIntake(s_Intake,
                                                         .2,
                                                         GamePiece.CONE,
-                                                        EjectSpeed.CONENORMAL,
+                                                        EjectSpeed.CONESLOW,
                                                         Direction.OUTTAKE),
                                                 new SetPosition(s_Wrist,
                                                         s_Elevator,
-                                                        Position.HIGH,
+                                                        Position.CONEHIGHUP,
                                                         () -> GamePiece.CUBE))))),
                 () -> gamePiece));
         /*
