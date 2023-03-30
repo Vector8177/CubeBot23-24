@@ -8,8 +8,8 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.GamePiece;
 import frc.robot.Constants.Wrist.PIDFFmode;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Wrist;
+import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.wrist.Wrist;
 
 public class TeleopIntake extends CommandBase {
     private Intake s_Intake;

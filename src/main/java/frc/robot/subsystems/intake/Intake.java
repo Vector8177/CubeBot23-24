@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.intake;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -17,16 +17,20 @@ public class Intake extends SubsystemBase {
     private final CANSparkMax intakeMotor;
     private final RelativeEncoder intakeEncoder;
 
+    private final IntakeIO io; 
+    private final IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged(); 
     /* Game Piece Currently In Robot */
 
     /**
      * Constructor for intake subsystem.
      */
-    public Intake() {
+    public Intake(IntakeIO io) {
+        this.io = io; 
+    
         intakeMotor = new CANSparkMax(Constants.Intake.motorId, MotorType.kBrushless);
         intakeEncoder = intakeMotor.getEncoder();
 
-        intakeMotor.setSmartCurrentLimit(Constants.Intake.currentLimit);
+        
 
     }
     /*
@@ -60,8 +64,12 @@ public class Intake extends SubsystemBase {
         SmartDashboard.putNumber("Intake Velocity", getVelocity());
         // SmartDashboard.putNumber("Gamepiece", getGamePiece().getDirection());
 
-    }
+        io.updateInputs(inputs); 
+        Logger.getInstance().processInputs("Input", inputs);
+        
 
+    }
+    
     public void resetIntakeEncoder() {
         intakeEncoder.setPosition(0);
 

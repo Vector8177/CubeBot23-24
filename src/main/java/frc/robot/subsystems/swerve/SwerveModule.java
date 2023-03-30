@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.swerve;
 
 import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
@@ -20,6 +20,7 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 
 public class SwerveModule {
+
     public int moduleNumber;
 
     private Rotation2d lastAngle;

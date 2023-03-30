@@ -2,7 +2,7 @@ package frc.robot.autos;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.swerve.Swerve;
 
 public class AutoBalancing extends CommandBase {
     private Swerve s_Swerve;

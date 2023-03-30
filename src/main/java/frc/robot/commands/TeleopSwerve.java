@@ -7,8 +7,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.VectorTools.util.SlewRateLimiter;
 import frc.robot.Constants;
 import frc.robot.Constants.LEDs.LEDMode;
-import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.LEDs.LEDs;
+import frc.robot.subsystems.swerve.Swerve;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;

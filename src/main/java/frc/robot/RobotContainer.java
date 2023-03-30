@@ -37,18 +37,20 @@ import frc.robot.commands.*;
 import frc.robot.commands.TimedIntake.Direction;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.LEDs.LEDs;
+import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.intake.Intake;
 // import frc.robot.Constants.SEGMENT;
 // import frc.robot.autos.segmentLineUp;
+import frc.robot.subsystems.swerve.Swerve;
+import frc.robot.subsystems.vision.Vision;
+import frc.robot.subsystems.wrist.Wrist;
 
 public class RobotContainer {
     /* Controllers */
     private final CommandXboxController driver = new CommandXboxController(0);
     private final CommandXboxController operator = new CommandXboxController(1);
 
-    /*Dashboard inputs */
-    private final LoggedDashboardChooser<Command> autoChooserLog = new LoggedDashboardChooser<>("Auto Choices");
-    private final LoggedDashboardNumber flywheelSpeedInput = new LoggedDashboardNumber("Flywheel Speed", 1500.0);
-    
+   
     /* Drive Controls */
     private static final int translationAxis = XboxController.Axis.kLeftY.value;
     private static final int strafeAxis = XboxController.Axis.kLeftX.value;
@@ -70,7 +72,10 @@ public class RobotContainer {
     public static GamePiece gamePiece = GamePiece.CONE;
 
     /* Autonomous Mode Chooser */
-    private final SendableChooser<PathPlannerTrajectory> autoChooser = new SendableChooser<>();
+     private final LoggedDashboardChooser<PathPlannerTrajectory> autoChooser = new LoggedDashboardChooser<>("Auto Choices");
+    
+    
+   // private final SendableChooser<PathPlannerTrajectory> autoChooser = new SendableChooser<>();
 
     /* Autonomous */
     private final SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
@@ -184,30 +189,23 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-        
         switch (Constants.currentMode) {
-                // Real robot, instantiate hardware IO implementations
-                case REAL:
-                  drive = new Drive(new DriveIOSparkMax());
-                  flywheel = new Flywheel(new FlywheelIOSparkMax());
-                  // drive = new Drive(new DriveIOFalcon500());
-                  // flywheel = new Flywheel(new FlywheelIOFalcon500());
-                  break;
-          
-                // Sim robot, instantiate physics sim IO implementations
-                case SIM:
-                  drive = new Drive(new DriveIOSim());
-                  flywheel = new Flywheel(new FlywheelIOSim());
-                  break;
-          
-                // Replayed robot, disable IO implementations
-                default:
-                  drive = new Drive(new DriveIO() {
-                  });
-                  flywheel = new Flywheel(new FlywheelIO() {
-                  });
-                  break;
+         // Real robot, instantiate hardware IO implementations
+        case REAL:
+        drive = new Drive(new DriveIOSparkMax());
+        flywheel = new Flywheel(new FlywheelIOSparkMax());
+        // drive = new Drive(new DriveIOFalcon500());
+        // flywheel = new Flywheel(new FlywheelIOFalcon500());
+        break;
 
+        // Replayed robot, disable IO implementations
+        default:
+        drive = new Drive(new DriveIO() {
+        });
+        flywheel = new Flywheel(new FlywheelIO() {
+        });
+        break;
+        }
         CameraServer.startAutomaticCapture();
 
         // Sets each subsystem's default commands
@@ -387,7 +385,7 @@ public class RobotContainer {
 
     private void configureSmartDashboard() {
         // Autonomous Mode Chooser
-        autoChooser.setDefaultOption("Move Forward", moveForward);
+        autoChooser.addDefaultOption("Move Forward", moveForward);
         autoChooser.addOption("Cone PCube Balance", coneCubeBalance);
         autoChooser.addOption("Auto Balance", autoBalance);
         autoChooser.addOption("L3 Cone+Cube", coneCubeDeposit);
@@ -396,7 +394,7 @@ public class RobotContainer {
         // autoChooser.addOption("Back and Forth", backnForth);
         // autoChooser.addOption("S curve", sCurve);
 
-        SmartDashboard.putData(autoChooser);
+       // SmartDashboard.putData(autoChooser);
     }
 
     /**
@@ -426,7 +424,7 @@ public class RobotContainer {
         return new ParallelCommandGroup(
                 new InstantCommand(
                         () -> s_Swerve.getField().getObject("Field").setTrajectory(
-                                autoChooser.getSelected())),
-                autoBuilder.fullAuto(autoChooser.getSelected()));
+                                autoChooser.get())),
+                autoBuilder.fullAuto(autoChooser.get()));
     }
 }

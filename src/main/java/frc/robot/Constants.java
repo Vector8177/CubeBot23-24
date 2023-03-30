@@ -19,8 +19,6 @@ public final class Constants {
         /** Replaying from a log file. */
         REAL,
         /** Replaying from a log file. */
-        SIM,
-        /** Replaying from a log file. */
         REPLAY
     }
     public static final class Swerve {
@@ -262,7 +260,7 @@ public final class Constants {
             }
         }
     }
-
+   
     public enum Position {
 
         HIGH(0, 0),
