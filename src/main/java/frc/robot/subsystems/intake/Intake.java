@@ -1,5 +1,7 @@
 package frc.robot.subsystems.intake;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -17,14 +19,14 @@ public class Intake extends SubsystemBase {
     private final CANSparkMax intakeMotor;
     private final RelativeEncoder intakeEncoder;
 
-    private final IntakeIO io; 
-    private final IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged(); 
+    private final IntakeIo io; 
+    private final IntakeIoInputsAutoLogged inputs = new IntakeIoInputsAutoLogged(); 
     /* Game Piece Currently In Robot */
 
     /**
      * Constructor for intake subsystem.
      */
-    public Intake(IntakeIO io) {
+    public Intake(IntakeIo io) {
         this.io = io; 
     
         intakeMotor = new CANSparkMax(Constants.Intake.motorId, MotorType.kBrushless);
