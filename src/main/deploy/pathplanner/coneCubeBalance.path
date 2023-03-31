@@ -19,7 +19,7 @@
         "names": [
           "setStandbyPosition",
           "setCone3Position",
-          "coneDeposit"
+          "cone3Deposit"
         ],
         "executionBehavior": "sequential",
         "waitBehavior": "after",
