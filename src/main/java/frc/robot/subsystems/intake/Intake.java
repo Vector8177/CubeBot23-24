@@ -16,21 +16,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Intake extends SubsystemBase {
 
-    private final CANSparkMax intakeMotor;
-    private final RelativeEncoder intakeEncoder;
-
-    private final IntakeIo io; 
-    private final IntakeIoInputsAutoLogged inputs = new IntakeIoInputsAutoLogged(); 
+   
+    private final IntakeIO io; 
+    private final IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged(); 
     /* Game Piece Currently In Robot */
 
     /**
      * Constructor for intake subsystem.
      */
-    public Intake(IntakeIo io) {
+    public Intake(IntakeIO io) {
         this.io = io; 
-    
-        intakeMotor = new CANSparkMax(Constants.Intake.motorId, MotorType.kBrushless);
-        intakeEncoder = intakeMotor.getEncoder();
+        
 
         
 
@@ -46,22 +42,22 @@ public class Intake extends SubsystemBase {
      */
 
     public void setMotor(double speed) {
-        intakeMotor.setVoltage(speed);
+        io.setVoltage(speed);
     }
 
     public double getPDMCurrent() {
-        return intakeMotor.getOutputCurrent();
+        return inputs.current;
     }
 
     public double getVelocity() {
-        return intakeEncoder.getVelocity();
+        return inputs.velocity;
     }
 
     @Override
     public void periodic() {
         // returns in amps
         // double intakeCurrent = pdm.getCurrent(Constants.IntakeConstants.pdpChannel);
-        double intakeCurrent = intakeMotor.getOutputCurrent();
+        double intakeCurrent = getPDMCurrent();
         SmartDashboard.putNumber("Intake Current", intakeCurrent);
         SmartDashboard.putNumber("Intake Velocity", getVelocity());
         // SmartDashboard.putNumber("Gamepiece", getGamePiece().getDirection());
@@ -73,7 +69,7 @@ public class Intake extends SubsystemBase {
     }
     
     public void resetIntakeEncoder() {
-        intakeEncoder.setPosition(0);
+        io.setPosition(0);
 
     }
 
