@@ -18,16 +18,16 @@ public class IntakeIOSparkMax implements IntakeIO{
         intakeMotor = new CANSparkMax(Constants.Intake.motorId, MotorType.kBrushless);
         intakeEncoder = intakeMotor.getEncoder();
     }
-    public default void updateInputs(IntakeIOInputs inputs){
+    public void updateInputs(IntakeIOInputs inputs){
         inputs.velocity = intakeEncoder.getVelocity();
         inputs.current = intakeMotor.getOutputCurrent();
     }
 
-    public default void setVoltage(double speed){
+    public void setVoltage(double speed){
         intakeMotor.setVoltage(speed);
     }
 
-    public default void setPosition(double position){
+    public void setPosition(double position){
         intakeEncoder.setPosition(position);
     }
 }
