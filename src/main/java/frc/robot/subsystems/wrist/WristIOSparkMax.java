@@ -10,7 +10,7 @@ import com.revrobotics.SparkMaxAbsoluteEncoder;
 import frc.robot.Constants;
 import frc.robot.subsystems.wrist.WristIO.WristIOInputs;
 
-public class WristIOSparkMax {
+public class WristIOSparkMax implements WristIO{
     private final RelativeEncoder relativeEncoder;
     private final CANSparkMax wristMotor;
     private final AbsoluteEncoder absoluteEncoder; 

@@ -39,11 +39,15 @@ import frc.robot.subsystems.*;
 import frc.robot.subsystems.LEDs.LEDs;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.intake.IntakeIO;
+import frc.robot.subsystems.intake.IntakeIOSparkMax;
 // import frc.robot.Constants.SEGMENT;
 // import frc.robot.autos.segmentLineUp;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.wrist.Wrist;
+import frc.robot.subsystems.wrist.WristIO;
+import frc.robot.subsystems.wrist.WristIOSparkMax;
 
 public class RobotContainer {
     /* Controllers */
@@ -64,9 +68,9 @@ public class RobotContainer {
     /* Subsystems */
     private final Vision s_Vision = new Vision();
     private final Swerve s_Swerve = new Swerve(s_Vision);
-    private final Intake s_Intake = new Intake();
+    private final Intake s_Intake;
     private final Elevator s_Elevator = new Elevator();
-    private final Wrist s_Wrist = new Wrist();
+    private final Wrist s_Wrist;
     private final LEDs s_LEDs = new LEDs();
 
     public static GamePiece gamePiece = GamePiece.CONE;
@@ -91,68 +95,7 @@ public class RobotContainer {
             true,
             s_Swerve);
 
-    private static Map<String, Command> eventMap = new HashMap<>();
-    {
-
-        eventMap.put("setStandbyPosition",
-                new SetPosition(s_Wrist, s_Elevator, Position.STANDBY, () -> gamePiece));
-
-        eventMap.put("setCone3Position",
-                new SequentialCommandGroup(
-                        new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
-                        s_Elevator.setPositionCMD(Position.CONEHIGH.getElev()),
-                        s_Wrist.setPositionCMD(Position.CONEHIGH.getWrist())
-                                .raceWith(new WaitCommand(1)),
-                        new WaitCommand(1.5)));
-
-        eventMap.put("setCube3Position",
-                new SequentialCommandGroup(
-                        new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
-                        s_Wrist.setPositionCMD(Position.CUBEHIGH.getWrist()),
-                        s_Elevator.setPositionCMD(Position.CUBEHIGH.getElev()),
-                        new WaitCommand(1)));
-
-        eventMap.put("setCubeIntakePosition",
-                new SequentialCommandGroup(
-                        new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
-                        new SetPosition(s_Wrist, s_Elevator, Position.CUBEINTAKE,
-                                () -> GamePiece.CUBE)));
-
-        eventMap.put("setStandingConeIntakePosition",
-                new SequentialCommandGroup(
-                        new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
-                        new SetPosition(s_Wrist, s_Elevator, Position.STANDINGCONEINTAKE,
-                                () -> GamePiece.CONE)));
-
-        eventMap.put("setTippedConeIntakePosition",
-                new SequentialCommandGroup(
-                        new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
-                        new SetPosition(s_Wrist, s_Elevator, Position.TIPPEDCONEINTAKE,
-                                () -> GamePiece.CONE)));
-
-        eventMap.put("coneDeposit",
-                new SequentialCommandGroup(
-                        new InstantCommand(() -> s_Wrist.setPIDFFMode(PIDFFmode.UNWEIGHTED)),
-                        new TimedIntake(s_Intake, .3, GamePiece.CONE, EjectSpeed.CONENORMAL,
-                                Direction.OUTTAKE)));
-        eventMap.put("cubeDeposit",
-                new TimedIntake(s_Intake, .3, GamePiece.CUBE, EjectSpeed.CUBENORMAL,
-                        Direction.OUTTAKE));
-
-        eventMap.put("runCubeIntake3",
-                new TimedIntake(s_Intake, 3, GamePiece.CUBE, EjectSpeed.CUBENORMAL, Direction.INTAKE));
-
-        eventMap.put("runConeIntake3",
-                new SequentialCommandGroup(
-                        new InstantCommand(() -> s_Wrist.setPIDFFMode(PIDFFmode.WEIGHTED)),
-                        new TimedIntake(s_Intake, 3, GamePiece.CONE, EjectSpeed.CONEINTAKE,
-                                Direction.INTAKE)));
-
-        eventMap.put("wait1Seconds", new WaitCommand(1));
-
-        eventMap.put("AutoBalance", new AutoBalancing(s_Swerve, true));
-    }
-
+    private static Map<String, Command> eventMap; 
     private final PathPlannerTrajectory moveForward = PathPlanner.loadPath("Move Forward",
             Constants.Autonomous.kMaxSpeedMetersPerSecond,
             Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
@@ -192,17 +135,18 @@ public class RobotContainer {
         switch (Constants.currentMode) {
          // Real robot, instantiate hardware IO implementations
         case REAL:
-        drive = new Drive(new DriveIOSparkMax());
-        flywheel = new Flywheel(new FlywheelIOSparkMax());
+                s_Intake = new Intake(new IntakeIOSparkMax()); 
+                s_Wrist = new Wrist(new WristIOSparkMax()); 
+
         // drive = new Drive(new DriveIOFalcon500());
         // flywheel = new Flywheel(new FlywheelIOFalcon500());
         break;
 
         // Replayed robot, disable IO implementations
         default:
-        drive = new Drive(new DriveIO() {
+        s_Intake = new Intake(new IntakeIO() {
         });
-        flywheel = new Flywheel(new FlywheelIO() {
+        s_Wrist = new Wrist(new WristIO() {
         });
         break;
         }
@@ -222,6 +166,68 @@ public class RobotContainer {
 
         // Set Initial Rotation To Face Field
         s_Swerve.setGyro(180);
+        eventMap = new HashMap<>();
+        {
+    
+            eventMap.put("setStandbyPosition",
+                    new SetPosition(s_Wrist, s_Elevator, Position.STANDBY, () -> gamePiece));
+    
+            eventMap.put("setCone3Position",
+                    new SequentialCommandGroup(
+                            new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
+                            s_Elevator.setPositionCMD(Position.CONEHIGH.getElev()),
+                            s_Wrist.setPositionCMD(Position.CONEHIGH.getWrist())
+                                    .raceWith(new WaitCommand(1)),
+                            new WaitCommand(1.5)));
+    
+            eventMap.put("setCube3Position",
+                    new SequentialCommandGroup(
+                            new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
+                            s_Wrist.setPositionCMD(Position.CUBEHIGH.getWrist()),
+                            s_Elevator.setPositionCMD(Position.CUBEHIGH.getElev()),
+                            new WaitCommand(1)));
+    
+            eventMap.put("setCubeIntakePosition",
+                    new SequentialCommandGroup(
+                            new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
+                            new SetPosition(s_Wrist, s_Elevator, Position.CUBEINTAKE,
+                                    () -> GamePiece.CUBE)));
+    
+            eventMap.put("setStandingConeIntakePosition",
+                    new SequentialCommandGroup(
+                            new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
+                            new SetPosition(s_Wrist, s_Elevator, Position.STANDINGCONEINTAKE,
+                                    () -> GamePiece.CONE)));
+    
+            eventMap.put("setTippedConeIntakePosition",
+                    new SequentialCommandGroup(
+                            new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
+                            new SetPosition(s_Wrist, s_Elevator, Position.TIPPEDCONEINTAKE,
+                                    () -> GamePiece.CONE)));
+    
+            eventMap.put("coneDeposit",
+                    new SequentialCommandGroup(
+                            new InstantCommand(() -> s_Wrist.setPIDFFMode(PIDFFmode.UNWEIGHTED)),
+                            new TimedIntake(s_Intake, .3, GamePiece.CONE, EjectSpeed.CONENORMAL,
+                                    Direction.OUTTAKE)));
+            eventMap.put("cubeDeposit",
+                    new TimedIntake(s_Intake, .3, GamePiece.CUBE, EjectSpeed.CUBENORMAL,
+                            Direction.OUTTAKE));
+    
+            eventMap.put("runCubeIntake3",
+                    new TimedIntake(s_Intake, 3, GamePiece.CUBE, EjectSpeed.CUBENORMAL, Direction.INTAKE));
+    
+            eventMap.put("runConeIntake3",
+                    new SequentialCommandGroup(
+                            new InstantCommand(() -> s_Wrist.setPIDFFMode(PIDFFmode.WEIGHTED)),
+                            new TimedIntake(s_Intake, 3, GamePiece.CONE, EjectSpeed.CONEINTAKE,
+                                    Direction.INTAKE)));
+    
+            eventMap.put("wait1Seconds", new WaitCommand(1));
+    
+            eventMap.put("AutoBalance", new AutoBalancing(s_Swerve, true));
+        }
+    
     }
 
     private void setDefaultCommands() {
