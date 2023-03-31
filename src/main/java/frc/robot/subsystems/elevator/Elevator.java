@@ -1,5 +1,8 @@
 package frc.robot.subsystems.elevator;
 
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.inputs.LoggableInputs;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -13,32 +16,26 @@ import frc.robot.Constants.Position;
 
 public class Elevator extends SubsystemBase {
 
-    private final CANSparkMax elevatorMotorLeft; // making the left the lead motor
-    private final CANSparkMax elevatorMotorRight; // the right motor is the follower
+    // private final CANSparkMax elevatorMotorLeft; // making the left the lead motor
+    // private final CANSparkMax elevatorMotorRight; // the right motor is the follower
+
+    private final ElevatorIO io;
+    private final ElevatorIOInputsAutoLogged inputs = new ElevatorIOInputsAutoLogged();
 
     private PIDController pidController;
+    private double targetPosition;
 
-    private double currentPosition;
+    // private double currentPosition;
 
     /**
      * Initialize Elevator motor and the built in encoder. There are no cancoders on
      * the elevator
      */
-    public Elevator() {
+    public Elevator(ElevatorIO io) {
+        this.io = io;
         // initialize motors
         // the right motor will spin clockwise and the left motor will go counter
         // clockwise
-        elevatorMotorLeft = new CANSparkMax(Constants.Elevator.motorLeftId, MotorType.kBrushless);
-
-        elevatorMotorRight = new CANSparkMax(Constants.Elevator.motorRightId, MotorType.kBrushless);
-
-        elevatorMotorLeft.restoreFactoryDefaults();
-        elevatorMotorRight.restoreFactoryDefaults();
-
-        elevatorMotorRight.follow(elevatorMotorLeft, true);
-
-        elevatorMotorLeft.setSmartCurrentLimit(Constants.Elevator.currentLimit); 
-        elevatorMotorRight.setSmartCurrentLimit(Constants.Elevator.currentLimit); 
         // elevatorRightController = new CANCoder(Constants.Elevator.canConderRightId);
 
         // The motors will follow each other
@@ -51,42 +48,43 @@ public class Elevator extends SubsystemBase {
         pidController.setSetpoint(0);
         pidController.setTolerance(.25);
 
-        setPosition(Position.STANDBY.getElev());
+        setTargetPosition(Position.STANDBY.getElev());
+    }
+
+
+    public void setTargetPosition(double targetPos) {
+        if(targetPos > 35) {
+            targetPos = 35;
+        }
+        else if(targetPos < 0.1) {
+            targetPos = 0.1;
+        }
+        Logger.getInstance().recordOutput("TargetPosition", targetPos);
+        this.targetPosition = targetPos;
     }
 
     public void resetEncoder() {
-        elevatorMotorLeft.getEncoder().setPosition(0);
-        elevatorMotorRight.getEncoder().setPosition(0);
+        io.resetEncoder();
     }
 
-    public Command setPositionCMD(double position) {
-        return run(() -> setPosition(position)).until(() -> atSetpoint());
+    public Command moveElevator(double targetPosition) {
+        return run(() -> setTargetPosition(targetPosition)).until(() -> atSetpoint());
     }
 
-    public void setPosition(double position) {
-        if(position > 35) {
-            position = 35;
-        }
-        else if(position < 0.1) {
-            position = 0.1;
-        }
-        currentPosition = position;
-    }
-
-    public double getPosition() {
-        return currentPosition;
+    public double getTargetPosition() {
+        return targetPosition;
     }
 
     public void move(double voltage) {
-        elevatorMotorLeft.setVoltage(voltage);
+        io.move(voltage);
     }
 
     public boolean reachedSetpoint(double distance) {
-        return pidController.getPositionTolerance() >= Math.abs(currentPosition - distance);
+        return pidController.getPositionTolerance() >= Math.abs(targetPosition - distance);
     }
 
     public double getEncoderPosition() {
-        return (elevatorMotorLeft.getEncoder().getPosition() + elevatorMotorRight.getEncoder().getPosition()) / 2;
+        return inputs.currentPosition;
     }
 
     public boolean atSetpoint() {
@@ -97,11 +95,11 @@ public class Elevator extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putBoolean("Elevator at setpoint", atSetpoint());
         SmartDashboard.putNumber("Elevator Position", getEncoderPosition());
-        SmartDashboard.putNumber("Elevator Goal Position", currentPosition);
+        SmartDashboard.putNumber("Elevator Goal Position", inputs.currentPosition);
 
         move(
                 MathUtil.clamp(
-                        pidController.calculate(getEncoderPosition(), currentPosition),
+                        pidController.calculate(getEncoderPosition(), targetPosition),
                         -Constants.Elevator.maxMotorVoltage,
                         Constants.Elevator.maxMotorVoltage));
     }
