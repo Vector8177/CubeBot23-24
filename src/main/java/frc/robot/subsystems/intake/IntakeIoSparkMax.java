@@ -10,11 +10,24 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class IntakeIoSparkMax implements IntakeIo{
+public class IntakeIOSparkMax implements IntakeIO{
     private final CANSparkMax intakeMotor; 
     private final RelativeEncoder intakeEncoder; 
-    public IntakeIoSparkMax(){
+
+    public IntakeIOSparkMax(){
         intakeMotor = new CANSparkMax(Constants.Intake.motorId, MotorType.kBrushless);
         intakeEncoder = intakeMotor.getEncoder();
+    }
+    public void updateInputs(IntakeIOInputs inputs){
+        inputs.velocity = intakeEncoder.getVelocity();
+        inputs.current = intakeMotor.getOutputCurrent();
+    }
+
+    public void setVoltage(double speed){
+        intakeMotor.setVoltage(speed);
+    }
+
+    public void setPosition(double position){
+        intakeEncoder.setPosition(position);
     }
 }
