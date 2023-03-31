@@ -13,12 +13,12 @@ import frc.robot.Constants.Position;
 
 public class Elevator extends SubsystemBase {
 
-    private final CANSparkMax elevatorMotorLeft; // making the left the lead motor
-    private final CANSparkMax elevatorMotorRight; // the right motor is the follower
+    // private final CANSparkMax elevatorMotorLeft; // making the left the lead motor
+    // private final CANSparkMax elevatorMotorRight; // the right motor is the follower
 
     private PIDController pidController;
 
-    private double currentPosition;
+    // private double currentPosition;
 
     /**
      * Initialize Elevator motor and the built in encoder. There are no cancoders on
@@ -28,17 +28,6 @@ public class Elevator extends SubsystemBase {
         // initialize motors
         // the right motor will spin clockwise and the left motor will go counter
         // clockwise
-        elevatorMotorLeft = new CANSparkMax(Constants.Elevator.motorLeftId, MotorType.kBrushless);
-
-        elevatorMotorRight = new CANSparkMax(Constants.Elevator.motorRightId, MotorType.kBrushless);
-
-        elevatorMotorLeft.restoreFactoryDefaults();
-        elevatorMotorRight.restoreFactoryDefaults();
-
-        elevatorMotorRight.follow(elevatorMotorLeft, true);
-
-        elevatorMotorLeft.setSmartCurrentLimit(Constants.Elevator.currentLimit); 
-        elevatorMotorRight.setSmartCurrentLimit(Constants.Elevator.currentLimit); 
         // elevatorRightController = new CANCoder(Constants.Elevator.canConderRightId);
 
         // The motors will follow each other
