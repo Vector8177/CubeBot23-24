@@ -27,6 +27,18 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     @Override
     public void updateInputs(ElevatorIOInputs inputs) {
         inputs.currentPosition = (elevatorMotorLeft.getEncoder().getPosition() + elevatorMotorRight.getEncoder().getPosition()) / 2;
-
     }
+
+    @Override
+    public void resetEncoder() {
+        elevatorMotorLeft.getEncoder().setPosition(0);
+        elevatorMotorRight.getEncoder().setPosition(0);
+    }
+
+    @Override
+    public void move(double voltage) {
+        elevatorMotorLeft.setVoltage(voltage);
+    }
+
+    
 }

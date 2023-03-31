@@ -13,4 +13,20 @@ public interface ElevatorIO {
     {
 
     }
+
+    public default void resetEncoder()
+    {
+
+    }
+    
+
+    public default void move(double voltage)
+    {
+
+    }
+
+    public default void setTargetPosition(double targetPos)
+    {
+
+    }
 }
