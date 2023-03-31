@@ -89,6 +89,7 @@ public class RobotContainer {
                 new SequentialCommandGroup(
                         new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
                         s_Elevator.setPositionCMD(Position.CONEHIGH.getElev()),
+                        new WaitCommand(0.5),
                         s_Wrist.setPositionCMD(Position.CONEHIGH.getWrist())
                                 .raceWith(new WaitCommand(1))));
 
@@ -103,7 +104,7 @@ public class RobotContainer {
                         new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
                         s_Elevator.setPositionCMD(Position.CONEMID.getElev()),
                         s_Wrist.setPositionCMD(Position.CONEMID.getWrist())
-                                .raceWith(new WaitCommand(1))));
+                                .raceWith(new WaitCommand(1.5))));
         
         eventMap.put("setCube2Position",
                 new SequentialCommandGroup(
@@ -193,6 +194,10 @@ public class RobotContainer {
             1.0);
 
     private final PathPlannerTrajectory threePieceAuto = PathPlanner.loadPath("threePieceAuto",
+            3.5,
+            2.5);
+
+    private final PathPlannerTrajectory twoPlusBalance = PathPlanner.loadPath("score2Balance",
             3.5,
             2.5);
     // Unused Path Planner Paths
@@ -408,6 +413,7 @@ public class RobotContainer {
         autoChooser.addOption("L3 Cone+Cube", coneCubeDeposit);
         autoChooser.addOption("Charge Station Cone PCube Balance", csConeCubeBalance);
         autoChooser.addOption("3 Game Piece Auto", threePieceAuto);
+        autoChooser.addOption("Score 2 Plus Balance", twoPlusBalance);
         // autoChooser.addOption("Back and Forth", backnForth);
         // autoChooser.addOption("S curve", sCurve);
 

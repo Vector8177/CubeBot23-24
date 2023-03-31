@@ -269,7 +269,7 @@ public final class Constants {
         CUBELOW(1.425, .25),
         STANDBY(1.1765, .25),
         CUBEINTAKE(-0.05, 0.25),
-        STANDINGCONEINTAKE(5.106, 14.0),
+        STANDINGCONEINTAKE(5.106, 14.5),
         TIPPEDCONEINTAKE(5.572, 1.333),
         HUMANPLAYERINTAKE(.8763, 1.5),
         DOUBSUBSTATIONINTAKE(0.0, 29.6);
