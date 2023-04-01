@@ -8,7 +8,6 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.SparkMaxAbsoluteEncoder;
 
 import frc.robot.Constants;
-import frc.robot.subsystems.wrist.WristIO.WristIOInputs;
 
 public class WristIOSparkMax implements WristIO{
     private final RelativeEncoder relativeEncoder;

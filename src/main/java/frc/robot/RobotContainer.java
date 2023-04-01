@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
-import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
 
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
@@ -18,8 +17,6 @@ import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -35,12 +32,17 @@ import frc.robot.autos.AutoBalancing;
 import frc.robot.Constants.GamePiece;
 import frc.robot.commands.*;
 import frc.robot.commands.TimedIntake.Direction;
-import frc.robot.subsystems.*;
 import frc.robot.subsystems.LEDs.LEDs;
 import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.elevator.ElevatorIO;
+import frc.robot.subsystems.elevator.ElevatorIOSparkMax;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeIO;
 import frc.robot.subsystems.intake.IntakeIOSparkMax;
+import frc.robot.subsystems.swerve.GyroIO;
+import frc.robot.subsystems.swerve.GyroIOPigeon2;
+import frc.robot.subsystems.swerve.ModuleIO;
+import frc.robot.subsystems.swerve.ModuleIOSparkMax;
 // import frc.robot.Constants.SEGMENT;
 // import frc.robot.autos.segmentLineUp;
 import frc.robot.subsystems.swerve.Swerve;
@@ -67,9 +69,9 @@ public class RobotContainer {
 
     /* Subsystems */
     private final Vision s_Vision = new Vision();
-    private final Swerve s_Swerve = new Swerve(s_Vision);
+    private final Swerve s_Swerve;
     private final Intake s_Intake;
-    private final Elevator s_Elevator = new Elevator();
+    private final Elevator s_Elevator; 
     private final Wrist s_Wrist;
     private final LEDs s_LEDs = new LEDs();
 
@@ -82,18 +84,7 @@ public class RobotContainer {
    // private final SendableChooser<PathPlannerTrajectory> autoChooser = new SendableChooser<>();
 
     /* Autonomous */
-    private final SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
-            s_Swerve::getPose,
-            s_Swerve::resetOdometry,
-            Constants.Swerve.swerveKinematics, // SwerveDriveKinematics
-            new PIDConstants(Constants.Autonomous.kPXController, 0, 0),
-            new PIDConstants(Constants.Autonomous.kPThetaController,
-                    0,
-                    0),
-            s_Swerve::setModuleStates,
-            eventMap,
-            true,
-            s_Swerve);
+    private final SwerveAutoBuilder autoBuilder;
 
     private static Map<String, Command> eventMap; 
     private final PathPlannerTrajectory moveForward = PathPlanner.loadPath("Move Forward",
@@ -116,18 +107,6 @@ public class RobotContainer {
             2.0,
             1.0);
 
-    // Unused Path Planner Paths
-    /*
-     * private final PathPlannerTrajectory backnForth =
-     * PathPlanner.loadPath("BacknForth",
-     * Constants.Autonomous.kMaxSpeedMetersPerSecond,
-     * Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
-     * 
-     * private final PathPlannerTrajectory sCurve = PathPlanner.loadPath("S Curve",
-     * Constants.Autonomous.kMaxSpeedMetersPerSecond,
-     * Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
-     */
-
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
@@ -135,21 +114,45 @@ public class RobotContainer {
         switch (Constants.currentMode) {
          // Real robot, instantiate hardware IO implementations
         case REAL:
+                s_Swerve = new Swerve(new GyroIOPigeon2(),
+                new ModuleIOSparkMax(0, Constants.Swerve.Mod0.constants),
+                new ModuleIOSparkMax(1, Constants.Swerve.Mod1.constants),
+                new ModuleIOSparkMax(2, Constants.Swerve.Mod2.constants),
+                new ModuleIOSparkMax(3, Constants.Swerve.Mod3.constants),
+                s_Vision);
                 s_Intake = new Intake(new IntakeIOSparkMax()); 
                 s_Wrist = new Wrist(new WristIOSparkMax()); 
-
-        // drive = new Drive(new DriveIOFalcon500());
-        // flywheel = new Flywheel(new FlywheelIOFalcon500());
-        break;
+                s_Elevator = new Elevator(new ElevatorIOSparkMax());
+                break;
 
         // Replayed robot, disable IO implementations
-        default:
-        s_Intake = new Intake(new IntakeIO() {
-        });
-        s_Wrist = new Wrist(new WristIO() {
-        });
-        break;
+         default:
+                s_Swerve = new Swerve(new GyroIO() {},
+                new ModuleIO() {},
+                new ModuleIO() {},
+                new ModuleIO() {},
+                new ModuleIO() {},
+                s_Vision);
+                s_Intake = new Intake(new IntakeIO() {});
+                s_Wrist = new Wrist(new WristIO() {});
+                s_Elevator = new Elevator(new ElevatorIO() {}); 
+                break;
+        
         }
+
+        autoBuilder = new SwerveAutoBuilder(
+            s_Swerve::getPose,
+            s_Swerve::resetOdometry,
+            Constants.Swerve.swerveKinematics, // SwerveDriveKinematics
+            new PIDConstants(Constants.Autonomous.kPXController, 0, 0),
+            new PIDConstants(Constants.Autonomous.kPThetaController,
+                    0,
+                    0),
+            s_Swerve::setModuleStates,
+            eventMap,
+            true,
+            s_Swerve);
+
         CameraServer.startAutomaticCapture();
 
         // Sets each subsystem's default commands
@@ -167,7 +170,7 @@ public class RobotContainer {
         // Set Initial Rotation To Face Field
         s_Swerve.setGyro(180);
         eventMap = new HashMap<>();
-        {
+        
     
             eventMap.put("setStandbyPosition",
                     new SetPosition(s_Wrist, s_Elevator, Position.STANDBY, () -> gamePiece));
@@ -175,16 +178,16 @@ public class RobotContainer {
             eventMap.put("setCone3Position",
                     new SequentialCommandGroup(
                             new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
-                            s_Elevator.setPositionCMD(Position.CONEHIGH.getElev()),
-                            s_Wrist.setPositionCMD(Position.CONEHIGH.getWrist())
+                            s_Elevator.moveElevator(Position.CONEHIGH.getElev()),
+                            s_Wrist.moveWrist(Position.CONEHIGH.getWrist())
                                     .raceWith(new WaitCommand(1)),
                             new WaitCommand(1.5)));
     
             eventMap.put("setCube3Position",
                     new SequentialCommandGroup(
                             new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
-                            s_Wrist.setPositionCMD(Position.CUBEHIGH.getWrist()),
-                            s_Elevator.setPositionCMD(Position.CUBEHIGH.getElev()),
+                            s_Wrist.moveWrist(Position.CUBEHIGH.getWrist()),
+                            s_Elevator.moveElevator(Position.CUBEHIGH.getElev()),
                             new WaitCommand(1)));
     
             eventMap.put("setCubeIntakePosition",
@@ -226,8 +229,8 @@ public class RobotContainer {
             eventMap.put("wait1Seconds", new WaitCommand(1));
     
             eventMap.put("AutoBalance", new AutoBalancing(s_Swerve, true));
-        }
-    
+        
+
     }
 
     private void setDefaultCommands() {
@@ -379,9 +382,9 @@ public class RobotContainer {
                                 new SetPosition(s_Wrist, s_Elevator, Position.HIGH,
                                         () -> getGamePiece())),
                         Map.entry(GamePiece.CONE, new SequentialCommandGroup(
-                                s_Wrist.setPositionCMD(Position.STANDBY.getWrist()),
-                                s_Elevator.setPositionCMD(Position.CONEHIGH.getElev()),
-                                s_Wrist.setPositionCMD(Position.CONEHIGH.getWrist())))),
+                                s_Wrist.moveWrist(Position.STANDBY.getWrist()),
+                                s_Elevator.moveElevator(Position.CONEHIGH.getElev()),
+                                s_Wrist.moveWrist(Position.CONEHIGH.getWrist())))),
                 () -> gamePiece));
 
         operator.b().onTrue(new SetPosition(s_Wrist, s_Elevator, Position.MID, () -> getGamePiece()));

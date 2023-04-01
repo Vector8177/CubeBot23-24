@@ -1,10 +1,6 @@
 package frc.robot.subsystems.elevator;
 
 import org.littletonrobotics.junction.Logger;
-import org.littletonrobotics.junction.inputs.LoggableInputs;
-
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
@@ -48,11 +44,11 @@ public class Elevator extends SubsystemBase {
         pidController.setSetpoint(0);
         pidController.setTolerance(.25);
 
-        setTargetPosition(Position.STANDBY.getElev());
+        setPosition(Position.STANDBY.getElev());
     }
 
 
-    public void setTargetPosition(double targetPos) {
+    public void setPosition(double targetPos) {
         if(targetPos > 35) {
             targetPos = 35;
         }
@@ -68,7 +64,7 @@ public class Elevator extends SubsystemBase {
     }
 
     public Command moveElevator(double targetPosition) {
-        return run(() -> setTargetPosition(targetPosition)).until(() -> atSetpoint());
+        return run(() -> setPosition(targetPosition)).until(() -> atSetpoint());
     }
 
     public double getTargetPosition() {

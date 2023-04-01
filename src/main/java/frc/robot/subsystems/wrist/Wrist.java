@@ -1,22 +1,14 @@
 package frc.robot.subsystems.wrist;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.SparkMaxAbsoluteEncoder;
-import com.revrobotics.CANSparkMax.IdleMode;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.Position;
 import frc.robot.Constants.Wrist.PIDFFmode;
-import frc.robot.subsystems.wrist.WristIO.WristIOInputs;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import com.revrobotics.AbsoluteEncoder;
 import org.littletonrobotics.junction.Logger;
 
 
@@ -88,7 +80,7 @@ public class Wrist extends SubsystemBase {
         io.setVoltage(voltage);
     }
 
-    public Command setPositionCMD(double position) {
+    public Command moveWrist(double position) {
         return run(() -> setPosition(position)).until(() -> atSetpoint());
     }
 

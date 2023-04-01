@@ -22,10 +22,13 @@ import frc.robot.Constants;
 import frc.robot.subsystems.vision.Vision;
 
 public class Swerve extends SubsystemBase {
-    private Pigeon2 gyro;
+    
 
     private SwerveDrivePoseEstimator swervePoseEstimator;
-    private SwerveModule[] mSwerveMods;
+    private Module[] mSwerveMods;
+
+    private GyroIO gyroIO;
+    private final GyroIOInputsAutoLogged gyroInputs = new GyroIOInputsAutoLogged();
 
     private ChassisSpeeds chassisSpeeds;
 
@@ -33,15 +36,21 @@ public class Swerve extends SubsystemBase {
 
     private Field2d field;
 
-    public Swerve(Vision pcw) {
-        gyro = new Pigeon2(Constants.Swerve.pigeonID);
+    public Swerve(GyroIO gyroIO,
+        ModuleIO flModuleIO,
+        ModuleIO frModuleIO,
+        ModuleIO blModuleIO,
+        ModuleIO brModuleIO,
+        Vision pcw) {
+
+        this.gyroIO = gyroIO;
         zeroGyro();
 
-        mSwerveMods = new SwerveModule[] {
-                new SwerveModule(0, Constants.Swerve.Mod0.constants),
-                new SwerveModule(1, Constants.Swerve.Mod1.constants),
-                new SwerveModule(2, Constants.Swerve.Mod2.constants),
-                new SwerveModule(3, Constants.Swerve.Mod3.constants)
+        mSwerveMods = new Module[] {
+                new Module(flModuleIO, 0),
+                new Module(frModuleIO,1),
+                new Module(blModuleIO,2),
+                new Module(brModuleIO,3)
         };
 
         swervePoseEstimator = new SwerveDrivePoseEstimator(Constants.Swerve.swerveKinematics, getYaw(), getPositions(),
@@ -62,8 +71,8 @@ public class Swerve extends SubsystemBase {
         SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(chassisSpeeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.fastSpeedLimit);
 
-        for (SwerveModule mod : mSwerveMods) {
-            mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
+        for (Module mod : mSwerveMods) {
+            mod.setDesiredState(swerveModuleStates[mod.index], isOpenLoop);
         }
     }
 
@@ -71,13 +80,13 @@ public class Swerve extends SubsystemBase {
     public void setModuleStates(SwerveModuleState[] desiredStates) {
         SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.Swerve.fastSpeedLimit);
 
-        for (SwerveModule mod : mSwerveMods) {
-            mod.setDesiredState(desiredStates[mod.moduleNumber], false);
+        for (Module mod : mSwerveMods) {
+            mod.setDesiredState(desiredStates[mod.index], false);
         }
     }
 
     public void setModuleRotation(Rotation2d rotation) {
-        for (SwerveModule mod : mSwerveMods) {
+        for (Module mod : mSwerveMods) {
             mod.setDesiredState(new SwerveModuleState(0, rotation), false);
         }
     }
@@ -96,32 +105,32 @@ public class Swerve extends SubsystemBase {
     }
 
     public void resetToAbsolute() {
-        for (SwerveModule mod : mSwerveMods) {
+        for (Module mod : mSwerveMods) {
             mod.resetToAbsolute();
         }
     }
 
     public SwerveModuleState[] getStates() {
         SwerveModuleState[] states = new SwerveModuleState[4];
-        for (SwerveModule mod : mSwerveMods) {
-            states[mod.moduleNumber] = mod.getState();
+        for (Module mod : mSwerveMods) {
+            states[mod.index] = mod.getState();
         }
         return states;
     }
 
     public SwerveModulePosition[] getPositions() {
         SwerveModulePosition[] positions = new SwerveModulePosition[4];
-        for (SwerveModule mod : mSwerveMods) {
-            positions[mod.moduleNumber] = mod.getPosition();
+        for (Module mod : mSwerveMods) {
+            positions[mod.index] = mod.getPosition();
         }
         return positions;
     }
 
-    public void zeroGyro() {
+    public void zeroYaw() {
         gyro.setYaw(0);
     }
 
-    public void setGyro(double angle) {
+    public void setYaw(double angle) {
         gyro.setYaw(angle); // Angle in Degrees
     }
 
@@ -149,6 +158,8 @@ public class Swerve extends SubsystemBase {
 
     @Override
     public void periodic() {
+        gyroIO.updateInputs(gyroInputs);
+        Logger.getInstance().processInputs("Drive/Gyro", gyroInputs);
         swervePoseEstimator.update(getYaw(), getPositions());
 
         if(!DriverStation.isAutonomous()){
@@ -168,13 +179,11 @@ public class Swerve extends SubsystemBase {
         SmartDashboard.putNumber("Pigeon2 Pitch", getPitch().getDegrees());
         SmartDashboard.putNumber("Pigeon2 Roll", getRoll().getDegrees());
 
-        for (SwerveModule mod : mSwerveMods) {
+        for (Module mod : mSwerveMods) {
             SmartDashboard.putNumber(
-                    "Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
+                    "Mod " + mod.index + " Integrated", mod.getState().angle.getDegrees());
             SmartDashboard.putNumber(
-                    "Mod " + mod.moduleNumber + " Integrated", mod.getState().angle.getDegrees());
-            SmartDashboard.putNumber(
-                    "Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);
+                    "Mod " + mod.index + " Velocity", mod.getState().speedMetersPerSecond);
         }
     }
 }

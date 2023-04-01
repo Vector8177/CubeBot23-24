@@ -10,14 +10,14 @@ public interface IntakeIO {
       public double current = 0.0; 
     }
     public default void updateInputs(IntakeIOInputs inputs){
-
     }
+
     public default void setVoltage(double speed){
-
     }
+
     public default void resetIntakeEncoder(){
     }
+    
     public default void setPosition(double position){
-
     }
 }
