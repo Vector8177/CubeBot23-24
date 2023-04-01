@@ -87,10 +87,6 @@ public class RobotContainer {
     private final SwerveAutoBuilder autoBuilder;
 
     private static Map<String, Command> eventMap;
-    private final PathPlannerTrajectory moveForward = PathPlanner.loadPath("Move Forward",
-            Constants.Autonomous.kMaxSpeedMetersPerSecond,
-            Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
-
     private final PathPlannerTrajectory autoBalance = PathPlanner.loadPath("Autobalance",
             1,
             3);
@@ -106,6 +102,14 @@ public class RobotContainer {
     private final PathPlannerTrajectory csConeCubeBalance = PathPlanner.loadPath("csConeCubeBalance",
             2.0,
             1.0);
+
+    private final PathPlannerTrajectory threePieceAuto = PathPlanner.loadPath("threePieceAuto",
+            3.5,
+            2.5);
+
+    private final PathPlannerTrajectory twoPlusBalance = PathPlanner.loadPath("score2Balance",
+            3.5,
+            2.5);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -172,16 +176,28 @@ public class RobotContainer {
                 new SequentialCommandGroup(
                         new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
                         s_Elevator.moveElevator(Position.CONEHIGH.getElev()),
+                        new WaitCommand(0.5),
                         s_Wrist.moveWrist(Position.CONEHIGH.getWrist())
-                                .raceWith(new WaitCommand(1)),
-                        new WaitCommand(1.5)));
+                                .raceWith(new WaitCommand(1))));
 
         eventMap.put("setCube3Position",
                 new SequentialCommandGroup(
                         new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
                         s_Wrist.moveWrist(Position.CUBEHIGH.getWrist()),
-                        s_Elevator.moveElevator(Position.CUBEHIGH.getElev()),
-                        new WaitCommand(1)));
+                        s_Elevator.moveElevator(Position.CUBEHIGH.getElev())));
+
+        eventMap.put("setCone2Position",
+                new SequentialCommandGroup(
+                        new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
+                        s_Elevator.moveElevator(Position.CONEMID.getElev()),
+                        s_Wrist.moveWrist(Position.CONEMID.getWrist())
+                                .raceWith(new WaitCommand(1.5))));
+
+        eventMap.put("setCube2Position",
+                new SequentialCommandGroup(
+                        new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
+                        s_Wrist.moveWrist(Position.CUBEMID.getWrist()),
+                        s_Elevator.moveElevator(Position.CUBEMID.getElev())));
 
         eventMap.put("setCubeIntakePosition",
                 new SequentialCommandGroup(
@@ -206,6 +222,26 @@ public class RobotContainer {
                         new InstantCommand(() -> s_Wrist.setPIDFFMode(PIDFFmode.UNWEIGHTED)),
                         new TimedIntake(s_Intake, .3, GamePiece.CONE, EjectSpeed.CONENORMAL,
                                 Direction.OUTTAKE)));
+
+        eventMap.put("cone3Deposit",
+                new SequentialCommandGroup(
+                        new InstantCommand(() -> s_Wrist
+                                .setPIDFFMode(PIDFFmode.UNWEIGHTED)),
+                        new TimedIntake(s_Intake, .1,
+                                GamePiece.CONE,
+                                EjectSpeed.CONEFAST,
+                                Direction.OUTTAKE),
+                        new ParallelCommandGroup(
+                                new TimedIntake(s_Intake,
+                                        .2,
+                                        GamePiece.CONE,
+                                        EjectSpeed.CONESLOW,
+                                        Direction.OUTTAKE),
+                                new SetPosition(s_Wrist,
+                                        s_Elevator,
+                                        Position.CONEHIGHUP,
+                                        () -> GamePiece.CUBE))));
+
         eventMap.put("cubeDeposit",
                 new TimedIntake(s_Intake, .3, GamePiece.CUBE, EjectSpeed.CUBENORMAL,
                         Direction.OUTTAKE));
@@ -235,7 +271,6 @@ public class RobotContainer {
                 eventMap,
                 true,
                 s_Swerve);
-
     }
 
     private void setDefaultCommands() {
@@ -283,7 +318,31 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         driver.y().onTrue(new InstantCommand(() -> s_Swerve.setYaw(Rotation2d.fromDegrees(0))));
-        driver.x().onTrue(new AutoBalancing(s_Swerve, true));
+        driver.x().onTrue(new SelectCommand(
+                Map.ofEntries(
+                        Map.entry(GamePiece.CUBE,
+                                new TimedIntake(s_Intake, .5, GamePiece.CUBE,
+                                        EjectSpeed.CUBENORMAL,
+                                        Direction.OUTTAKE)),
+                        Map.entry(GamePiece.CONE,
+                                new SequentialCommandGroup(
+                                        new InstantCommand(() -> s_Wrist
+                                                .setPIDFFMode(PIDFFmode.UNWEIGHTED)),
+                                        new TimedIntake(s_Intake, .1,
+                                                GamePiece.CONE,
+                                                EjectSpeed.CONEFAST,
+                                                Direction.OUTTAKE),
+                                        new ParallelCommandGroup(
+                                                new TimedIntake(s_Intake,
+                                                        .2,
+                                                        GamePiece.CONE,
+                                                        EjectSpeed.CONESLOW,
+                                                        Direction.OUTTAKE),
+                                                new SetPosition(s_Wrist,
+                                                        s_Elevator,
+                                                        Position.CONEHIGHUP,
+                                                        () -> GamePiece.CUBE))))),
+                () -> gamePiece));
         /*
          * driver.b().whileTrue(
          * autoBuilder.followPath(
@@ -352,17 +411,7 @@ public class RobotContainer {
                                         new TimedIntake(s_Intake, .5,
                                                 GamePiece.CONE,
                                                 EjectSpeed.CONENORMAL,
-                                                Direction.OUTTAKE),
-                                        new ParallelCommandGroup(
-                                                new TimedIntake(s_Intake,
-                                                        .2,
-                                                        GamePiece.CONE,
-                                                        EjectSpeed.CONESLOW,
-                                                        Direction.OUTTAKE),
-                                                new SetPosition(s_Wrist,
-                                                        s_Elevator,
-                                                        Position.HIGH,
-                                                        () -> GamePiece.CUBE))))),
+                                                Direction.OUTTAKE)))),
                 () -> gamePiece));
 
         operator.x().onTrue(new SequentialCommandGroup(
@@ -400,12 +449,12 @@ public class RobotContainer {
 
     private void configureSmartDashboard() {
         // Autonomous Mode Chooser
-        autoChooser.addDefaultOption("Move Forward", moveForward);
-        autoChooser.addOption("Cone PCube Balance", coneCubeBalance);
+        autoChooser.addDefaultOption("Cone PCube Balance", coneCubeBalance);
         autoChooser.addOption("Auto Balance", autoBalance);
         autoChooser.addOption("L3 Cone+Cube", coneCubeDeposit);
         autoChooser.addOption("Charge Station Cone PCube Balance", csConeCubeBalance);
-
+        autoChooser.addOption("3 Game Piece Auto", threePieceAuto);
+        autoChooser.addOption("Score 2 Plus Balance", twoPlusBalance);
         // autoChooser.addOption("Back and Forth", backnForth);
         // autoChooser.addOption("S curve", sCurve);
 
@@ -415,8 +464,8 @@ public class RobotContainer {
     /**
      * Ran once the robot is put in disabled
      */
-    public void disabledInit() {
-        s_Swerve.resetToAbsolute();
+    public void disabledPeriodic() {
+        s_Vision.updatePoseAlliance();
         s_LEDs.setLEDMode(LEDMode.VECTORWAVE);
     }
 
@@ -435,6 +484,8 @@ public class RobotContainer {
      */
 
     public Command getAutonomousCommand() {
+        s_Swerve.setYaw(autoChooser.get().getInitialPose().getRotation());
+
         // Executes the autonomous command chosen in smart dashboard
         return new ParallelCommandGroup(
                 new InstantCommand(

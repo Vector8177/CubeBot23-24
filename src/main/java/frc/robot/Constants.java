@@ -157,7 +157,7 @@ public final class Constants {
         public static final double elevatorKI = .2;
         public static final double elevatorKD = .05;
 
-        public static final double maxMotorVoltage = 5;
+        public static final double maxMotorVoltage = 9;
 
         public static final int currentLimit = 30;
 
@@ -264,8 +264,9 @@ public final class Constants {
     public enum Position {
 
         HIGH(0, 0),
-        CONEHIGH(.19, 34.5),
-        CUBEHIGH(1.55, 35),
+        CONEHIGH(.17, 34.5),
+        CONEHIGHUP(1.55,34.5),
+        CUBEHIGH(1.55, 34),
         MID(0, 0),
         CONEMID(5.81731, 35),
         CUBEMID(1.427, 16.5),
@@ -274,7 +275,7 @@ public final class Constants {
         CUBELOW(1.425, .25),
         STANDBY(1.1765, .25),
         CUBEINTAKE(-0.05, 0.25),
-        STANDINGCONEINTAKE(5.106, 14.0),
+        STANDINGCONEINTAKE(5.106, 14.5),
         TIPPEDCONEINTAKE(5.572, 1.333),
         HUMANPLAYERINTAKE(.8763, 1.5),
         DOUBSUBSTATIONINTAKE(0.0, 29.6);
@@ -370,25 +371,32 @@ public final class Constants {
         public static final double kPThetaController = 1.5;
 
         /* Constants for line up */
-        public static final double kPGridLineUp = 0.6;
+        public static final double kPGridLineUp = 0.8;
         public static final double kIGridLineUp = 0.0;
         public static final double gridLineUpTolerance = 0.05;
 
         public static final double kPThetaGridLineUp = 0.025;
         public static final double thetaGridLineUpTolerance = 2.0;
 
-        public static final double gridLineUpPosition = 2.00;
         public static final double gridLineUpAngle = 180.0;
     }
 
     public static final class PhotonVision {
-        public static final String photonVisionName = "OV5647";
-        public static final Transform3d robotToCam = new Transform3d(
+        public static final String leftCameraName = "velocityleft"; // Camera to the left (Robot perspective)
+        public static final Transform3d leftCameraPosition = new Transform3d(
                 new Translation3d(Units.inchesToMeters(9.1505), Units.inchesToMeters(9.666),
                         Units.inchesToMeters(31.185)),
                 new Rotation3d(
                         0, Units.degreesToRadians(20),
-                        Units.degreesToRadians(355)));
+                        Units.degreesToRadians(5)));
+
+        public static final String rightCameraName = "velocityright"; // Camera to the right (Robot perspective)
+        public static final Transform3d rightCameraPosition = new Transform3d(
+                new Translation3d(Units.inchesToMeters(9.1505), Units.inchesToMeters(-9.666),
+                        Units.inchesToMeters(31.185)),
+                new Rotation3d(
+                        0, Units.degreesToRadians(20),
+                        Units.degreesToRadians(-5)));
     }
 
     public static final class LEDs {

@@ -1,0 +1,204 @@
+{
+  "waypoints": [
+    {
+      "anchorPoint": {
+        "x": 2.1676198221755123,
+        "y": 4.969697920393466
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.417842734079669,
+        "y": 4.674423211788493
+      },
+      "holonomicAngle": -180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [
+          "setCone2Position",
+          "wait1Seconds",
+          "coneDeposit"
+        ],
+        "executionBehavior": "sequential",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 7.790406145048402,
+        "y": 4.586963864899952
+      },
+      "prevControl": {
+        "x": 8.171850966965824,
+        "y": 6.4200793575198265
+      },
+      "nextControl": {
+        "x": 7.788643372273891,
+        "y": 4.578492479532391
+      },
+      "holonomicAngle": -180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 2.0,
+        "y": 4.401460370629074
+      },
+      "prevControl": {
+        "x": 1.9928667914079994,
+        "y": 4.398842500553672
+      },
+      "nextControl": {
+        "x": 3.845988820449863,
+        "y": 5.078933744673045
+      },
+      "holonomicAngle": -180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 7.6133424475875096,
+        "y": 3.3512139233304596
+      },
+      "prevControl": {
+        "x": 7.830306642199661,
+        "y": 4.652999091003361
+      },
+      "nextControl": {
+        "x": 7.612560205282196,
+        "y": 3.3465204694985786
+      },
+      "holonomicAngle": -180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 1.9897140648982155,
+        "y": 4.24
+      },
+      "prevControl": {
+        "x": 5.107146966430685,
+        "y": 5.393335981885639
+      },
+      "nextControl": null,
+      "holonomicAngle": -180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    }
+  ],
+  "maxVelocity": 3.5,
+  "maxAcceleration": 2.5,
+  "isReversed": null,
+  "markers": [
+    {
+      "position": 0.05,
+      "names": [
+        "setStandbyPosition"
+      ]
+    },
+    {
+      "position": 0.9,
+      "names": [
+        "runCubeIntake3"
+      ]
+    },
+    {
+      "position": 0.95,
+      "names": [
+        "setCubeIntakePosition"
+      ]
+    },
+    {
+      "position": 1.8335227272727275,
+      "names": [
+        "setCube2Position"
+      ]
+    },
+    {
+      "position": 1.9700284090909088,
+      "names": [
+        "cubeDeposit"
+      ]
+    },
+    {
+      "position": 2.0232954545454533,
+      "names": [
+        "setStandbyPosition"
+      ]
+    },
+    {
+      "position": 2.98,
+      "names": [
+        "setCubeIntakePosition"
+      ]
+    },
+    {
+      "position": 1.2800000000000331,
+      "names": [
+        "setStandbyPosition"
+      ]
+    },
+    {
+      "position": 2.945454545454471,
+      "names": [
+        "runCubeIntake3"
+      ]
+    },
+    {
+      "position": 3.4618181818181997,
+      "names": [
+        "setStandbyPosition"
+      ]
+    },
+    {
+      "position": 3.93,
+      "names": [
+        "setCube3Position"
+      ]
+    },
+    {
+      "position": 3.98,
+      "names": [
+        "cubeDeposit"
+      ]
+    }
+  ]
+}
