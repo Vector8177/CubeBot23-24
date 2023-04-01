@@ -15,6 +15,7 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -61,6 +62,7 @@ public class Vision extends SubsystemBase {
      */
     public List<Optional<EstimatedRobotPose>> getEstimatedGlobalPoses(Pose2d prevEstimatedRobotPose) {
         ArrayList<Optional<EstimatedRobotPose>> robotPoses = new ArrayList<>();
+        ArrayList<Pose3d> aprilTagPoses = new ArrayList<>();
 
         for (PhotonPoseEstimator positionEstimation : poseEstimators) {
             if (positionEstimation == null) {
@@ -71,12 +73,12 @@ public class Vision extends SubsystemBase {
                 Optional<EstimatedRobotPose> estimatedPosition = positionEstimation.update();
 
                 if (estimatedPosition.isPresent())
-                    Logger.getInstance().recordOutput("AprilTagEstimatedPosition",
-                            estimatedPosition.get().estimatedPose);
-
+                    aprilTagPoses.add(estimatedPosition.get().estimatedPose);
                 robotPoses.add(estimatedPosition);
             }
         }
+        Logger.getInstance().recordOutput("AprilTagEstimatedPosition",
+                aprilTagPoses.toArray(new Pose3d[aprilTagPoses.size()]));
 
         return robotPoses;
     }

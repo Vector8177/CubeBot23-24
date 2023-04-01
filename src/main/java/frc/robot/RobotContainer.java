@@ -6,6 +6,7 @@ package frc.robot;
 
 import java.util.Map;
 
+import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 import com.pathplanner.lib.PathPlanner;
@@ -163,12 +164,52 @@ public class RobotContainer {
         // Configure Smart Dashboard options
         configureSmartDashboard();
 
-        // Configure autonomous routines
-        configureAutonomousPaths();
+        // Configure autonomous events
+        configureAutonomousEvents();
 
-        // Set Initial Rotation To Face Field
-        s_Swerve.setYaw(Rotation2d.fromDegrees(180));
+        autoBuilder = new SwerveAutoBuilder(
+                s_Swerve::getPose,
+                s_Swerve::resetOdometry,
+                Constants.Swerve.swerveKinematics, // SwerveDriveKinematics
+                new PIDConstants(Constants.Autonomous.kPXController, 0, 0),
+                new PIDConstants(Constants.Autonomous.kPThetaController,
+                        0,
+                        0),
+                s_Swerve::setModuleStates,
+                eventMap,
+                true,
+                s_Swerve);
+    }
 
+    private void setDefaultCommands() {
+        s_Swerve.setDefaultCommand(
+                new TeleopSwerve(
+                        s_Swerve,
+                        s_LEDs,
+                        () -> -driver.getRawAxis(translationAxis),
+                        () -> -driver.getRawAxis(strafeAxis),
+                        () -> -driver.getRawAxis(rotationAxis),
+                        () -> driver.povDown().getAsBoolean(),
+                        () -> driver.leftBumper().getAsBoolean(),
+                        () -> driver.rightBumper().getAsBoolean(),
+                        () -> driver.a().getAsBoolean()));
+
+        s_Elevator.setDefaultCommand(
+                new TeleopElevator(
+                        s_Elevator,
+                        () -> operator.getRawAxis(elevatorAxis)));
+
+        s_Wrist.setDefaultCommand(
+                new TeleopWrist(
+                        s_Wrist,
+                        () -> operator.getRawAxis(wristAxis)));
+
+        s_Intake.setDefaultCommand(
+                new TeleopIntake(s_Intake, s_Wrist,
+                        () -> operator.getRawAxis(intakeTrigger)));
+    }
+
+    private void configureAutonomousEvents() {
         eventMap.put("setStandbyPosition",
                 new SetPosition(s_Wrist, s_Elevator, Position.STANDBY, () -> gamePiece));
 
@@ -258,51 +299,6 @@ public class RobotContainer {
         eventMap.put("wait1Seconds", new WaitCommand(1));
 
         eventMap.put("AutoBalance", new AutoBalancing(s_Swerve, true));
-
-        autoBuilder = new SwerveAutoBuilder(
-                s_Swerve::getPose,
-                s_Swerve::resetOdometry,
-                Constants.Swerve.swerveKinematics, // SwerveDriveKinematics
-                new PIDConstants(Constants.Autonomous.kPXController, 0, 0),
-                new PIDConstants(Constants.Autonomous.kPThetaController,
-                        0,
-                        0),
-                s_Swerve::setModuleStates,
-                eventMap,
-                true,
-                s_Swerve);
-    }
-
-    private void setDefaultCommands() {
-        s_Swerve.setDefaultCommand(
-                new TeleopSwerve(
-                        s_Swerve,
-                        s_LEDs,
-                        () -> -driver.getRawAxis(translationAxis),
-                        () -> -driver.getRawAxis(strafeAxis),
-                        () -> -driver.getRawAxis(rotationAxis),
-                        () -> driver.povDown().getAsBoolean(),
-                        () -> driver.leftBumper().getAsBoolean(),
-                        () -> driver.rightBumper().getAsBoolean(),
-                        () -> driver.a().getAsBoolean()));
-
-        s_Elevator.setDefaultCommand(
-                new TeleopElevator(
-                        s_Elevator,
-                        () -> operator.getRawAxis(elevatorAxis)));
-
-        s_Wrist.setDefaultCommand(
-                new TeleopWrist(
-                        s_Wrist,
-                        () -> operator.getRawAxis(wristAxis)));
-
-        s_Intake.setDefaultCommand(
-                new TeleopIntake(s_Intake, s_Wrist,
-                        () -> operator.getRawAxis(intakeTrigger)));
-    }
-
-    private void configureAutonomousPaths() {
-
     }
 
     /**
@@ -485,6 +481,7 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
         s_Swerve.setYaw(autoChooser.get().getInitialPose().getRotation());
+        Logger.getInstance().recordOutput("Trajectory", autoChooser.get());
 
         // Executes the autonomous command chosen in smart dashboard
         return new ParallelCommandGroup(

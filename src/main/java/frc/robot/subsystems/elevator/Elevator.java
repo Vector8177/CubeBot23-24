@@ -47,7 +47,7 @@ public class Elevator extends SubsystemBase {
         } else if (targetPos < 0.1) {
             targetPos = 0.1;
         }
-        Logger.getInstance().recordOutput("TargetPosition", targetPos);
+        Logger.getInstance().recordOutput("ElevatorTargetPosition", targetPos);
         this.targetPosition = targetPos;
     }
 

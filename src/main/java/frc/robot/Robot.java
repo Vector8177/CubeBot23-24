@@ -4,9 +4,6 @@
 
 package frc.robot;
 
-
-
-
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -27,7 +24,7 @@ import frc.lib.config.CTREConfigs;
  * build.gradle file in the
  * project.
  */
-public class Robot extends LoggedRobot{
+public class Robot extends LoggedRobot {
     public static CTREConfigs ctreConfigs;
 
     private Command m_autonomousCommand;
@@ -41,21 +38,35 @@ public class Robot extends LoggedRobot{
 
     @Override
     public void robotInit() {
-        Logger.getInstance().recordMetadata("Velocity", "Logs"); // Set a metadata value
-        
-    if (isReal()) {
-        Logger.getInstance().addDataReceiver(new WPILOGWriter("/media/sda1/")); // Log to a USB stick
-        Logger.getInstance().addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
-        //new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging
-    } else {
-        setUseTiming(false); // Run as fast as possible
-        String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
-        Logger.getInstance().setReplaySource(new WPILOGReader(logPath)); // Read replay log
-        Logger.getInstance().addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log
-    }
+        Logger logger = Logger.getInstance();
 
-    // Logger.getInstance().disableDeterministicTimestamps() // See "Deterministic Timestamps" in the "Understanding Data Flow" page
-    Logger.getInstance().start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
+        logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
+        logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
+        logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
+        logger.recordMetadata("GitDate", BuildConstants.GIT_DATE);
+        logger.recordMetadata("GitBranch", BuildConstants.GIT_BRANCH);
+
+        if (isReal()) {
+            logger.addDataReceiver(new WPILOGWriter("/media/sda1/")); // Log to a USB stick
+            logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
+            // new PowerDistribution(1, ModuleType.kRev); // Enables power distribution
+            // logging
+        } else {
+            setUseTiming(false); // Run as fast as possible
+            String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the
+                                                          // user)
+            logger.setReplaySource(new WPILOGReader(logPath)); // Read replay log
+            logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save
+                                                                                                  // outputs
+                                                                                                  // to a
+                                                                                                  // new
+                                                                                                  // log
+        }
+
+        // logger.disableDeterministicTimestamps() // See "Deterministic
+        // Timestamps" in the "Understanding Data Flow" page
+        logger.start(); // Start logging! No more data receivers, replay sources, or metadata values may
+                        // be added.
         ctreConfigs = new CTREConfigs();
         // Instantiate our RobotContainer. This will perform all our button bindings,
         // and put our

@@ -4,6 +4,7 @@ import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.sensors.Pigeon2;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import frc.robot.Constants;
 
 /** IO implementation for Pigeon2 */
 public class GyroIOPigeon2 implements GyroIO {
@@ -12,7 +13,7 @@ public class GyroIOPigeon2 implements GyroIO {
   private final double[] xyzDps = new double[3];
 
   public GyroIOPigeon2() {
-    pigeon = new Pigeon2(0);
+    pigeon = new Pigeon2(Constants.Swerve.pigeonID);
 
     pigeon.configFactoryDefault();
     pigeon.zeroGyroBiasNow();

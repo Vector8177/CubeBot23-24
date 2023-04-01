@@ -14,15 +14,18 @@ public class IntakeIOSparkMax implements IntakeIO {
         intakeEncoder = intakeMotor.getEncoder();
     }
 
+    @Override
     public void updateInputs(IntakeIOInputs inputs) {
         inputs.velocity = intakeEncoder.getVelocity();
         inputs.current = intakeMotor.getOutputCurrent();
     }
 
+    @Override
     public void setVoltage(double speed) {
         intakeMotor.setVoltage(speed);
     }
 
+    @Override
     public void setPosition(double position) {
         intakeEncoder.setPosition(position);
     }

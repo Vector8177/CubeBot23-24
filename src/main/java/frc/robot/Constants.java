@@ -14,13 +14,15 @@ import frc.VectorTools.util.HSV;
 import frc.lib.config.SwerveModuleConstants;
 
 public final class Constants {
-    public static final Mode currentMode = Mode.REAL; 
-    public static enum Mode{
+    public static final Mode currentMode = Mode.REAL;
+
+    public static enum Mode {
         /** Replaying from a log file. */
         REAL,
         /** Replaying from a log file. */
         REPLAY
     }
+
     public static final class Swerve {
         public static final double stickDeadband = 0.1;
 
@@ -260,12 +262,12 @@ public final class Constants {
             }
         }
     }
-   
+
     public enum Position {
 
         HIGH(0, 0),
         CONEHIGH(.17, 34.5),
-        CONEHIGHUP(1.55,34.5),
+        CONEHIGHUP(1.55, 34.5),
         CUBEHIGH(1.55, 34),
         MID(0, 0),
         CONEMID(5.81731, 35),

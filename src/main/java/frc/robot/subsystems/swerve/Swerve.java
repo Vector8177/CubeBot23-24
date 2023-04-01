@@ -31,7 +31,7 @@ public class Swerve extends SubsystemBase {
 
     private ChassisSpeeds chassisSpeeds;
 
-    private final Vision pcw;
+    private final Vision s_Vision;
 
     private Field2d field;
 
@@ -40,7 +40,7 @@ public class Swerve extends SubsystemBase {
             ModuleIO frModuleIO,
             ModuleIO blModuleIO,
             ModuleIO brModuleIO,
-            Vision pcw) {
+            Vision s_Vision) {
 
         this.gyroIO = gyroIO;
         setYaw(Rotation2d.fromDegrees(0));
@@ -55,7 +55,7 @@ public class Swerve extends SubsystemBase {
         swervePoseEstimator = new SwerveDrivePoseEstimator(Constants.Swerve.swerveKinematics, getYaw(), getPositions(),
                 new Pose2d());
 
-        this.pcw = pcw;
+        this.s_Vision = s_Vision;
 
         field = new Field2d();
         chassisSpeeds = new ChassisSpeeds();
@@ -148,26 +148,30 @@ public class Swerve extends SubsystemBase {
     }
 
     public Vision getCamera() {
-        return pcw;
+        return s_Vision;
     }
 
     @Override
     public void periodic() {
         gyroIO.updateInputs(gyroInputs);
-        Logger.getInstance().processInputs("Drive/Gyro", gyroInputs);
+
         swervePoseEstimator.update(getYaw(), getPositions());
 
         if (!DriverStation.isAutonomous()) {
-            Optional<EstimatedRobotPose> result = pcw.getEstimatedGlobalPose(getPose());
-
-            if (result.isPresent()) {
-                EstimatedRobotPose camPose = result.get();
-                swervePoseEstimator.addVisionMeasurement(
-                        camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
+            for (Optional<EstimatedRobotPose> result : s_Vision.getEstimatedGlobalPoses(getPose())) {
+                if (result.isPresent()) {
+                    EstimatedRobotPose camPose = result.get();
+                    swervePoseEstimator.addVisionMeasurement(
+                            camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
+                }
             }
         }
 
         field.setRobotPose(getPose());
+
+        Logger.getInstance().processInputs("Drive/Gyro", gyroInputs);
+        Logger.getInstance().recordOutput("Robot Pose", getPose());
+        Logger.getInstance().recordOutput("SwerveModuleStates", getStates());
 
         SmartDashboard.putNumber("Pigeon2 Yaw", getYaw().getDegrees());
         SmartDashboard.putNumber("Pigeon2 Pitch", getPitch().getDegrees());

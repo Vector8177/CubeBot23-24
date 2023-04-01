@@ -11,33 +11,29 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.littletonrobotics.junction.Logger;
 
-
 public class Wrist extends SubsystemBase {
 
-    private double goalPosition;
+    private double targetPosition;
     private final PIDController pidController;
     private ArmFeedforward feedForward;
 
-    private final WristIO io; 
-    private final WristIOInputsAutoLogged inputs = new WristIOInputsAutoLogged(); 
+    private final WristIO io;
+    private final WristIOInputsAutoLogged inputs = new WristIOInputsAutoLogged();
 
     public Wrist(WristIO io) {
 
-        this.io = io; 
+        this.io = io;
         pidController = new PIDController(Constants.Wrist.unweightedP, Constants.Wrist.unweightedI,
                 Constants.Wrist.unweightedD);
         pidController.enableContinuousInput(0, Math.PI * 2);
         pidController.setTolerance(.25);
 
-        
         feedForward = new ArmFeedforward(Constants.Wrist.unweightedS, Constants.Wrist.unweightedG,
                 Constants.Wrist.unweightedV,
                 Constants.Wrist.unweightedA);
 
-
         setPosition(Position.STANDBY.getWrist());
 
-      
     }
 
     @Override
@@ -46,31 +42,30 @@ public class Wrist extends SubsystemBase {
         // relativeEncoder.getPosition());
         SmartDashboard.putBoolean("Wrist at setpoint", atSetpoint());
         SmartDashboard.putNumber("Wrist Absolute Position", inputs.absoluteEncoderPosition);
-        SmartDashboard.putNumber("Wrist Goal position", goalPosition);
+        SmartDashboard.putNumber("Wrist Goal position", targetPosition);
 
-        double pidMotorSpeed = pidController.calculate(inputs.absoluteEncoderPosition, goalPosition)
-                + feedForward.calculate(goalPosition, 0);
+        double pidMotorSpeed = pidController.calculate(inputs.absoluteEncoderPosition, targetPosition)
+                + feedForward.calculate(targetPosition, 0);
         SmartDashboard.putNumber("Motor power wrist", pidMotorSpeed);
         setMotor(
                 MathUtil.clamp(
                         (pidMotorSpeed), -Constants.Wrist.maxMotorVoltage,
                         Constants.Wrist.maxMotorVoltage));
-                        Logger.getInstance().recordOutput("Goal position", getPosition()); 
+        Logger.getInstance().recordOutput("Goal position", getPosition());
 
     }
 
     public void setPIDFFMode(PIDFFmode mode) {
         pidController.setPID(mode.kP, mode.kI, mode.kD);
         feedForward = new ArmFeedforward(mode.kS, mode.kG, mode.kV, mode.kA);
-        if(mode == PIDFFmode.WEIGHTED){
-        SmartDashboard.putNumber("PIDFF", 1);
-        } else{
-            SmartDashboard.putNumber("PIDFF", 0);
+        if (mode == PIDFFmode.WEIGHTED) {
+            SmartDashboard.putNumber("PIDFF", 1);
+            Logger.getInstance().recordOutput("WristPIDMode", "Weighted");
+        } else {
+            Logger.getInstance().recordOutput("WristPIDMode", "Unweighted");
         }
-        
-    }
 
-   
+    }
 
     public double getEncoderPosition() {
         return inputs.absoluteEncoderPosition;
@@ -85,21 +80,21 @@ public class Wrist extends SubsystemBase {
     }
 
     public void setPosition(double position) {
-        goalPosition = position;
+        Logger.getInstance().recordOutput("WristTargetPosition", position);
+        targetPosition = position;
     }
 
     public double getPosition() {
-        return goalPosition;
+        return targetPosition;
     }
 
     public boolean atSetpoint() {
         return pidController.atSetpoint();
     }
-    
+
     public void resetRelativeEncoder() {
         io.resetRelativeEncoder();
 
     }
-
 
 }
