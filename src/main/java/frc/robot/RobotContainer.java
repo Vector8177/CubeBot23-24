@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.littletonrobotics.junction.Logger;
@@ -210,6 +211,7 @@ public class RobotContainer {
     }
 
     private void configureAutonomousEvents() {
+        eventMap = new HashMap<>();
         eventMap.put("setStandbyPosition",
                 new SetPosition(s_Wrist, s_Elevator, Position.STANDBY, () -> gamePiece));
 

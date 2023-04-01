@@ -4,6 +4,7 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import org.littletonrobotics.junction.Logger;
 import frc.robot.Constants;
 
 public class Module {
@@ -23,6 +24,11 @@ public class Module {
         this.index = index;
 
         lastAngle = Rotation2d.fromDegrees(inputs.turnPosition);
+    }
+
+    public void periodic(){
+        io.updateInputs(inputs);
+        Logger.getInstance().processInputs("Drive/Module" + Integer.toString(index), inputs);
     }
 
     /**
