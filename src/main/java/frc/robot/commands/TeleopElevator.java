@@ -19,6 +19,6 @@ public class TeleopElevator extends CommandBase {
     @Override
     public void execute() {
         double deadbandController = Math.abs(moveVal.getAsDouble()) > .1 ? -moveVal.getAsDouble() : 0;
-        s_Elevator.setPosition((s_Elevator.getTargetPosition() + deadbandController * .2));
+        s_Elevator.setTargetPosition(s_Elevator.getTargetPosition() + deadbandController * .2);
     }
 }

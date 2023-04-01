@@ -11,17 +11,11 @@ import frc.robot.Constants;
 import frc.robot.Constants.Position;
 
 public class Elevator extends SubsystemBase {
-
-    // private final CANSparkMax elevatorMotorLeft; // making the left the lead motor
-    // private final CANSparkMax elevatorMotorRight; // the right motor is the follower
-
     private final ElevatorIO io;
     private final ElevatorIOInputsAutoLogged inputs = new ElevatorIOInputsAutoLogged();
 
     private PIDController pidController;
     private double targetPosition;
-
-    // private double currentPosition;
 
     /**
      * Initialize Elevator motor and the built in encoder. There are no cancoders on
@@ -94,9 +88,11 @@ public class Elevator extends SubsystemBase {
         SmartDashboard.putNumber("Elevator Goal Position", inputs.currentPosition);
 
         move(
-                MathUtil.clamp(
-                        pidController.calculate(getEncoderPosition(), targetPosition),
-                        -Constants.Elevator.maxMotorVoltage,
-                        Constants.Elevator.maxMotorVoltage));
+            MathUtil.clamp(
+                pidController.calculate(getEncoderPosition(), targetPosition),
+                -Constants.Elevator.maxMotorVoltage,
+                Constants.Elevator.maxMotorVoltage
+                )
+            );
     }
 }

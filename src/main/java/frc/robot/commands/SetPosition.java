@@ -40,36 +40,36 @@ public class SetPosition extends CommandBase {
             case HIGH:
                 if (gamePiece.get() == GamePiece.CONE) {
                     s_Wrist.setPosition(Position.CONEHIGH.getWrist());
-                    s_Elevator.setPosition(Position.CONEHIGH.getElev());
+                    s_Elevator.setTargetPosition(Position.CONEHIGH.getElev());
                 } else if (gamePiece.get() == GamePiece.CUBE) {
                     s_Wrist.setPosition(Position.CUBEHIGH.getWrist());
-                    s_Elevator.setPosition(Position.CUBEHIGH.getElev());
+                    s_Elevator.setTargetPosition(Position.CUBEHIGH.getElev());
                 }
                 break;
 
             case MID:
                 if (gamePiece.get() == GamePiece.CONE) {
                     s_Wrist.setPosition(Position.CONEMID.getWrist());
-                    s_Elevator.setPosition(Position.CONEMID.getElev());
+                    s_Elevator.setTargetPosition(Position.CONEMID.getElev());
                 } else if (gamePiece.get() == GamePiece.CUBE) {
                     s_Wrist.setPosition(Position.CUBEMID.getWrist());
-                    s_Elevator.setPosition(Position.CUBEMID.getElev());
+                    s_Elevator.setTargetPosition(Position.CUBEMID.getElev());
                 }
                 break;
             
             case LOW:
                 if (gamePiece.get() == GamePiece.CONE) {
                     s_Wrist.setPosition(Position.CONELOW.getWrist());
-                    s_Elevator.setPosition(Position.CONELOW.getElev());
+                    s_Elevator.setTargetPosition(Position.CONELOW.getElev());
                 } else if (gamePiece.get() == GamePiece.CUBE) {
                     s_Wrist.setPosition(Position.CUBELOW.getWrist());
-                    s_Elevator.setPosition(Position.CUBELOW.getElev());
+                    s_Elevator.setTargetPosition(Position.CUBELOW.getElev());
                 }
                 break;
 
             default:
                 s_Wrist.setPosition(position.getWrist());
-                s_Elevator.setPosition(position.getElev());
+                s_Elevator.setTargetPosition(position.getElev());
                 break;
 
         }
