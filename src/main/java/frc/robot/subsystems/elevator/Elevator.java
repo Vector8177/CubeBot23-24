@@ -41,12 +41,10 @@ public class Elevator extends SubsystemBase {
         setPosition(Position.STANDBY.getElev());
     }
 
-
     public void setPosition(double targetPos) {
-        if(targetPos > 35) {
+        if (targetPos > 35) {
             targetPos = 35;
-        }
-        else if(targetPos < 0.1) {
+        } else if (targetPos < 0.1) {
             targetPos = 0.1;
         }
         Logger.getInstance().recordOutput("TargetPosition", targetPos);
@@ -88,11 +86,9 @@ public class Elevator extends SubsystemBase {
         SmartDashboard.putNumber("Elevator Goal Position", inputs.currentPosition);
 
         move(
-            MathUtil.clamp(
-                pidController.calculate(getEncoderPosition(), targetPosition),
-                -Constants.Elevator.maxMotorVoltage,
-                Constants.Elevator.maxMotorVoltage
-                )
-            );
+                MathUtil.clamp(
+                        pidController.calculate(getEncoderPosition(), targetPosition),
+                        -Constants.Elevator.maxMotorVoltage,
+                        Constants.Elevator.maxMotorVoltage));
     }
 }

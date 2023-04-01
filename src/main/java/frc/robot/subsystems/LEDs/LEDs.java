@@ -1,5 +1,7 @@
 package frc.robot.subsystems.LEDs;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -76,6 +78,7 @@ public class LEDs extends SubsystemBase {
     }
 
     public void setLEDMode(LEDMode mode) {
+        Logger.getInstance().recordOutput("LEDMode", mode.toString());
         this.mode = mode;
     }
 

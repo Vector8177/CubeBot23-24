@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
@@ -15,6 +14,7 @@ import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -56,7 +56,6 @@ public class RobotContainer {
     private final CommandXboxController driver = new CommandXboxController(0);
     private final CommandXboxController operator = new CommandXboxController(1);
 
-   
     /* Drive Controls */
     private static final int translationAxis = XboxController.Axis.kLeftY.value;
     private static final int strafeAxis = XboxController.Axis.kLeftX.value;
@@ -71,22 +70,23 @@ public class RobotContainer {
     private final Vision s_Vision = new Vision();
     private final Swerve s_Swerve;
     private final Intake s_Intake;
-    private final Elevator s_Elevator; 
+    private final Elevator s_Elevator;
     private final Wrist s_Wrist;
     private final LEDs s_LEDs = new LEDs();
 
     public static GamePiece gamePiece = GamePiece.CONE;
 
     /* Autonomous Mode Chooser */
-     private final LoggedDashboardChooser<PathPlannerTrajectory> autoChooser = new LoggedDashboardChooser<>("Auto Choices");
-    
-    
-   // private final SendableChooser<PathPlannerTrajectory> autoChooser = new SendableChooser<>();
+    private final LoggedDashboardChooser<PathPlannerTrajectory> autoChooser = new LoggedDashboardChooser<>(
+            "Auto Choices");
+
+    // private final SendableChooser<PathPlannerTrajectory> autoChooser = new
+    // SendableChooser<>();
 
     /* Autonomous */
     private final SwerveAutoBuilder autoBuilder;
 
-    private static Map<String, Command> eventMap; 
+    private static Map<String, Command> eventMap;
     private final PathPlannerTrajectory moveForward = PathPlanner.loadPath("Move Forward",
             Constants.Autonomous.kMaxSpeedMetersPerSecond,
             Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared);
@@ -112,46 +112,41 @@ public class RobotContainer {
      */
     public RobotContainer() {
         switch (Constants.currentMode) {
-         // Real robot, instantiate hardware IO implementations
-        case REAL:
+            // Real robot, instantiate hardware IO implementations
+            case REAL:
                 s_Swerve = new Swerve(new GyroIOPigeon2(),
-                new ModuleIOSparkMax(0, Constants.Swerve.Mod0.constants),
-                new ModuleIOSparkMax(1, Constants.Swerve.Mod1.constants),
-                new ModuleIOSparkMax(2, Constants.Swerve.Mod2.constants),
-                new ModuleIOSparkMax(3, Constants.Swerve.Mod3.constants),
-                s_Vision);
-                s_Intake = new Intake(new IntakeIOSparkMax()); 
-                s_Wrist = new Wrist(new WristIOSparkMax()); 
+                        new ModuleIOSparkMax(Constants.Swerve.Mod0.constants),
+                        new ModuleIOSparkMax(Constants.Swerve.Mod1.constants),
+                        new ModuleIOSparkMax(Constants.Swerve.Mod2.constants),
+                        new ModuleIOSparkMax(Constants.Swerve.Mod3.constants),
+                        s_Vision);
+                s_Intake = new Intake(new IntakeIOSparkMax());
+                s_Wrist = new Wrist(new WristIOSparkMax());
                 s_Elevator = new Elevator(new ElevatorIOSparkMax());
                 break;
 
-        // Replayed robot, disable IO implementations
-         default:
-                s_Swerve = new Swerve(new GyroIO() {},
-                new ModuleIO() {},
-                new ModuleIO() {},
-                new ModuleIO() {},
-                new ModuleIO() {},
-                s_Vision);
-                s_Intake = new Intake(new IntakeIO() {});
-                s_Wrist = new Wrist(new WristIO() {});
-                s_Elevator = new Elevator(new ElevatorIO() {}); 
+            // Replayed robot, disable IO implementations
+            default:
+                s_Swerve = new Swerve(new GyroIO() {
+                },
+                        new ModuleIO() {
+                        },
+                        new ModuleIO() {
+                        },
+                        new ModuleIO() {
+                        },
+                        new ModuleIO() {
+                        },
+                        s_Vision);
+                s_Intake = new Intake(new IntakeIO() {
+                });
+                s_Wrist = new Wrist(new WristIO() {
+                });
+                s_Elevator = new Elevator(new ElevatorIO() {
+                });
                 break;
-        
-        }
 
-        autoBuilder = new SwerveAutoBuilder(
-            s_Swerve::getPose,
-            s_Swerve::resetOdometry,
-            Constants.Swerve.swerveKinematics, // SwerveDriveKinematics
-            new PIDConstants(Constants.Autonomous.kPXController, 0, 0),
-            new PIDConstants(Constants.Autonomous.kPThetaController,
-                    0,
-                    0),
-            s_Swerve::setModuleStates,
-            eventMap,
-            true,
-            s_Swerve);
+        }
 
         CameraServer.startAutomaticCapture();
 
@@ -168,68 +163,78 @@ public class RobotContainer {
         configureAutonomousPaths();
 
         // Set Initial Rotation To Face Field
-        s_Swerve.setGyro(180);
-        eventMap = new HashMap<>();
-        
-    
-            eventMap.put("setStandbyPosition",
-                    new SetPosition(s_Wrist, s_Elevator, Position.STANDBY, () -> gamePiece));
-    
-            eventMap.put("setCone3Position",
-                    new SequentialCommandGroup(
-                            new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
-                            s_Elevator.moveElevator(Position.CONEHIGH.getElev()),
-                            s_Wrist.moveWrist(Position.CONEHIGH.getWrist())
-                                    .raceWith(new WaitCommand(1)),
-                            new WaitCommand(1.5)));
-    
-            eventMap.put("setCube3Position",
-                    new SequentialCommandGroup(
-                            new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
-                            s_Wrist.moveWrist(Position.CUBEHIGH.getWrist()),
-                            s_Elevator.moveElevator(Position.CUBEHIGH.getElev()),
-                            new WaitCommand(1)));
-    
-            eventMap.put("setCubeIntakePosition",
-                    new SequentialCommandGroup(
-                            new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
-                            new SetPosition(s_Wrist, s_Elevator, Position.CUBEINTAKE,
-                                    () -> GamePiece.CUBE)));
-    
-            eventMap.put("setStandingConeIntakePosition",
-                    new SequentialCommandGroup(
-                            new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
-                            new SetPosition(s_Wrist, s_Elevator, Position.STANDINGCONEINTAKE,
-                                    () -> GamePiece.CONE)));
-    
-            eventMap.put("setTippedConeIntakePosition",
-                    new SequentialCommandGroup(
-                            new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
-                            new SetPosition(s_Wrist, s_Elevator, Position.TIPPEDCONEINTAKE,
-                                    () -> GamePiece.CONE)));
-    
-            eventMap.put("coneDeposit",
-                    new SequentialCommandGroup(
-                            new InstantCommand(() -> s_Wrist.setPIDFFMode(PIDFFmode.UNWEIGHTED)),
-                            new TimedIntake(s_Intake, .3, GamePiece.CONE, EjectSpeed.CONENORMAL,
-                                    Direction.OUTTAKE)));
-            eventMap.put("cubeDeposit",
-                    new TimedIntake(s_Intake, .3, GamePiece.CUBE, EjectSpeed.CUBENORMAL,
-                            Direction.OUTTAKE));
-    
-            eventMap.put("runCubeIntake3",
-                    new TimedIntake(s_Intake, 3, GamePiece.CUBE, EjectSpeed.CUBENORMAL, Direction.INTAKE));
-    
-            eventMap.put("runConeIntake3",
-                    new SequentialCommandGroup(
-                            new InstantCommand(() -> s_Wrist.setPIDFFMode(PIDFFmode.WEIGHTED)),
-                            new TimedIntake(s_Intake, 3, GamePiece.CONE, EjectSpeed.CONEINTAKE,
-                                    Direction.INTAKE)));
-    
-            eventMap.put("wait1Seconds", new WaitCommand(1));
-    
-            eventMap.put("AutoBalance", new AutoBalancing(s_Swerve, true));
-        
+        s_Swerve.setYaw(Rotation2d.fromDegrees(180));
+
+        eventMap.put("setStandbyPosition",
+                new SetPosition(s_Wrist, s_Elevator, Position.STANDBY, () -> gamePiece));
+
+        eventMap.put("setCone3Position",
+                new SequentialCommandGroup(
+                        new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
+                        s_Elevator.moveElevator(Position.CONEHIGH.getElev()),
+                        s_Wrist.moveWrist(Position.CONEHIGH.getWrist())
+                                .raceWith(new WaitCommand(1)),
+                        new WaitCommand(1.5)));
+
+        eventMap.put("setCube3Position",
+                new SequentialCommandGroup(
+                        new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
+                        s_Wrist.moveWrist(Position.CUBEHIGH.getWrist()),
+                        s_Elevator.moveElevator(Position.CUBEHIGH.getElev()),
+                        new WaitCommand(1)));
+
+        eventMap.put("setCubeIntakePosition",
+                new SequentialCommandGroup(
+                        new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
+                        new SetPosition(s_Wrist, s_Elevator, Position.CUBEINTAKE,
+                                () -> GamePiece.CUBE)));
+
+        eventMap.put("setStandingConeIntakePosition",
+                new SequentialCommandGroup(
+                        new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
+                        new SetPosition(s_Wrist, s_Elevator, Position.STANDINGCONEINTAKE,
+                                () -> GamePiece.CONE)));
+
+        eventMap.put("setTippedConeIntakePosition",
+                new SequentialCommandGroup(
+                        new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
+                        new SetPosition(s_Wrist, s_Elevator, Position.TIPPEDCONEINTAKE,
+                                () -> GamePiece.CONE)));
+
+        eventMap.put("coneDeposit",
+                new SequentialCommandGroup(
+                        new InstantCommand(() -> s_Wrist.setPIDFFMode(PIDFFmode.UNWEIGHTED)),
+                        new TimedIntake(s_Intake, .3, GamePiece.CONE, EjectSpeed.CONENORMAL,
+                                Direction.OUTTAKE)));
+        eventMap.put("cubeDeposit",
+                new TimedIntake(s_Intake, .3, GamePiece.CUBE, EjectSpeed.CUBENORMAL,
+                        Direction.OUTTAKE));
+
+        eventMap.put("runCubeIntake3",
+                new TimedIntake(s_Intake, 3, GamePiece.CUBE, EjectSpeed.CUBENORMAL, Direction.INTAKE));
+
+        eventMap.put("runConeIntake3",
+                new SequentialCommandGroup(
+                        new InstantCommand(() -> s_Wrist.setPIDFFMode(PIDFFmode.WEIGHTED)),
+                        new TimedIntake(s_Intake, 3, GamePiece.CONE, EjectSpeed.CONEINTAKE,
+                                Direction.INTAKE)));
+
+        eventMap.put("wait1Seconds", new WaitCommand(1));
+
+        eventMap.put("AutoBalance", new AutoBalancing(s_Swerve, true));
+
+        autoBuilder = new SwerveAutoBuilder(
+                s_Swerve::getPose,
+                s_Swerve::resetOdometry,
+                Constants.Swerve.swerveKinematics, // SwerveDriveKinematics
+                new PIDConstants(Constants.Autonomous.kPXController, 0, 0),
+                new PIDConstants(Constants.Autonomous.kPThetaController,
+                        0,
+                        0),
+                s_Swerve::setModuleStates,
+                eventMap,
+                true,
+                s_Swerve);
 
     }
 
@@ -277,7 +282,7 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
-        driver.y().onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
+        driver.y().onTrue(new InstantCommand(() -> s_Swerve.setYaw(Rotation2d.fromDegrees(0))));
         driver.x().onTrue(new AutoBalancing(s_Swerve, true));
         /*
          * driver.b().whileTrue(
@@ -349,7 +354,8 @@ public class RobotContainer {
                                                 EjectSpeed.CONENORMAL,
                                                 Direction.OUTTAKE),
                                         new ParallelCommandGroup(
-                                                new TimedIntake(s_Intake, .2,
+                                                new TimedIntake(s_Intake,
+                                                        .2,
                                                         GamePiece.CONE,
                                                         EjectSpeed.CONESLOW,
                                                         Direction.OUTTAKE),
@@ -403,7 +409,7 @@ public class RobotContainer {
         // autoChooser.addOption("Back and Forth", backnForth);
         // autoChooser.addOption("S curve", sCurve);
 
-       // SmartDashboard.putData(autoChooser);
+        // SmartDashboard.putData(autoChooser);
     }
 
     /**

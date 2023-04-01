@@ -9,11 +9,11 @@ import frc.robot.Constants;
 public class Module {
     private Rotation2d lastAngle;
 
-    public ModuleIO io; 
+    public ModuleIO io;
 
     public int index;
 
-    private final ModuleIOInputsAutoLogged inputs = new ModuleIOInputsAutoLogged(); 
+    private final ModuleIOInputsAutoLogged inputs = new ModuleIOInputsAutoLogged();
 
     private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(
             Constants.Swerve.driveKS, Constants.Swerve.driveKV, Constants.Swerve.driveKA);
@@ -21,8 +21,8 @@ public class Module {
     public Module(ModuleIO io, int index) {
         this.io = io;
         this.index = index;
-        
-        lastAngle = inputs.state.angle;
+
+        lastAngle = Rotation2d.fromDegrees(inputs.turnPosition);
     }
 
     /**
@@ -33,7 +33,7 @@ public class Module {
      */
 
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
-        desiredState = SwerveModuleState.optimize(desiredState, inputs.state.angle);
+        desiredState = SwerveModuleState.optimize(desiredState, Rotation2d.fromDegrees(inputs.turnPosition));
         // Custom optimize command, since default WPILib optimize assumes
         // continuous controller which REV and CTRE are not
 
@@ -50,7 +50,7 @@ public class Module {
     private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop) {
         if (isOpenLoop) {
             double percentOutput = desiredState.speedMetersPerSecond / Constants.Swerve.fastSpeedLimit;
-            io.setMotorOutput(percentOutput); 
+            io.setMotorOutput(percentOutput);
         } else {
             io.setVelocity(desiredState, feedforward.calculate(desiredState.speedMetersPerSecond));
         }
@@ -71,15 +71,15 @@ public class Module {
         lastAngle = angle;
     }
 
-    public void resetToAbsolute(){
+    public void resetToAbsolute() {
         io.resetToAbsolute();
     }
 
-    public SwerveModuleState getState(){
-        return inputs.state;
+    public SwerveModuleState getState() {
+        return new SwerveModuleState(inputs.driveVelocityPerSec, Rotation2d.fromDegrees(inputs.turnPosition));
     }
 
-    public SwerveModulePosition getPosition(){
-        return inputs.position;
+    public SwerveModulePosition getPosition() {
+        return new SwerveModulePosition(inputs.drivePosition, Rotation2d.fromDegrees(inputs.turnPosition));
     }
 }

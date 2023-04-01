@@ -2,9 +2,9 @@ package frc.robot.subsystems.swerve;
 
 import java.util.Optional;
 
+import org.littletonrobotics.junction.Logger;
 import org.photonvision.EstimatedRobotPose;
 
-import com.ctre.phoenix.sensors.Pigeon2;
 import com.pathplanner.lib.PathPoint;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -22,7 +22,6 @@ import frc.robot.Constants;
 import frc.robot.subsystems.vision.Vision;
 
 public class Swerve extends SubsystemBase {
-    
 
     private SwerveDrivePoseEstimator swervePoseEstimator;
     private Module[] mSwerveMods;
@@ -37,20 +36,20 @@ public class Swerve extends SubsystemBase {
     private Field2d field;
 
     public Swerve(GyroIO gyroIO,
-        ModuleIO flModuleIO,
-        ModuleIO frModuleIO,
-        ModuleIO blModuleIO,
-        ModuleIO brModuleIO,
-        Vision pcw) {
+            ModuleIO flModuleIO,
+            ModuleIO frModuleIO,
+            ModuleIO blModuleIO,
+            ModuleIO brModuleIO,
+            Vision pcw) {
 
         this.gyroIO = gyroIO;
-        zeroGyro();
+        setYaw(Rotation2d.fromDegrees(0));
 
         mSwerveMods = new Module[] {
                 new Module(flModuleIO, 0),
-                new Module(frModuleIO,1),
-                new Module(blModuleIO,2),
-                new Module(brModuleIO,3)
+                new Module(frModuleIO, 1),
+                new Module(blModuleIO, 2),
+                new Module(brModuleIO, 3)
         };
 
         swervePoseEstimator = new SwerveDrivePoseEstimator(Constants.Swerve.swerveKinematics, getYaw(), getPositions(),
@@ -101,7 +100,7 @@ public class Swerve extends SubsystemBase {
 
     public void resetOdometry(Pose2d pose) {
         swervePoseEstimator.resetPosition(getYaw(), getPositions(), pose);
-        
+
     }
 
     public void resetToAbsolute() {
@@ -126,16 +125,12 @@ public class Swerve extends SubsystemBase {
         return positions;
     }
 
-    public void zeroYaw() {
-        gyro.setYaw(0);
-    }
-
-    public void setYaw(double angle) {
-        gyro.setYaw(angle); // Angle in Degrees
+    public void setYaw(Rotation2d angle) {
+        gyroIO.setYaw(angle); // Angle in Degrees
     }
 
     public Rotation2d getPitch() {
-        return Rotation2d.fromDegrees(gyro.getPitch());
+        return Rotation2d.fromDegrees(gyroInputs.pitchPosition);
     }
 
     public PathPoint getPoint() {
@@ -144,12 +139,12 @@ public class Swerve extends SubsystemBase {
 
     public Rotation2d getYaw() {
         return (Constants.Swerve.invertGyro)
-                ? Rotation2d.fromDegrees(360 - gyro.getYaw())
-                : Rotation2d.fromDegrees(gyro.getYaw());
+                ? Rotation2d.fromDegrees(360 - gyroInputs.yawPosition)
+                : Rotation2d.fromDegrees(gyroInputs.yawPosition);
     }
 
     public Rotation2d getRoll() {
-        return Rotation2d.fromDegrees(gyro.getRoll());
+        return Rotation2d.fromDegrees(gyroInputs.rollPosition);
     }
 
     public Vision getCamera() {
@@ -162,20 +157,19 @@ public class Swerve extends SubsystemBase {
         Logger.getInstance().processInputs("Drive/Gyro", gyroInputs);
         swervePoseEstimator.update(getYaw(), getPositions());
 
-        if(!DriverStation.isAutonomous()){
-        Optional<EstimatedRobotPose> result = pcw.getEstimatedGlobalPose(getPose());
+        if (!DriverStation.isAutonomous()) {
+            Optional<EstimatedRobotPose> result = pcw.getEstimatedGlobalPose(getPose());
 
-        if (result.isPresent()) {
-            EstimatedRobotPose camPose = result.get();
-            swervePoseEstimator.addVisionMeasurement(
-                    camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
+            if (result.isPresent()) {
+                EstimatedRobotPose camPose = result.get();
+                swervePoseEstimator.addVisionMeasurement(
+                        camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
+            }
         }
-    }
-        
 
         field.setRobotPose(getPose());
 
-        SmartDashboard.putNumber("Pigeon2 Yaw", gyro.getYaw());
+        SmartDashboard.putNumber("Pigeon2 Yaw", getYaw().getDegrees());
         SmartDashboard.putNumber("Pigeon2 Pitch", getPitch().getDegrees());
         SmartDashboard.putNumber("Pigeon2 Roll", getRoll().getDegrees());
 

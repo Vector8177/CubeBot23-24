@@ -8,7 +8,6 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.lib.config.SwerveModuleConstants;
 import frc.lib.util.CANCoderUtil;
@@ -18,7 +17,7 @@ import frc.lib.util.CANSparkMaxUtil.Usage;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
-public class ModuleIOSparkMax implements ModuleIO{
+public class ModuleIOSparkMax implements ModuleIO {
     public int moduleNumber;
     public SwerveModuleConstants moduleConstants;
     private CANSparkMax angleMotor;
@@ -32,46 +31,54 @@ public class ModuleIOSparkMax implements ModuleIO{
     private RelativeEncoder integratedAngleEncoder;
     private CANCoder angleEncoder;
 
-    public double position = 0.0; 
-    
-   
+    public double position = 0.0;
 
-    public ModuleIOSparkMax(int moduleNumber, SwerveModuleConstants moduleConstants){
+    public ModuleIOSparkMax(SwerveModuleConstants moduleConstants) {
         /* Angle Encoder Config */
         angleEncoder = new CANCoder(moduleConstants.cancoderID);
         configAngleEncoder();
 
         this.moduleConstants = moduleConstants;
 
-         /* Angle Motor Config */
-         angleMotor = new CANSparkMax(moduleConstants.angleMotorID, MotorType.kBrushless);
-         integratedAngleEncoder = angleMotor.getEncoder();
-         angleController = angleMotor.getPIDController();
-         configAngleMotor();
- 
-         /* Drive Motor Config */
-         driveMotor = new CANSparkMax(moduleConstants.driveMotorID, MotorType.kBrushless);
-         driveEncoder = driveMotor.getEncoder();
-         driveController = driveMotor.getPIDController();
-         configDriveMotor();
+        /* Angle Motor Config */
+        angleMotor = new CANSparkMax(moduleConstants.angleMotorID, MotorType.kBrushless);
+        integratedAngleEncoder = angleMotor.getEncoder();
+        angleController = angleMotor.getPIDController();
+        configAngleMotor();
+
+        /* Drive Motor Config */
+        driveMotor = new CANSparkMax(moduleConstants.driveMotorID, MotorType.kBrushless);
+        driveEncoder = driveMotor.getEncoder();
+        driveController = driveMotor.getPIDController();
+        configDriveMotor();
     }
 
-    public void updateInputs(ModuleIOInputs inputs){
-        inputs.absoluteEncoder = Rotation2d.fromDegrees(angleEncoder.getAbsolutePosition());
-        inputs.position = new SwerveModulePosition(driveEncoder.getPosition(), Rotation2d.fromDegrees(integratedAngleEncoder.getPosition()));
-        inputs.state = new SwerveModuleState(driveEncoder.getVelocity(), Rotation2d.fromDegrees(integratedAngleEncoder.getPosition()));
+    @Override
+    public void updateInputs(ModuleIOInputs inputs) {
+        inputs.absoluteEncoder = angleEncoder.getAbsolutePosition();
+
+        inputs.drivePosition = driveEncoder.getPosition();
+        inputs.driveVelocityPerSec = driveEncoder.getVelocity();
         inputs.driveAppliedVolts = driveMotor.getAppliedOutput() * driveMotor.getBusVoltage();
-        inputs.driveCurrentAmps = new double[] {driveMotor.getOutputCurrent()};
-        inputs.driveTempCelcius = new double[] {driveMotor.getMotorTemperature()};
-        inputs.turnAppliedVolts = angleMotor.getAppliedOutput() * angleMotor.getBusVoltage();
-        inputs.turnCurrentAmps = new double[] {angleMotor.getOutputCurrent()};
-        inputs.turnTempCelcius = new double[] {angleMotor.getMotorTemperature()};
+        inputs.driveCurrentAmps = new double[] { driveMotor.getOutputCurrent() };
+        inputs.driveTempCelcius = new double[] { driveMotor.getMotorTemperature() };
+
+        inputs.turnAbsolutePosition = angleEncoder.getAbsolutePosition();
+        inputs.turnPosition = integratedAngleEncoder.getPosition();
+        inputs.turnVelocityPerSec = integratedAngleEncoder.getVelocity();
+        inputs.turnAppliedVolts = angleMotor.getAppliedOutput()
+                * angleMotor.getBusVoltage();
+        inputs.turnCurrentAmps = new double[] { angleMotor.getOutputCurrent() };
+        inputs.turnTempCelcius = new double[] { angleMotor.getMotorTemperature() };
     }
-    public void setMotorOutput(double percentOutput){
-        driveMotor.set(percentOutput); 
+
+    @Override
+    public void setMotorOutput(double percentOutput) {
+        driveMotor.set(percentOutput);
     }
-    public void setPosition(double absoultePosition){
-        integratedAngleEncoder.setPosition(absoultePosition); 
+
+    public void setPosition(double absoultePosition) {
+        integratedAngleEncoder.setPosition(absoultePosition);
     }
 
     private void configAngleMotor() {
@@ -105,6 +112,7 @@ public class ModuleIOSparkMax implements ModuleIO{
     /**
      * 
      */
+    @Override
     public void resetToAbsolute() {
         double absolutePosition = angleEncoder.getAbsolutePosition() - moduleConstants.angleOffset.getDegrees();
         setPosition(absolutePosition);
@@ -130,15 +138,17 @@ public class ModuleIOSparkMax implements ModuleIO{
         driveEncoder.setPosition(0.0);
     }
 
-    public void setVelocity(SwerveModuleState desiredState, double ffVoltage){
+    @Override
+    public void setVelocity(SwerveModuleState desiredState, double ffVoltage) {
         driveController.setReference(
-                        desiredState.speedMetersPerSecond,
-                        ControlType.kVelocity,
-                        0,
-                        ffVoltage);
+                desiredState.speedMetersPerSecond,
+                ControlType.kVelocity,
+                0,
+                ffVoltage);
     }
 
-    public void setAngle(Rotation2d angle){
+    @Override
+    public void setAngle(Rotation2d angle) {
         angleController.setReference(angle.getDegrees(), ControlType.kPosition);
     }
 }

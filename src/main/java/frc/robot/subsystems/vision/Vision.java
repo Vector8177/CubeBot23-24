@@ -54,7 +54,8 @@ public class Vision extends SubsystemBase {
         positionEstimation.setReferencePose(prevEstimatedRobotPose);
         Optional<EstimatedRobotPose> estimatedPosition = positionEstimation.update();
 
-        Logger.getInstance().recordOutput("AprilTagEstimatedPosition", estimatedPosition.get().estimatedPose);
+        if (estimatedPosition.isPresent())
+            Logger.getInstance().recordOutput("AprilTagEstimatedPosition", estimatedPosition.get().estimatedPose);
 
         return estimatedPosition;
     }
