@@ -117,7 +117,7 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-        switch (Constants.currentMode) {
+        switch (Constants.getMode()) {
             // Real robot, instantiate hardware IO implementations
             case REAL:
                 s_Swerve = new Swerve(new GyroIOPigeon2(),

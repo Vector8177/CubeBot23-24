@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -14,9 +15,12 @@ import frc.VectorTools.util.HSV;
 import frc.lib.config.SwerveModuleConstants;
 
 public final class Constants {
-    public static final Mode currentMode = Mode.REAL;
 
-    public static enum Mode {
+    public static Mode getMode() {
+        return RobotBase.isReal() ? Mode.REAL : Mode.REPLAY;
+    }
+
+    public enum Mode {
         /** Replaying from a log file. */
         REAL,
         /** Replaying from a log file. */
