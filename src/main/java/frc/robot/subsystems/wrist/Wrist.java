@@ -39,6 +39,7 @@ public class Wrist extends SubsystemBase {
     @Override
     public void periodic() {
         io.updateInputs(inputs);
+        Logger.getInstance().processInputs("Wrist", inputs);
         // SmartDashboard.putNumber("Wrist Relative Encoder",
         // relativeEncoder.getPosition());
         SmartDashboard.putBoolean("Wrist at setpoint", atSetpoint());
@@ -52,7 +53,6 @@ public class Wrist extends SubsystemBase {
                 MathUtil.clamp(
                         (pidMotorSpeed), -Constants.Wrist.maxMotorVoltage,
                         Constants.Wrist.maxMotorVoltage));
-        Logger.getInstance().recordOutput("Goal position", getPosition());
 
     }
 

@@ -9,7 +9,6 @@ import frc.robot.Constants;
 /** IO implementation for Pigeon2 */
 public class GyroIOPigeon2 implements GyroIO {
   private final Pigeon2 pigeon;
-  private final double[] yprDegrees = new double[3];
   private final double[] xyzDps = new double[3];
 
   public GyroIOPigeon2() {
@@ -22,12 +21,11 @@ public class GyroIOPigeon2 implements GyroIO {
 
   @Override
   public void updateInputs(GyroIOInputs inputs) {
-    pigeon.getYawPitchRoll(yprDegrees);
     pigeon.getRawGyro(xyzDps);
     inputs.connected = pigeon.getLastError().equals(ErrorCode.OK);
-    inputs.rollPosition = yprDegrees[1];
-    inputs.pitchPosition = -yprDegrees[2];
-    inputs.yawPosition = yprDegrees[0];
+    inputs.rollPosition = pigeon.getRoll();
+    inputs.pitchPosition = pigeon.getPitch();
+    inputs.yawPosition = pigeon.getYaw();
     inputs.rollVelocityPerSec = xyzDps[1];
     inputs.pitchVelocityPerSec = -xyzDps[0];
     inputs.yawVelocityPerSec = xyzDps[2];

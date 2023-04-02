@@ -2,7 +2,6 @@ package frc.robot.subsystems.intake;
 
 import org.littletonrobotics.junction.Logger;
 
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -12,30 +11,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Intake extends SubsystemBase {
 
-   
-    private final IntakeIO io; 
-    private final IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged(); 
+    private final IntakeIO io;
+    private final IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
     /* Game Piece Currently In Robot */
 
     /**
      * Constructor for intake subsystem.
      */
     public Intake(IntakeIO io) {
-        this.io = io; 
-        
-
-        
-
+        this.io = io;
     }
-    /*
-     * public void setGamePiece(GamePiece piece) {
-     * gamePiece = piece;
-     * }
-     * 
-     * public GamePiece getGamePiece() {
-     * return gamePiece;
-     * }
-     */
 
     public void setMotor(double speed) {
         io.setVoltage(speed);
@@ -58,12 +43,11 @@ public class Intake extends SubsystemBase {
         SmartDashboard.putNumber("Intake Velocity", getVelocity());
         // SmartDashboard.putNumber("Gamepiece", getGamePiece().getDirection());
 
-        io.updateInputs(inputs); 
-        Logger.getInstance().processInputs("Input", inputs);
-        
+        io.updateInputs(inputs);
+        Logger.getInstance().processInputs("Intake", inputs);
 
     }
-    
+
     public void resetIntakeEncoder() {
         io.setPosition(0);
 

@@ -82,7 +82,8 @@ public class Elevator extends SubsystemBase {
     @Override
     public void periodic() {
         io.updateInputs(inputs);
-        
+        Logger.getInstance().processInputs("Elevator", inputs);
+
         SmartDashboard.putBoolean("Elevator at setpoint", atSetpoint());
         SmartDashboard.putNumber("Elevator Position", getEncoderPosition());
         SmartDashboard.putNumber("Elevator Goal Position", inputs.currentPosition);
