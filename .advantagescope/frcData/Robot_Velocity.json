@@ -1,6 +1,6 @@
 {
-  "rotations": [{}],
-  "position": [0, 0, 0],
+  "rotations": [{ "axis": "x", "degrees": 90 }],
+  "position": [-0.72, 0.49, 0.1],
   "cameras": [
     {
       "name": "leftCamera",
@@ -26,13 +26,5 @@
     }
   ],
   "components": [
-    {
-      "zeroedRotations": [{}],
-      "zeroedPosition": [0, 0, 0]
-    },
-    {
-      "zeroedRotations": [{}],
-      "zeroedPosition": [9.1505, 0, 30]
-    }
   ]
 }

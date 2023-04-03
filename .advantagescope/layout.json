@@ -1,0 +1,58 @@
+{
+  "version": "2.3.0",
+  "layout": [
+    {
+      "type": 1,
+      "legends": {
+        "left": {
+          "lockedRange": null,
+          "unitConversion": {
+            "type": null,
+            "factor": 1
+          },
+          "fields": []
+        },
+        "discrete": {
+          "fields": []
+        },
+        "right": {
+          "lockedRange": null,
+          "unitConversion": {
+            "type": null,
+            "factor": 1
+          },
+          "fields": []
+        }
+      },
+      "title": "Line Graph"
+    },
+    {
+      "type": 6,
+      "fields": [],
+      "listFields": [
+        [
+          {
+            "type": "Ghost",
+            "key": "/RealOutputs/AprilTagEstimatedPosition",
+            "fieldTypeIndex": 0
+          }
+        ],
+        [
+          {
+            "type": "Robot",
+            "key": "/RealOutputs/Robot Pose",
+            "fieldTypeIndex": 0
+          }
+        ]
+      ],
+      "options": {
+        "field": "2023",
+        "alliance": "blue",
+        "robot": "Velocity",
+        "unitDistance": "meters",
+        "unitRotation": "radians"
+      },
+      "title": "3D Field"
+    }
+  ]
+}
