@@ -7,6 +7,7 @@ package frc.robot;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.inputs.LoggedPowerDistribution;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
@@ -14,6 +15,7 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.lib.config.CTREConfigs;
+import frc.robot.Constants.Mode;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -45,22 +47,15 @@ public class Robot extends LoggedRobot {
         logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
         logger.recordMetadata("GitDate", BuildConstants.GIT_DATE);
         logger.recordMetadata("GitBranch", BuildConstants.GIT_BRANCH);
-
-        if (isReal()) {
+        if (Constants.getMode() == Mode.REAL) {
             logger.addDataReceiver(new WPILOGWriter("/media/sda1/")); // Log to a USB stick
             logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
-            // new PowerDistribution(1, ModuleType.kRev); // Enables power distribution
-            // logging
-        } else {
+            LoggedPowerDistribution.getInstance();
+        } else if (Constants.getMode() == Mode.REPLAY) {
             setUseTiming(false); // Run as fast as possible
-            String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the
-                                                          // user)
-            logger.setReplaySource(new WPILOGReader(logPath)); // Read replay log
-            logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save
-                                                                                                  // outputs
-                                                                                                  // to a
-                                                                                                  // new
-                                                                                                  // log
+            String logPath = LogFileUtil.findReplayLog();
+            logger.setReplaySource(new WPILOGReader(logPath));
+            logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim")));
         }
 
         // logger.disableDeterministicTimestamps() // See "Deterministic

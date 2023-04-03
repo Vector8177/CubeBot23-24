@@ -48,6 +48,8 @@ import frc.robot.subsystems.swerve.ModuleIOSparkMax;
 // import frc.robot.Constants.SEGMENT;
 // import frc.robot.autos.segmentLineUp;
 import frc.robot.subsystems.swerve.Swerve;
+import frc.robot.subsystems.vision.CameraIO;
+import frc.robot.subsystems.vision.CameraIOPhoton;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.wrist.Wrist;
 import frc.robot.subsystems.wrist.WristIO;
@@ -69,7 +71,7 @@ public class RobotContainer {
     private static final int intakeTrigger = XboxController.Axis.kRightTrigger.value;
 
     /* Subsystems */
-    private final Vision s_Vision = new Vision();
+    private final Vision s_Vision;
     private final Swerve s_Swerve;
     private final Intake s_Intake;
     private final Elevator s_Elevator;
@@ -120,6 +122,9 @@ public class RobotContainer {
         switch (Constants.getMode()) {
             // Real robot, instantiate hardware IO implementations
             case REAL:
+                s_Vision = new Vision(
+                        new CameraIOPhoton(Constants.PhotonVision.leftCameraName),
+                        new CameraIOPhoton(Constants.PhotonVision.rightCameraName));
                 s_Swerve = new Swerve(new GyroIOPigeon2(),
                         new ModuleIOSparkMax(Constants.Swerve.Mod0.constants),
                         new ModuleIOSparkMax(Constants.Swerve.Mod1.constants),
@@ -133,6 +138,11 @@ public class RobotContainer {
 
             // Replayed robot, disable IO implementations
             default:
+                s_Vision = new Vision(
+                        new CameraIO() {
+                        },
+                        new CameraIO() {
+                        });
                 s_Swerve = new Swerve(new GyroIO() {
                 },
                         new ModuleIO() {

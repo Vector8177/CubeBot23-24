@@ -154,6 +154,9 @@ public class Swerve extends SubsystemBase {
     @Override
     public void periodic() {
         gyroIO.updateInputs(gyroInputs);
+        for (Module mod : mSwerveMods) {
+            mod.periodic();
+        }
 
         swervePoseEstimator.update(getYaw(), getPositions());
 
@@ -170,18 +173,11 @@ public class Swerve extends SubsystemBase {
         field.setRobotPose(getPose());
 
         Logger.getInstance().processInputs("Drive/Gyro", gyroInputs);
-        Logger.getInstance().recordOutput("Robot Pose", getPose());
+        Logger.getInstance().recordOutput("Odometry/RobotPose", getPose());
         Logger.getInstance().recordOutput("SwerveModuleStates", getStates());
 
         SmartDashboard.putNumber("Pigeon2 Yaw", getYaw().getDegrees());
         SmartDashboard.putNumber("Pigeon2 Pitch", getPitch().getDegrees());
         SmartDashboard.putNumber("Pigeon2 Roll", getRoll().getDegrees());
-
-        for (Module mod : mSwerveMods) {
-            SmartDashboard.putNumber(
-                    "Mod " + mod.index + " Integrated", mod.getState().angle.getDegrees());
-            SmartDashboard.putNumber(
-                    "Mod " + mod.index + " Velocity", mod.getState().speedMetersPerSecond);
-        }
     }
 }

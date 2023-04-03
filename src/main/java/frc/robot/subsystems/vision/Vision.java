@@ -7,54 +7,35 @@ import java.util.Optional;
 
 import org.littletonrobotics.junction.Logger;
 import org.photonvision.EstimatedRobotPose;
-import org.photonvision.PhotonCamera;
-import org.photonvision.PhotonPoseEstimator;
-import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.targeting.PhotonPipelineResult;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import frc.VectorTools.CustomPhoton.PhotonPoseEstimatorRaw;
 import frc.robot.Constants;
 
 public class Vision extends SubsystemBase {
-    private ArrayList<PhotonPoseEstimator> poseEstimators;
+    private ArrayList<Camera> cameras;
     private AprilTagFieldLayout aprilTagLayout;
 
     /**
      * Sets up the pose estimators and AprilTag layout.
      */
-    public Vision() {
-        poseEstimators = new ArrayList<>();
-        PhotonCamera leftCamera = new PhotonCamera(Constants.PhotonVision.leftCameraName);
-        PhotonCamera rightCamera = new PhotonCamera(Constants.PhotonVision.rightCameraName);
+    public Vision(CameraIO leftCamera, CameraIO rightCamera) {
+        this.cameras = new ArrayList<>();
 
         try {
             aprilTagLayout = AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();
 
-            poseEstimators.add(generatePoseEstimator(leftCamera, Constants.PhotonVision.leftCameraPosition));
-            poseEstimators.add(generatePoseEstimator(rightCamera, Constants.PhotonVision.rightCameraPosition));
+            cameras.add(new Camera(leftCamera, Constants.PhotonVision.leftCameraPosition, aprilTagLayout));
+            cameras.add(new Camera(rightCamera, Constants.PhotonVision.rightCameraPosition, aprilTagLayout));
         } catch (IOException e) {
             DriverStation.reportError("Failed to load AprilTagFieldLayout", e.getStackTrace());
         }
-    }
-
-    /**
-     * Generates a pose estimator for a camera.
-     */
-    public PhotonPoseEstimator generatePoseEstimator(PhotonCamera camera, Transform3d cameraPosition) {
-        PhotonPoseEstimator positionEstimation = new PhotonPoseEstimator(aprilTagLayout, PoseStrategy.MULTI_TAG_PNP,
-                camera,
-                cameraPosition);
-
-        positionEstimation.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
-
-        return positionEstimation;
     }
 
     /**
@@ -62,25 +43,38 @@ public class Vision extends SubsystemBase {
      */
     public List<Optional<EstimatedRobotPose>> getEstimatedGlobalPoses(Pose2d prevEstimatedRobotPose) {
         ArrayList<Optional<EstimatedRobotPose>> robotPoses = new ArrayList<>();
-        ArrayList<Pose3d> aprilTagPoses = new ArrayList<>();
 
-        for (PhotonPoseEstimator positionEstimation : poseEstimators) {
+        for (Camera camera : cameras) {
+            PhotonPoseEstimatorRaw positionEstimation = camera.getPoseEstimator();
+
             if (positionEstimation == null) {
                 robotPoses.add(Optional.empty());
             } else {
                 positionEstimation.setReferencePose(prevEstimatedRobotPose);
 
-                Optional<EstimatedRobotPose> estimatedPosition = positionEstimation.update();
+                PhotonPipelineResult result = new PhotonPipelineResult();
+                result.createFromPacket(camera.getPacket());
+
+                Optional<EstimatedRobotPose> estimatedPosition = positionEstimation.update(
+                        result,
+                        camera.getCameraMatrixData(),
+                        camera.getDistCoeffsData());
 
                 if (estimatedPosition.isPresent())
-                    aprilTagPoses.add(estimatedPosition.get().estimatedPose);
+                    Logger.getInstance().recordOutput("Odometry/" + camera.cameraName,
+                            estimatedPosition.get().estimatedPose);
                 robotPoses.add(estimatedPosition);
             }
         }
-        Logger.getInstance().recordOutput("AprilTagEstimatedPosition",
-                aprilTagPoses.toArray(new Pose3d[aprilTagPoses.size()]));
 
         return robotPoses;
+    }
+
+    @Override
+    public void periodic() {
+        for (Camera camera : cameras) {
+            camera.periodic();
+        }
     }
 
     /**
@@ -88,7 +82,8 @@ public class Vision extends SubsystemBase {
      */
     public void updatePoseAlliance() {
         // Sets the april tag positions depending on which side the robot starts on.
-        for (PhotonPoseEstimator positionEstimation : poseEstimators) {
+        for (Camera camera : cameras) {
+            PhotonPoseEstimatorRaw positionEstimation = camera.getPoseEstimator();
             if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
                 positionEstimation.getFieldTags().setOrigin(OriginPosition.kBlueAllianceWallRightSide);
             } else {
