@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import org.littletonrobotics.junction.Logger;
 import org.photonvision.EstimatedRobotPose;
-import org.photonvision.targeting.PhotonPipelineResult;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
@@ -15,7 +14,7 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.VectorTools.CustomPhoton.PhotonPoseEstimatorRaw;
+import frc.VectorTools.CustomPhoton.PhotonPoseEstimator;
 import frc.robot.Constants;
 
 public class Vision extends SubsystemBase {
@@ -45,18 +44,15 @@ public class Vision extends SubsystemBase {
         ArrayList<Optional<EstimatedRobotPose>> robotPoses = new ArrayList<>();
 
         for (Camera camera : cameras) {
-            PhotonPoseEstimatorRaw positionEstimation = camera.getPoseEstimator();
+            PhotonPoseEstimator positionEstimation = camera.getPoseEstimator();
 
             if (positionEstimation == null) {
                 robotPoses.add(Optional.empty());
             } else {
                 positionEstimation.setReferencePose(prevEstimatedRobotPose);
 
-                PhotonPipelineResult result = new PhotonPipelineResult();
-                result.createFromPacket(camera.getPacket());
-
                 Optional<EstimatedRobotPose> estimatedPosition = positionEstimation.update(
-                        result,
+                        camera.getPhotonPipelineResult(),
                         camera.getCameraMatrixData(),
                         camera.getDistCoeffsData());
 
@@ -83,7 +79,7 @@ public class Vision extends SubsystemBase {
     public void updatePoseAlliance() {
         // Sets the april tag positions depending on which side the robot starts on.
         for (Camera camera : cameras) {
-            PhotonPoseEstimatorRaw positionEstimation = camera.getPoseEstimator();
+            PhotonPoseEstimator positionEstimation = camera.getPoseEstimator();
             if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
                 positionEstimation.getFieldTags().setOrigin(OriginPosition.kBlueAllianceWallRightSide);
             } else {

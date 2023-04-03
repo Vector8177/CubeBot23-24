@@ -2,11 +2,12 @@ package frc.robot.subsystems.vision;
 
 import org.littletonrobotics.junction.Logger;
 import org.photonvision.common.dataflow.structures.Packet;
+import org.photonvision.targeting.PhotonPipelineResult;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.geometry.Transform3d;
-import frc.VectorTools.CustomPhoton.PhotonPoseEstimatorRaw;
-import frc.VectorTools.CustomPhoton.PhotonPoseEstimatorRaw.PoseStrategy;
+import frc.VectorTools.CustomPhoton.PhotonPoseEstimator;
+import frc.VectorTools.CustomPhoton.PhotonPoseEstimator.PoseStrategy;
 
 public class Camera {
     private final CameraIO cameraIO;
@@ -16,7 +17,7 @@ public class Camera {
 
     private final Transform3d cameraPosition;
     private final AprilTagFieldLayout aprilTagLayout;
-    private final PhotonPoseEstimatorRaw poseEstimator;
+    private final PhotonPoseEstimator poseEstimator;
 
     public Camera(CameraIO camera, Transform3d cameraPosition, AprilTagFieldLayout aprilTagLayout) {
         this.cameraIO = camera;
@@ -27,8 +28,8 @@ public class Camera {
         poseEstimator = generatePoseEstimator();
     }
 
-    private PhotonPoseEstimatorRaw generatePoseEstimator() {
-        PhotonPoseEstimatorRaw positionEstimation = new PhotonPoseEstimatorRaw(aprilTagLayout,
+    private PhotonPoseEstimator generatePoseEstimator() {
+        PhotonPoseEstimator positionEstimation = new PhotonPoseEstimator(aprilTagLayout,
                 PoseStrategy.MULTI_TAG_PNP,
                 cameraPosition);
 
@@ -42,12 +43,14 @@ public class Camera {
         Logger.getInstance().processInputs("Cameras/" + cameraName, cameraInputs);
     }
 
-    public PhotonPoseEstimatorRaw getPoseEstimator() {
+    public PhotonPoseEstimator getPoseEstimator() {
         return poseEstimator;
     }
 
-    public Packet getPacket() {
-        return new Packet(cameraInputs.byteArray);
+    public PhotonPipelineResult getPhotonPipelineResult() {
+        PhotonPipelineResult result = new PhotonPipelineResult();
+        result.createFromPacket(new Packet(cameraInputs.targetData));
+        return result;
     }
 
     public double[] getCameraMatrixData() {

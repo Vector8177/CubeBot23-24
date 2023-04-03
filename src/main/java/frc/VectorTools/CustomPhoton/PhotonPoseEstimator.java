@@ -1,4 +1,3 @@
-
 /*
  * MIT License
  *
@@ -47,22 +46,23 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.photonvision.EstimatedRobotPose;
+import org.photonvision.PhotonCamera;
 import org.photonvision.estimation.VisionEstimation;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import org.photonvision.targeting.TargetCorner;
 
 /**
- * The PhotonPoseEstimatorRaw class filters or combines readings from all the
+ * The PhotonPoseEstimator class filters or combines readings from all the
  * AprilTags visible at a
  * given timestamp on the field to produce a single robot in field pose, using
  * the strategy set
  * below. Example usage can be found in our apriltagExample example project.
  */
-public class PhotonPoseEstimatorRaw {
+public class PhotonPoseEstimator {
     /**
      * Position estimation strategies that can be used by the
-     * {@link PhotonPoseEstimatorRaw} class.
+     * {@link PhotonPoseEstimator} class.
      */
     public enum PoseStrategy {
         /** Choose the Pose with the lowest ambiguity. */
@@ -87,6 +87,7 @@ public class PhotonPoseEstimatorRaw {
     private AprilTagFieldLayout fieldTags;
     private PoseStrategy primaryStrategy;
     private PoseStrategy multiTagFallbackStrategy = PoseStrategy.LOWEST_AMBIGUITY;
+    private final PhotonCamera camera;
     private Transform3d robotToCamera;
 
     private Pose3d lastPose;
@@ -95,7 +96,7 @@ public class PhotonPoseEstimatorRaw {
     private final Set<Integer> reportedErrors = new HashSet<>();
 
     /**
-     * Create a new PhotonPoseEstimatorRaw.
+     * Create a new PhotonPoseEstimator.
      *
      * @param fieldTags     A WPILib {@link AprilTagFieldLayout} linking AprilTag
      *                      IDs to Pose3d objects
@@ -112,12 +113,24 @@ public class PhotonPoseEstimatorRaw {
      *                      "https://docs.wpilib.org/en/stable/docs/software/advanced-controls/geometry/coordinate-systems.html#robot-coordinate-system">Robot
      *                      Coordinate System</a>.
      */
-    public PhotonPoseEstimatorRaw(
+    public PhotonPoseEstimator(
+            AprilTagFieldLayout fieldTags,
+            PoseStrategy strategy,
+            PhotonCamera camera,
+            Transform3d robotToCamera) {
+        this.fieldTags = fieldTags;
+        this.primaryStrategy = strategy;
+        this.camera = camera;
+        this.robotToCamera = robotToCamera;
+    }
+
+    public PhotonPoseEstimator(
             AprilTagFieldLayout fieldTags,
             PoseStrategy strategy,
             Transform3d robotToCamera) {
         this.fieldTags = fieldTags;
         this.primaryStrategy = strategy;
+        this.camera = null;
         this.robotToCamera = robotToCamera;
     }
 
@@ -261,6 +274,26 @@ public class PhotonPoseEstimatorRaw {
     }
 
     /**
+     * Poll data from the configured cameras and update the estimated position of
+     * the robot. Returns
+     * empty if there are no cameras set or no targets were found from the cameras.
+     *
+     * @return an EstimatedRobotPose with an estimated pose, the timestamp, and
+     *         targets used to create
+     *         the estimate
+     */
+    public Optional<EstimatedRobotPose> update() {
+        if (camera == null) {
+            DriverStation.reportError("[PhotonPoseEstimator] Missing camera!", false);
+            return Optional.empty();
+        }
+
+        PhotonPipelineResult cameraResult = camera.getLatestResult();
+
+        return update(cameraResult, null, null);
+    }
+
+    /**
      * Updates the estimated position of the robot. Returns empty if there are no
      * cameras set or no
      * targets were found from the cameras.
@@ -271,7 +304,7 @@ public class PhotonPoseEstimatorRaw {
      *         pipeline results used to create the estimate
      */
     public Optional<EstimatedRobotPose> update(PhotonPipelineResult cameraResult, double[] cameraMatrixData,
-            double[] distCoeffsData) {
+            double[] coeffsData) {
         // Time in the past -- give up, since the following if expects times > 0
         if (cameraResult.getTimestampSeconds() < 0) {
             return Optional.empty();
@@ -293,12 +326,11 @@ public class PhotonPoseEstimatorRaw {
             return Optional.empty();
         }
 
-        return update(cameraResult, this.primaryStrategy, cameraMatrixData, distCoeffsData);
+        return update(cameraResult, cameraMatrixData, coeffsData, this.primaryStrategy);
     }
 
     private Optional<EstimatedRobotPose> update(
-            PhotonPipelineResult cameraResult, PoseStrategy strat, double[] cameraMatrixData,
-            double[] distCoeffsData) {
+            PhotonPipelineResult cameraResult, double[] cameraMatrixData, double[] coeffsData, PoseStrategy strat) {
         Optional<EstimatedRobotPose> estimatedPose;
         switch (strat) {
             case LOWEST_AMBIGUITY:
@@ -318,11 +350,11 @@ public class PhotonPoseEstimatorRaw {
                 estimatedPose = averageBestTargetsStrategy(cameraResult);
                 break;
             case MULTI_TAG_PNP:
-                estimatedPose = multiTagPNPStrategy(cameraResult, cameraMatrixData, distCoeffsData);
+                estimatedPose = multiTagPNPStrategy(cameraResult, cameraMatrixData, coeffsData);
                 break;
             default:
                 DriverStation.reportError(
-                        "[PhotonPoseEstimatorRaw] Unknown Position Estimation Strategy!", false);
+                        "[PhotonPoseEstimator] Unknown Position Estimation Strategy!", false);
                 return Optional.empty();
         }
 
@@ -334,7 +366,7 @@ public class PhotonPoseEstimatorRaw {
     }
 
     private Optional<EstimatedRobotPose> multiTagPNPStrategy(PhotonPipelineResult result, double[] cameraMatrixData,
-            double[] distCoeffsData) {
+            double[] coeffsData) {
         // Arrays we need declared up front
         var visCorners = new ArrayList<TargetCorner>();
         var knownVisTags = new ArrayList<AprilTag>();
@@ -343,7 +375,7 @@ public class PhotonPoseEstimatorRaw {
 
         if (result.getTargets().size() < 2) {
             // Run fallback strategy instead
-            return update(result, this.multiTagFallbackStrategy, cameraMatrixData, distCoeffsData);
+            return update(result, cameraMatrixData, coeffsData, this.multiTagFallbackStrategy);
         }
 
         for (var target : result.getTargets()) {
@@ -364,19 +396,21 @@ public class PhotonPoseEstimatorRaw {
             fieldToCamsAlt.add(tagPose.transformBy(target.getAlternateCameraToTarget().inverse()));
         }
 
-        Optional<Matrix<N3, N3>> cameraMatrixOpt;
+        Optional<Matrix<N3, N3>> cameraMatrixOpt = Optional.empty();
+        Optional<Matrix<N5, N1>> distCoeffsOpt = Optional.empty();
+
+        if (camera != null) {
+            cameraMatrixOpt = camera.getCameraMatrix();
+            distCoeffsOpt = camera.getDistCoeffs();
+        }
 
         if (cameraMatrixData != null && cameraMatrixData.length == 9) {
             cameraMatrixOpt = Optional.of(new MatBuilder<>(Nat.N3(), Nat.N3()).fill(cameraMatrixData));
-        } else
-            cameraMatrixOpt = Optional.empty();
+        }
 
-        Optional<Matrix<N5, N1>> distCoeffsOpt;
-
-        if (distCoeffsData != null && distCoeffsData.length == 5) {
-            distCoeffsOpt = Optional.of(new MatBuilder<>(Nat.N5(), Nat.N1()).fill(distCoeffsData));
-        } else
-            distCoeffsOpt = Optional.empty();
+        if (coeffsData != null && coeffsData.length == 5) {
+            distCoeffsOpt = Optional.of(new MatBuilder<>(Nat.N5(), Nat.N1()).fill(coeffsData));
+        }
 
         boolean hasCalibData = cameraMatrixOpt.isPresent() && distCoeffsOpt.isPresent();
 
@@ -534,7 +568,7 @@ public class PhotonPoseEstimatorRaw {
             PhotonPipelineResult result, Pose3d referencePose) {
         if (referencePose == null) {
             DriverStation.reportError(
-                    "[PhotonPoseEstimatorRaw] Tried to use reference pose strategy without setting the reference!",
+                    "[PhotonPoseEstimator] Tried to use reference pose strategy without setting the reference!",
                     false);
             return Optional.empty();
         }
@@ -671,7 +705,7 @@ public class PhotonPoseEstimatorRaw {
     private void reportFiducialPoseError(int fiducialId) {
         if (!reportedErrors.contains(fiducialId)) {
             DriverStation.reportError(
-                    "[PhotonPoseEstimatorRaw] Tried to get pose of unknown AprilTag: " + fiducialId, false);
+                    "[PhotonPoseEstimator] Tried to get pose of unknown AprilTag: " + fiducialId, false);
             reportedErrors.add(fiducialId);
         }
     }
