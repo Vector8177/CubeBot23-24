@@ -62,6 +62,8 @@ public class Swerve extends SubsystemBase {
 
         this.s_Vision = s_Vision;
 
+        resetToAbsolute();
+
         field = new Field2d();
         chassisSpeeds = new ChassisSpeeds();
         SmartDashboard.putData(field);

@@ -80,12 +80,14 @@ public class Vision extends SubsystemBase {
                             estimatedPosition.get().estimatedPose);
                     Logger.getInstance().recordOutput("Targets/" + camera.cameraName + "/AverageDistance",
                             avgDistance);
-                }
 
-                for (PhotonTrackedTarget target : estimatedPosition.get().targetsUsed) {
+                            for (PhotonTrackedTarget target : estimatedPosition.get().targetsUsed) {
                     Logger.getInstance().recordOutput("Targets/" + camera.cameraName + "/" + target.getFiducialId(),
                             estimatedPosition.get().estimatedPose.plus(target.getBestCameraToTarget()));
                 }
+                }
+
+                
 
                 robotPoses.add(estimatedPosition);
             }
