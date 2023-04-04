@@ -52,8 +52,13 @@ public class Swerve extends SubsystemBase {
                 new Module(brModuleIO, 3)
         };
 
-        swervePoseEstimator = new SwerveDrivePoseEstimator(Constants.Swerve.swerveKinematics, getYaw(), getPositions(),
-                new Pose2d());
+        swervePoseEstimator = new SwerveDrivePoseEstimator(
+                Constants.Swerve.swerveKinematics,
+                getYaw(),
+                getPositions(),
+                new Pose2d(),
+                Constants.PoseEstimation.STATE_STANDARD_DEVIATIONS,
+                Constants.PoseEstimation.VISION_MEASUREMENT_STANDARD_DEVIATIONS);
 
         this.s_Vision = s_Vision;
 

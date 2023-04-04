@@ -1,8 +1,12 @@
 package frc.robot;
 
+import java.util.List;
+
 import com.pathplanner.lib.PathConstraints;
 import com.revrobotics.CANSparkMax.IdleMode;
 
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -10,6 +14,8 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import frc.VectorTools.util.HSV;
 import frc.lib.config.SwerveModuleConstants;
@@ -387,7 +393,7 @@ public final class Constants {
         public static final double gridLineUpAngle = 180.0;
     }
 
-    public static final class PhotonVision {
+    public static final class Vision {
         public static final String leftCameraName = "velocityleft"; // Camera to the left (Robot perspective)
         public static final Transform3d leftCameraPosition = new Transform3d(
                 new Translation3d(Units.inchesToMeters(9.1505), Units.inchesToMeters(9.666),
@@ -403,6 +409,45 @@ public final class Constants {
                 new Rotation3d(
                         0, Units.degreesToRadians(20),
                         Units.degreesToRadians(-5)));
+    }
+
+    public static final class PoseEstimation {
+        /**
+         * Standard deviations of model states. Increase these numbers to trust your
+         * model's state
+         * estimates less. This matrix is in the form [x, y, theta]ᵀ, with units in
+         * meters and radians.
+         */
+        public static final Matrix<N3, N1> STATE_STANDARD_DEVIATIONS = Matrix.mat(Nat.N3(), Nat.N1())
+                .fill(
+                        0.1, // x
+                        0.1, // y
+                        0.1 // theta
+                );
+
+        /**
+         * Standard deviations of the vision measurements. Increase these numbers to
+         * trust global
+         * measurements from vision less. This matrix is in the form [x, y, theta]ᵀ,
+         * with units in
+         * meters and radians.
+         *
+         * <p>
+         * These are not actually used anymore, but the constructor for the pose
+         * estimator wants
+         * them. This value is calculated dynamically using the below list.
+         */
+        public static final Matrix<N3, N1> VISION_MEASUREMENT_STANDARD_DEVIATIONS = Matrix.mat(Nat.N3(), Nat.N1())
+                .fill(
+                        // if these numbers are less than one, multiplying will do bad things
+                        1, // x
+                        1, // y
+                        1 * Math.PI // theta
+                );
+
+        public static final double POSE_AMBIGUITY_CUTOFF = .05;
+
+        public static final double POSE_DISTANCE_CUTOFF = 1.85;
     }
 
     public static final class LEDs {

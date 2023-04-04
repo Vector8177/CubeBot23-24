@@ -31,8 +31,8 @@ public class Vision extends SubsystemBase {
         try {
             aprilTagLayout = AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();
 
-            cameras.add(new Camera(leftCamera, Constants.PhotonVision.leftCameraPosition, aprilTagLayout));
-            cameras.add(new Camera(rightCamera, Constants.PhotonVision.rightCameraPosition, aprilTagLayout));
+            cameras.add(new Camera(leftCamera, Constants.Vision.leftCameraPosition, aprilTagLayout));
+            cameras.add(new Camera(rightCamera, Constants.Vision.rightCameraPosition, aprilTagLayout));
         } catch (IOException e) {
             DriverStation.reportError("Failed to load AprilTagFieldLayout", e.getStackTrace());
         }
@@ -57,12 +57,33 @@ public class Vision extends SubsystemBase {
                         camera.getCameraMatrixData(),
                         camera.getDistCoeffsData());
 
-                if (estimatedPosition.isPresent())
+                if (estimatedPosition.isPresent()) {
+                    List<PhotonTrackedTarget> targets = estimatedPosition.get().targetsUsed;
+                    if (targets.size() == 1 &&
+                            targets.get(0).getPoseAmbiguity() > Constants.PoseEstimation.POSE_AMBIGUITY_CUTOFF) {
+                        robotPoses.add(Optional.empty());
+                        continue;
+                    }
+
+                    double sumDistance = 0;
+                    for (var target : targets) {
+                        var t3d = target.getBestCameraToTarget();
+                        sumDistance += Math
+                                .sqrt(Math.pow(t3d.getX(), 2) + Math.pow(t3d.getY(), 2) + Math.pow(t3d.getZ(), 2));
+                    }
+                    double avgDistance = sumDistance / targets.size();
+
+                    if (avgDistance > Constants.PoseEstimation.POSE_DISTANCE_CUTOFF)
+                        continue;
+
                     Logger.getInstance().recordOutput("Odometry/" + camera.cameraName,
                             estimatedPosition.get().estimatedPose);
+                    Logger.getInstance().recordOutput("Targets/" + camera.cameraName + "/AverageDistance",
+                            avgDistance);
+                }
 
                 for (PhotonTrackedTarget target : estimatedPosition.get().targetsUsed) {
-                    Logger.getInstance().recordOutput("Targets/" + camera.cameraName,
+                    Logger.getInstance().recordOutput("Targets/" + camera.cameraName + "/" + target.getFiducialId(),
                             estimatedPosition.get().estimatedPose.plus(target.getBestCameraToTarget()));
                 }
 

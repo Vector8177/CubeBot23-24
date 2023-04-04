@@ -123,8 +123,8 @@ public class RobotContainer {
             // Real robot, instantiate hardware IO implementations
             case REAL:
                 s_Vision = new Vision(
-                        new CameraIOPhoton(Constants.PhotonVision.leftCameraName),
-                        new CameraIOPhoton(Constants.PhotonVision.rightCameraName));
+                        new CameraIOPhoton(Constants.Vision.leftCameraName),
+                        new CameraIOPhoton(Constants.Vision.rightCameraName));
                 s_Swerve = new Swerve(new GyroIOPigeon2(),
                         new ModuleIOSparkMax(Constants.Swerve.Mod0.constants),
                         new ModuleIOSparkMax(Constants.Swerve.Mod1.constants),
