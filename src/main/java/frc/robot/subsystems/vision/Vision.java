@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.littletonrobotics.junction.Logger;
 import org.photonvision.EstimatedRobotPose;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
@@ -59,6 +60,12 @@ public class Vision extends SubsystemBase {
                 if (estimatedPosition.isPresent())
                     Logger.getInstance().recordOutput("Odometry/" + camera.cameraName,
                             estimatedPosition.get().estimatedPose);
+
+                for (PhotonTrackedTarget target : estimatedPosition.get().targetsUsed) {
+                    Logger.getInstance().recordOutput("Targets/" + camera.cameraName,
+                            estimatedPosition.get().estimatedPose.plus(target.getBestCameraToTarget()));
+                }
+
                 robotPoses.add(estimatedPosition);
             }
         }

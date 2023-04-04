@@ -9,7 +9,7 @@ public interface CameraIO {
         public boolean connected = false;
         public boolean driverMode = false;
         public byte[] targetData = {};
-        public double targetTimeStamp = 0.0;
+        public double targetTimestamp = 0.0;
         public double[] cameraMatrixData = {};
         public double[] distCoeffsData = {};
     }

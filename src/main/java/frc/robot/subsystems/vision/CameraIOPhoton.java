@@ -18,7 +18,7 @@ public class CameraIOPhoton implements CameraIO {
         inputs.connected = camera.isConnected();
         inputs.driverMode = camera.getDriverMode();
         inputs.targetData = camera.getLatestResult().populatePacket(new Packet(new byte[] {})).getData();
-        inputs.targetTimeStamp = camera.getLatestResult().getTimestampSeconds();
+        inputs.targetTimestamp = camera.getLatestResult().getTimestampSeconds();
         inputs.cameraMatrixData = camera.getCameraMatrix().isPresent() ? camera.getCameraMatrix().get().getData()
                 : new double[] {};
         inputs.distCoeffsData = camera.getDistCoeffs().isPresent() ? camera.getDistCoeffs().get().getData()

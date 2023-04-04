@@ -50,7 +50,7 @@ public class Camera {
     public PhotonPipelineResult getPhotonPipelineResult() {
         PhotonPipelineResult result = new PhotonPipelineResult();
         result.createFromPacket(new Packet(cameraInputs.targetData));
-        result.setTimestampSeconds(cameraInputs.targetTimeStamp);
+        result.setTimestampSeconds(cameraInputs.targetTimestamp);
         return result;
     }
 
