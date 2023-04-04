@@ -303,6 +303,24 @@ public class PhotonPoseEstimator {
      *         the camera(s) and
      *         pipeline results used to create the estimate
      */
+    public Optional<EstimatedRobotPose> update(PhotonPipelineResult cameraResult) {
+        return update(cameraResult, null, null);
+    }
+
+    /**
+     * Updates the estimated position of the robot. Returns empty if there are no
+     * cameras set or no
+     * targets were found from the cameras.
+     *
+     * @param cameraResult     The latest pipeline result from the camera
+     * @param cameraMatrixData Camera calibration data that can be used in the case
+     *                         of no assigned PhotonCamera.
+     * @param coeffsData       Camera calibration data that can be used in the case
+     *                         of no assigned PhotonCamera
+     * @return an EstimatedRobotPose with an estimated pose, and information about
+     *         the camera(s) and
+     *         pipeline results used to create the estimate
+     */
     public Optional<EstimatedRobotPose> update(PhotonPipelineResult cameraResult, double[] cameraMatrixData,
             double[] coeffsData) {
         // Time in the past -- give up, since the following if expects times > 0
