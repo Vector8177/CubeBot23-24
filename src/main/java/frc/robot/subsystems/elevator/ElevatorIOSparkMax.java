@@ -29,8 +29,8 @@ public class ElevatorIOSparkMax implements ElevatorIO {
                 + elevatorMotorRight.getEncoder().getPosition()) / 2;
 
         inputs.leftAppliedVolts = elevatorMotorLeft.getAppliedOutput() * elevatorMotorLeft.getBusVoltage();
-        inputs.leftCurrentAmps = elevatorMotorLeft.getOutputCurrent();
-        inputs.leftTempCelcius = elevatorMotorLeft.getMotorTemperature();
+        inputs.leftCurrentAmps = new double[] { elevatorMotorLeft.getOutputCurrent() };
+        inputs.leftTempCelcius = new double[] { elevatorMotorLeft.getMotorTemperature() };
 
         inputs.rightAppliedVolts = elevatorMotorRight.getAppliedOutput() * elevatorMotorRight.getBusVoltage();
         inputs.rightCurrentAmps = new double[] { elevatorMotorRight.getOutputCurrent() };

@@ -9,8 +9,8 @@ public interface ElevatorIO {
 
         // Left elevator motor
         public double leftAppliedVolts = 0.0;
-        public double leftCurrentAmps = 0.0;
-        public double leftTempCelcius = 0.0;
+        public double[] leftCurrentAmps = new double[] {};
+        public double[] leftTempCelcius = new double[] {};
 
         // Right elevator motor
         public double rightAppliedVolts = 0.0;
