@@ -59,6 +59,7 @@ public class Vision extends SubsystemBase {
 
                 if (estimatedPosition.isPresent()) {
                     List<PhotonTrackedTarget> targets = estimatedPosition.get().targetsUsed;
+
                     if (targets.size() == 1 &&
                             targets.get(0).getPoseAmbiguity() > Constants.PoseEstimation.POSE_AMBIGUITY_CUTOFF) {
                         robotPoses.add(Optional.empty());
@@ -81,13 +82,11 @@ public class Vision extends SubsystemBase {
                     Logger.getInstance().recordOutput("Targets/" + camera.cameraName + "/AverageDistance",
                             avgDistance);
 
-                            for (PhotonTrackedTarget target : estimatedPosition.get().targetsUsed) {
-                    Logger.getInstance().recordOutput("Targets/" + camera.cameraName + "/" + target.getFiducialId(),
-                            estimatedPosition.get().estimatedPose.plus(target.getBestCameraToTarget()));
+                    for (var target : targets) {
+                        Logger.getInstance().recordOutput("Targets/" + camera.cameraName + "/" + target.getFiducialId(),
+                                estimatedPosition.get().estimatedPose.plus(target.getBestCameraToTarget()));
+                    }
                 }
-                }
-
-                
 
                 robotPoses.add(estimatedPosition);
             }

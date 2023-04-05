@@ -1,7 +1,5 @@
 package frc.robot;
 
-import java.util.List;
-
 import com.pathplanner.lib.PathConstraints;
 import com.revrobotics.CANSparkMax.IdleMode;
 

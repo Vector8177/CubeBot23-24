@@ -3,7 +3,6 @@ package frc.robot.subsystems.intake;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The intake subsysatem will be used to set up the motors and encoders for the
@@ -26,23 +25,12 @@ public class Intake extends SubsystemBase {
         io.setVoltage(speed);
     }
 
-    public double getPDMCurrent() {
-        return inputs.current;
-    }
-
     public double getVelocity() {
         return inputs.velocity;
     }
 
     @Override
     public void periodic() {
-        // returns in amps
-        // double intakeCurrent = pdm.getCurrent(Constants.IntakeConstants.pdpChannel);
-        double intakeCurrent = getPDMCurrent();
-        SmartDashboard.putNumber("Intake Current", intakeCurrent);
-        SmartDashboard.putNumber("Intake Velocity", getVelocity());
-        // SmartDashboard.putNumber("Gamepiece", getGamePiece().getDirection());
-
         io.updateInputs(inputs);
         Logger.getInstance().processInputs("Intake", inputs);
 

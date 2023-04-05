@@ -6,6 +6,16 @@ public interface ElevatorIO {
     @AutoLog
     public static class ElevatorIOInputs {
         public double currentPosition = 0.0;
+
+        // Left elevator motor
+        public double leftAppliedVolts = 0.0;
+        public double leftCurrentAmps = 0.0;
+        public double leftTempCelcius = 0.0;
+
+        // Right elevator motor
+        public double rightAppliedVolts = 0.0;
+        public double[] rightCurrentAmps = new double[] {};
+        public double[] rightTempCelcius = new double[] {};
     }
 
     public default void updateInputs(ElevatorIOInputs inputs) {
@@ -15,8 +25,5 @@ public interface ElevatorIO {
     }
 
     public default void move(double voltage) {
-    }
-
-    public default void setTargetPosition(double targetPos) {
     }
 }

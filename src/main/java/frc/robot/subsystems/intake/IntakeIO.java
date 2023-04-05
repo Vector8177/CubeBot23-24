@@ -6,7 +6,10 @@ public interface IntakeIO {
   @AutoLog
   public static class IntakeIOInputs {
     public double velocity = 0.0;
-    public double current = 0.0;
+
+    public double appliedVolts = 0.0;
+    public double[] currentAmps = new double[] {};
+    public double[] tempCelcius = new double[] {};
   }
 
   public default void updateInputs(IntakeIOInputs inputs) {

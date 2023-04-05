@@ -9,8 +9,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     private final CANSparkMax elevatorMotorLeft; // making the left the lead motor
     private final CANSparkMax elevatorMotorRight;
 
-    public ElevatorIOSparkMax()
-    {
+    public ElevatorIOSparkMax() {
         elevatorMotorLeft = new CANSparkMax(Constants.Elevator.motorLeftId, MotorType.kBrushless);
 
         elevatorMotorRight = new CANSparkMax(Constants.Elevator.motorRightId, MotorType.kBrushless);
@@ -20,13 +19,22 @@ public class ElevatorIOSparkMax implements ElevatorIO {
 
         elevatorMotorRight.follow(elevatorMotorLeft, true);
 
-        elevatorMotorLeft.setSmartCurrentLimit(Constants.Elevator.currentLimit); 
-        elevatorMotorRight.setSmartCurrentLimit(Constants.Elevator.currentLimit); 
+        elevatorMotorLeft.setSmartCurrentLimit(Constants.Elevator.currentLimit);
+        elevatorMotorRight.setSmartCurrentLimit(Constants.Elevator.currentLimit);
     }
 
     @Override
     public void updateInputs(ElevatorIOInputs inputs) {
-        inputs.currentPosition = (elevatorMotorLeft.getEncoder().getPosition() + elevatorMotorRight.getEncoder().getPosition()) / 2;
+        inputs.currentPosition = (elevatorMotorLeft.getEncoder().getPosition()
+                + elevatorMotorRight.getEncoder().getPosition()) / 2;
+
+        inputs.leftAppliedVolts = elevatorMotorLeft.getAppliedOutput() * elevatorMotorLeft.getBusVoltage();
+        inputs.leftCurrentAmps = elevatorMotorLeft.getOutputCurrent();
+        inputs.leftTempCelcius = elevatorMotorLeft.getMotorTemperature();
+
+        inputs.rightAppliedVolts = elevatorMotorRight.getAppliedOutput() * elevatorMotorRight.getBusVoltage();
+        inputs.rightCurrentAmps = new double[] { elevatorMotorRight.getOutputCurrent() };
+        inputs.rightTempCelcius = new double[] { elevatorMotorRight.getMotorTemperature() };
     }
 
     @Override
@@ -40,5 +48,4 @@ public class ElevatorIOSparkMax implements ElevatorIO {
         elevatorMotorLeft.setVoltage(voltage);
     }
 
-    
 }

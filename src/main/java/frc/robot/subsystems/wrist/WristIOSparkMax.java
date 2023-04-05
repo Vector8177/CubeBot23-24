@@ -37,9 +37,11 @@ public class WristIOSparkMax implements WristIO {
     @Override
     public void updateInputs(WristIOInputs inputs) {
         inputs.velocity = relativeEncoder.getVelocity();
-        inputs.current = wristMotor.getOutputCurrent();
-
         inputs.absoluteEncoderPosition = absoluteEncoder.getPosition();
+
+        inputs.appliedVolts = wristMotor.getAppliedOutput() * wristMotor.getBusVoltage();
+        inputs.currentAmps = new double[] { wristMotor.getOutputCurrent() };
+        inputs.tempCelcius = new double[] { wristMotor.getMotorTemperature() };
 
     }
 
