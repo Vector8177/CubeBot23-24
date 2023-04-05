@@ -116,6 +116,11 @@ public class RobotContainer {
             3.5,
             2.5);
 
+   private final PathPlannerTrajectory bump2Piece = PathPlanner.loadPath("bump2PieceAuto",
+            3.5,
+            2.0);
+
+
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
@@ -337,15 +342,15 @@ public class RobotContainer {
                                 new SequentialCommandGroup(
                                         new InstantCommand(() -> s_Wrist
                                                 .setPIDFFMode(PIDFFmode.UNWEIGHTED)),
-                                        new TimedIntake(s_Intake, .1,
+                                        new TimedIntake(s_Intake, .12,
                                                 GamePiece.CONE,
                                                 EjectSpeed.CONEFAST,
                                                 Direction.OUTTAKE),
                                         new ParallelCommandGroup(
                                                 new TimedIntake(s_Intake,
-                                                        .2,
+                                                        .75,
                                                         GamePiece.CONE,
-                                                        EjectSpeed.CONESLOW,
+                                                        EjectSpeed.CONENORMAL,
                                                         Direction.OUTTAKE),
                                                 new SetPosition(s_Wrist,
                                                         s_Elevator,
@@ -464,6 +469,7 @@ public class RobotContainer {
         autoChooser.addOption("Charge Station Cone PCube Balance", csConeCubeBalance);
         autoChooser.addOption("3 Game Piece Auto", threePieceAuto);
         autoChooser.addOption("Score 2 Plus Balance", twoPlusBalance);
+        autoChooser.addOption("Bump 2 Piece", bump2Piece);
         // autoChooser.addOption("Back and Forth", backnForth);
         // autoChooser.addOption("S curve", sCurve);
 
@@ -493,7 +499,7 @@ public class RobotContainer {
      */
 
     public Command getAutonomousCommand() {
-        s_Swerve.setYaw(autoChooser.get().getInitialPose().getRotation());
+        s_Swerve.setYaw(Rotation2d.fromDegrees(180));
         Logger.getInstance().recordOutput("Trajectory", autoChooser.get());
 
         // Executes the autonomous command chosen in smart dashboard
