@@ -335,8 +335,7 @@ public class RobotContainer {
                                         Direction.OUTTAKE)),
                         Map.entry(GamePiece.CONE,
                                 new SequentialCommandGroup(
-                                        new InstantCommand(() -> s_Wrist
-                                                .setPIDFFMode(PIDFFmode.UNWEIGHTED)),
+                                        
                                         new TimedIntake(s_Intake, .12,
                                                 GamePiece.CONE,
                                                 EjectSpeed.CONEFAST,
@@ -350,7 +349,9 @@ public class RobotContainer {
                                                 new SetPosition(s_Wrist,
                                                         s_Elevator,
                                                         Position.CONEHIGHUP,
-                                                        () -> GamePiece.CUBE))))),
+                                                        () -> GamePiece.CONE)),
+                                        new InstantCommand(() -> s_Wrist
+                                                .setPIDFFMode(PIDFFmode.UNWEIGHTED))))),
                 () -> gamePiece));
         /*
          * driver.b().whileTrue(
@@ -494,7 +495,7 @@ public class RobotContainer {
      */
 
     public Command getAutonomousCommand() {
-        s_Swerve.setYaw(Rotation2d.fromDegrees(180));
+        // s_Swerve.setYaw(Rotation2d.fromDegrees(180));
         Logger.getInstance().recordOutput("Trajectory", autoChooser.get());
 
         // Executes the autonomous command chosen in smart dashboard
