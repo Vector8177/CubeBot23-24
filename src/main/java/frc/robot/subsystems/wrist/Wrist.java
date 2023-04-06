@@ -40,8 +40,6 @@ public class Wrist extends SubsystemBase {
     public void periodic() {
         io.updateInputs(inputs);
         Logger.getInstance().processInputs("Wrist", inputs);
-        // SmartDashboard.putNumber("Wrist Relative Encoder",
-        // relativeEncoder.getPosition());
         SmartDashboard.putBoolean("Wrist at setpoint", atSetpoint());
         SmartDashboard.putNumber("Wrist Absolute Position", inputs.absoluteEncoderPosition);
         SmartDashboard.putNumber("Wrist Goal position", targetPosition);

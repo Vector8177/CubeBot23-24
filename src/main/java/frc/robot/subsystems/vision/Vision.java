@@ -23,7 +23,7 @@ public class Vision extends SubsystemBase {
     private AprilTagFieldLayout aprilTagLayout;
 
     /**
-     * Sets up the pose estimators and AprilTag layout.
+     * Sets up the cameras and AprilTag layout.
      */
     public Vision(CameraIO leftCamera, CameraIO rightCamera) {
         this.cameras = new ArrayList<>();
