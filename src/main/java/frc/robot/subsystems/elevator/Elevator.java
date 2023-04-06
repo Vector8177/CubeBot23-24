@@ -17,21 +17,8 @@ public class Elevator extends SubsystemBase {
     private PIDController pidController;
     private double targetPosition;
 
-    /**
-     * Initialize Elevator motor and the built in encoder. There are no cancoders on
-     * the elevator
-     */
     public Elevator(ElevatorIO io) {
         this.io = io;
-        // initialize motors
-        // the right motor will spin clockwise and the left motor will go counter
-        // clockwise
-        // elevatorRightController = new CANCoder(Constants.Elevator.canConderRightId);
-
-        // The motors will follow each other
-        // The right motor will follow whatever the applied output on the
-        // left motor is so only need to adjust output for the left motor
-
         // initialize pidContoller
         pidController = new PIDController(Constants.Elevator.elevatorKP, Constants.Elevator.elevatorKI,
                 Constants.Elevator.elevatorKD);
