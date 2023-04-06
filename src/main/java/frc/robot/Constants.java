@@ -66,8 +66,8 @@ public final class Constants {
 
         public static final double drivePitchKP = 0.015;
         public static final double drivePitchKI = 0.0001;
-        public static final double drivePitchKD = 0.000000000000001;
-        public static final double drivePitchKFF = 0.000000000000001;
+        public static final double drivePitchKD = 1e-15; // 1 in the 15th decimal place
+        public static final double drivePitchKFF = 1e-15;
 
         /* Angle Motor PID Values */
         public static final double angleKP = 0.01;
