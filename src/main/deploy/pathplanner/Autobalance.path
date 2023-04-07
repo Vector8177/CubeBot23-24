@@ -18,6 +18,7 @@
       "stopEvent": {
         "names": [
           "setCube3Position",
+          "wait1Seconds",
           "cubeDeposit",
           "setStandbyPosition"
         ],

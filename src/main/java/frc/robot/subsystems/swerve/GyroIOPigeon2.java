@@ -14,7 +14,6 @@ public class GyroIOPigeon2 implements GyroIO {
   public GyroIOPigeon2() {
     pigeon = new Pigeon2(Constants.Swerve.pigeonID);
 
-    pigeon.configFactoryDefault();
     pigeon.zeroGyroBiasNow();
     pigeon.setYaw(0.0);
   }

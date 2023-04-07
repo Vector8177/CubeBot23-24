@@ -842,6 +842,32 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "10,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///AdvantageKit/Drive/Gyro/PitchPosition",
+              "_title": "/AdvantageKit/Drive/Gyro/PitchPosition",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "11,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///AdvantageKit/Drive/Gyro/RollPosition",
+              "_title": "/AdvantageKit/Drive/Gyro/RollPosition",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }
