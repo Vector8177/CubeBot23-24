@@ -274,7 +274,7 @@ public final class Constants {
     public enum Position {
 
         HIGH(0, 0),
-        CONEHIGH(.12928, 34.5),
+        CONEHIGH(.15, 34.5),
         CONEHIGHUP(1.55, 34.5),
         CUBEHIGH(1.55, 34),
         MID(0, 0),
@@ -286,7 +286,7 @@ public final class Constants {
         STANDBY(1.1765, .25),
         CUBEINTAKE(-0.05, 0.25),
         STANDINGCONEINTAKE(5.106, 14.083),
-        TIPPEDCONEINTAKE(5.6399, 1),
+        TIPPEDCONEINTAKE(5.572, 1.333),
         HUMANPLAYERINTAKE(.8763, 1.5),
         DOUBSUBSTATIONINTAKE(0.0, 29.6);
 

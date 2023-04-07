@@ -100,11 +100,15 @@ public class RobotContainer {
             3,
             1);
 
-    private final PathPlannerTrajectory csConeCubeBalance = PathPlanner.loadPath("csConeCubeBalance",
+    private final PathPlannerTrajectory coneMobilBalance = PathPlanner.loadPath("coneMobilityBalance",
             2.0,
             1.0);
 
     private final PathPlannerTrajectory threePieceAuto = PathPlanner.loadPath("threePieceAuto",
+            3.5,
+            2.5);
+
+    private final PathPlannerTrajectory threePieceAutoCopy = PathPlanner.loadPath("threePieceAuto Copy",
             3.5,
             2.5);
 
@@ -115,6 +119,10 @@ public class RobotContainer {
     private final PathPlannerTrajectory bump2Piece = PathPlanner.loadPath("bump2PieceAuto",
             3.5,
             2.0);
+
+    private final PathPlannerTrajectory twoPlusPickup = PathPlanner.loadPath("score2Pickup1",
+            3.5,
+            2.5);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -462,10 +470,12 @@ public class RobotContainer {
         autoChooser.addDefaultOption("Cone PCube Balance", coneCubeBalance);
         autoChooser.addOption("Auto Balance", autoBalance);
         autoChooser.addOption("L3 Cone+Cube", coneCubeDeposit);
-        autoChooser.addOption("Charge Station Cone PCube Balance", csConeCubeBalance);
+        autoChooser.addOption("Cone Mobility Balance", coneMobilBalance);
         autoChooser.addOption("3 Game Piece Auto", threePieceAuto);
+        autoChooser.addOption("3 Game Piece Auto Copy", threePieceAutoCopy);
         autoChooser.addOption("Score 2 Plus Balance", twoPlusBalance);
         autoChooser.addOption("Bump 2 Piece", bump2Piece);
+        autoChooser.addOption("Score 2 Plus Field", twoPlusPickup);
         // autoChooser.addOption("Back and Forth", backnForth);
         // autoChooser.addOption("S curve", sCurve);
 
