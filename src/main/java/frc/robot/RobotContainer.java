@@ -118,7 +118,7 @@ public class RobotContainer {
 
     private final PathPlannerTrajectory bump2Piece = PathPlanner.loadPath("bump2PieceAuto",
             3.5,
-            2.0);
+            2.5);
 
     private final PathPlannerTrajectory twoPlusPickup = PathPlanner.loadPath("score2Pickup1",
             3.5,

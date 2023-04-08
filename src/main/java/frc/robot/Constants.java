@@ -288,7 +288,7 @@ public final class Constants {
         STANDINGCONEINTAKE(5.106, 14.083),
         TIPPEDCONEINTAKE(5.572, 1.333),
         HUMANPLAYERINTAKE(.8763, 1.5),
-        DOUBSUBSTATIONINTAKE(0.0, 29.6);
+        DOUBSUBSTATIONINTAKE(6.0076, 33.178);
 
         private double wristPos;
         private double elevatorPos;
