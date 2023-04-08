@@ -122,7 +122,7 @@ public class RobotContainer {
 
     private final PathPlannerTrajectory twoPlusPickup = PathPlanner.loadPath("score2Pickup1",
             3.5,
-            2.5);
+            2.25);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
