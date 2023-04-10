@@ -182,9 +182,5 @@ public class Swerve extends SubsystemBase {
         Logger.getInstance().processInputs("Drive/Gyro", gyroInputs);
         Logger.getInstance().recordOutput("Odometry/RobotPose", getPose());
         Logger.getInstance().recordOutput("SwerveModuleStates", getStates());
-
-        SmartDashboard.putNumber("Pigeon2 Yaw", getYaw().getDegrees());
-        SmartDashboard.putNumber("Pigeon2 Pitch", getPitch().getDegrees());
-        SmartDashboard.putNumber("Pigeon2 Roll", getRoll().getDegrees());
     }
 }
