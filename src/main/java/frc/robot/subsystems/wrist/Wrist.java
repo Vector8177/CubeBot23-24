@@ -8,7 +8,6 @@ import frc.robot.Constants.Wrist.PIDFFmode;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.littletonrobotics.junction.Logger;
 
 public class Wrist extends SubsystemBase {
@@ -40,13 +39,9 @@ public class Wrist extends SubsystemBase {
     public void periodic() {
         io.updateInputs(inputs);
         Logger.getInstance().processInputs("Wrist", inputs);
-        SmartDashboard.putBoolean("Wrist at setpoint", atSetpoint());
-        SmartDashboard.putNumber("Wrist Absolute Position", inputs.absoluteEncoderPosition);
-        SmartDashboard.putNumber("Wrist Goal position", targetPosition);
 
         double pidMotorSpeed = pidController.calculate(inputs.absoluteEncoderPosition, targetPosition)
                 + feedForward.calculate(targetPosition, 0);
-        SmartDashboard.putNumber("Motor power wrist", pidMotorSpeed);
         setMotor(
                 MathUtil.clamp(
                         (pidMotorSpeed), -Constants.Wrist.maxMotorVoltage,
@@ -58,7 +53,6 @@ public class Wrist extends SubsystemBase {
         pidController.setPID(mode.kP, mode.kI, mode.kD);
         feedForward = new ArmFeedforward(mode.kS, mode.kG, mode.kV, mode.kA);
         if (mode == PIDFFmode.WEIGHTED) {
-            SmartDashboard.putNumber("PIDFF", 1);
             Logger.getInstance().recordOutput("WristPIDMode", "Weighted");
         } else {
             Logger.getInstance().recordOutput("WristPIDMode", "Unweighted");

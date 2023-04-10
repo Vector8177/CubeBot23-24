@@ -4,7 +4,6 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.VectorTools.util.HSV;
 import frc.robot.Constants;
@@ -74,7 +73,6 @@ public class LEDs extends SubsystemBase {
                 break;
         }
         m_led.setData(m_ledBuffer);
-        SmartDashboard.putString("LED Mode", mode.toString());
     }
 
     public void setLEDMode(LEDMode mode) {
