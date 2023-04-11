@@ -3,9 +3,7 @@ package frc.robot;
 import com.pathplanner.lib.PathConstraints;
 import com.revrobotics.CANSparkMax.IdleMode;
 
-import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.Vector;
-import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -14,7 +12,6 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import frc.VectorTools.util.HSV;
@@ -432,32 +429,7 @@ public final class Constants {
          * estimates less. This matrix is in the form [x, y, theta]ᵀ, with units in
          * meters and radians.
          */
-        public static final Matrix<N3, N1> STATE_STANDARD_DEVIATIONS = Matrix.mat(Nat.N3(), Nat.N1())
-                .fill(
-                        0.1, // x
-                        0.1, // y
-                        0.1 // theta
-                );
-
-        /**
-         * Standard deviations of the vision measurements. Increase these numbers to
-         * trust global
-         * measurements from vision less. This matrix is in the form [x, y, theta]ᵀ,
-         * with units in
-         * meters and radians.
-         *
-         * <p>
-         * These are not actually used anymore, but the constructor for the pose
-         * estimator wants
-         * them. This value is calculated dynamically using the below list.
-         */
-        public static final Matrix<N3, N1> VISION_MEASUREMENT_STANDARD_DEVIATIONS = Matrix.mat(Nat.N3(), Nat.N1())
-                .fill(
-                        // if these numbers are less than one, multiplying will do bad things
-                        1, // x
-                        1, // y
-                        1 * Math.PI // theta
-                );
+        public static final Vector<N3> STATE_STANDARD_DEVIATIONS = VecBuilder.fill(0.02, 0.02, 0.005);
 
         public static final double POSE_AMBIGUITY_CUTOFF = .05;
 

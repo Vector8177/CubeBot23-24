@@ -43,8 +43,8 @@ public class Vision extends SubsystemBase {
         ArrayList<Optional<Measurement>> robotPoses = new ArrayList<>();
 
         for (Camera camera : cameras) {
-            robotPoses.add(camera.getEstimatedPose(prevEstimatedRobotPose));
-
+            Optional<Measurement> measurement = camera.getEstimatedPose(prevEstimatedRobotPose);
+            robotPoses.add(measurement);
         }
 
         return robotPoses;
