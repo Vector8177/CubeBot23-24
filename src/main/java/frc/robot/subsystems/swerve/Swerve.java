@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.littletonrobotics.junction.Logger;
 
 import com.pathplanner.lib.PathPoint;
+
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -59,7 +61,7 @@ public class Swerve extends SubsystemBase {
                 getPositions(),
                 new Pose2d(),
                 Constants.PoseEstimation.STATE_STANDARD_DEVIATIONS,
-                Constants.PoseEstimation.VISION_MEASUREMENT_STANDARD_DEVIATIONS);
+                VecBuilder.fill(0, 0, 0));
 
         this.s_Vision = s_Vision;
 
