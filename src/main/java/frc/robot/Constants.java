@@ -4,7 +4,9 @@ import com.pathplanner.lib.PathConstraints;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.Nat;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -410,6 +412,20 @@ public final class Constants {
     }
 
     public static final class PoseEstimation {
+        public interface StandardDeviation {
+            Vector<N3> forMeasurement(double distance, int count);
+        }
+
+        public static final StandardDeviation PHOTON_VISION_STD_DEV = (distance, count) -> {
+            double distanceMultiplier = Math.pow(distance - ((count - 1) * 2), 2);
+            double translationalStdDev = (0.05 / (count)) * distanceMultiplier + 0.05;
+            double rotationalStdDev = 0.2 * distanceMultiplier + 0.1;
+            return VecBuilder.fill(
+                    translationalStdDev,
+                    translationalStdDev,
+                    rotationalStdDev);
+        };
+
         /**
          * Standard deviations of model states. Increase these numbers to trust your
          * model's state
@@ -446,6 +462,11 @@ public final class Constants {
         public static final double POSE_AMBIGUITY_CUTOFF = .05;
 
         public static final double POSE_DISTANCE_CUTOFF = 1.85;
+    }
+
+    public static class FieldConstants {
+        public static final double fieldLength = 16.542;
+        public static final double fieldWidth = 8.0137;
     }
 
     public static final class LEDs {

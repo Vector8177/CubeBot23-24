@@ -1,9 +1,9 @@
 package frc.robot.subsystems.swerve;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.littletonrobotics.junction.Logger;
-import org.photonvision.EstimatedRobotPose;
 
 import com.pathplanner.lib.PathPoint;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.VectorTools.util.PoseMeasurement;
 import frc.robot.Constants;
 import frc.robot.subsystems.vision.Vision;
 
@@ -168,12 +169,17 @@ public class Swerve extends SubsystemBase {
         swervePoseEstimator.update(getYaw(), getPositions());
 
         if (!DriverStation.isAutonomous()) {
-            for (Optional<EstimatedRobotPose> result : s_Vision.getEstimatedGlobalPoses(getPose())) {
-                if (result.isPresent()) {
-                    EstimatedRobotPose camPose = result.get();
-                    swervePoseEstimator.addVisionMeasurement(
-                            camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
-                }
+            List<Optional<PoseMeasurement.Measurement>> poses = s_Vision.getEstimatedGlobalPoses(getPose());
+
+            for (int i = 0; i < poses.size(); i++) {
+                // this is a hack to get around an issue in `SwerveDrivePoseEstimator`
+                // where two measurements cannot share the same timestamp
+                double timestampOffset = 1e-9 * i;
+
+                poses.get(i).map((measurement) -> {
+                    measurement.timestamp += timestampOffset;
+                    return measurement;
+                }).ifPresent(this::addVisionMeasurement);
             }
         }
 
@@ -182,5 +188,10 @@ public class Swerve extends SubsystemBase {
         Logger.getInstance().processInputs("Drive/Gyro", gyroInputs);
         Logger.getInstance().recordOutput("Odometry/RobotPose", getPose());
         Logger.getInstance().recordOutput("SwerveModuleStates", getStates());
+    }
+
+    private void addVisionMeasurement(PoseMeasurement.Measurement measurement) {
+        swervePoseEstimator.addVisionMeasurement(measurement.pose.toPose2d(), measurement.timestamp,
+                measurement.stdDeviation);
     }
 }
