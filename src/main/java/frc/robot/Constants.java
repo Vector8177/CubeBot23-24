@@ -431,9 +431,9 @@ public final class Constants {
          */
         public static final Vector<N3> STATE_STANDARD_DEVIATIONS = VecBuilder.fill(0.02, 0.02, 0.005);
 
-        public static final double POSE_AMBIGUITY_CUTOFF = .05;
+        public static final double POSE_AMBIGUITY_CUTOFF = .3;
 
-        public static final double POSE_DISTANCE_CUTOFF = 1.85;
+        public static final double POSE_DISTANCE_CUTOFF = FieldConstants.fieldLength/4;
     }
 
     public static class FieldConstants {
