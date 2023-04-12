@@ -6,7 +6,6 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.Position;
 
 public class Elevator extends SubsystemBase {
@@ -19,8 +18,8 @@ public class Elevator extends SubsystemBase {
     public Elevator(ElevatorIO io) {
         this.io = io;
         // initialize pidContoller
-        pidController = new PIDController(Constants.Elevator.elevatorKP, Constants.Elevator.elevatorKI,
-                Constants.Elevator.elevatorKD);
+        pidController = new PIDController(ElevatorConstants.elevatorKP, ElevatorConstants.elevatorKI,
+                ElevatorConstants.elevatorKD);
         pidController.setSetpoint(0);
         pidController.setTolerance(.25);
 
@@ -72,7 +71,7 @@ public class Elevator extends SubsystemBase {
         move(
                 MathUtil.clamp(
                         pidController.calculate(getEncoderPosition(), targetPosition),
-                        -Constants.Elevator.maxMotorVoltage,
-                        Constants.Elevator.maxMotorVoltage));
+                        -ElevatorConstants.maxMotorVoltage,
+                        ElevatorConstants.maxMotorVoltage));
     }
 }

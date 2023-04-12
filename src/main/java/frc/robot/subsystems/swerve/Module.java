@@ -5,7 +5,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import org.littletonrobotics.junction.Logger;
-import frc.robot.Constants;
 
 public class Module {
     private Rotation2d lastAngle;
@@ -17,7 +16,7 @@ public class Module {
     private final ModuleIOInputsAutoLogged inputs = new ModuleIOInputsAutoLogged();
 
     private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(
-            Constants.Swerve.driveKS, Constants.Swerve.driveKV, Constants.Swerve.driveKA);
+            SwerveConstants.driveKS, SwerveConstants.driveKV, SwerveConstants.driveKA);
 
     public Module(ModuleIO io, int index) {
         this.io = io;
@@ -26,7 +25,7 @@ public class Module {
         lastAngle = Rotation2d.fromDegrees(inputs.turnPosition);
     }
 
-    public void periodic(){
+    public void periodic() {
         io.updateInputs(inputs);
         Logger.getInstance().processInputs("Drive/Module" + Integer.toString(index), inputs);
     }
@@ -55,7 +54,7 @@ public class Module {
 
     private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop) {
         if (isOpenLoop) {
-            double percentOutput = desiredState.speedMetersPerSecond / Constants.Swerve.fastSpeedLimit;
+            double percentOutput = desiredState.speedMetersPerSecond / SwerveConstants.fastSpeedLimit;
             io.setMotorOutput(percentOutput);
         } else {
             io.setVelocity(desiredState, feedforward.calculate(desiredState.speedMetersPerSecond));
@@ -69,7 +68,7 @@ public class Module {
     private void setAngle(SwerveModuleState desiredState) {
         // Prevent rotating module if speed is less then 1%. Prevents jittering.
         Rotation2d angle = (Math
-                .abs(desiredState.speedMetersPerSecond) <= (Constants.Swerve.fastAngularVelocityLimit * 0.01))
+                .abs(desiredState.speedMetersPerSecond) <= (SwerveConstants.fastAngularVelocityLimit * 0.01))
                         ? lastAngle
                         : desiredState.angle;
 

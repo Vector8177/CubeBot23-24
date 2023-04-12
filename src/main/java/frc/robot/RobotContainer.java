@@ -27,14 +27,14 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.Position;
-import frc.robot.Constants.Intake.EjectSpeed;
-import frc.robot.Constants.LEDs.LEDMode;
-import frc.robot.Constants.Wrist.PIDFFmode;
+import frc.robot.subsystems.intake.IntakeConstants.EjectSpeed;
+import frc.robot.subsystems.wrist.WristConstants.PIDFFmode;
 import frc.robot.autos.AutoBalancing;
 import frc.robot.Constants.GamePiece;
 import frc.robot.commands.*;
 import frc.robot.commands.TimedIntake.Direction;
 import frc.robot.subsystems.LEDs.LEDs;
+import frc.robot.subsystems.LEDs.LEDConstants.LEDMode;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIO;
 import frc.robot.subsystems.elevator.ElevatorIOSparkMax;
@@ -48,9 +48,11 @@ import frc.robot.subsystems.swerve.ModuleIOSparkMax;
 // import frc.robot.Constants.SEGMENT;
 // import frc.robot.autos.segmentLineUp;
 import frc.robot.subsystems.swerve.Swerve;
+import frc.robot.subsystems.swerve.SwerveConstants;
 import frc.robot.subsystems.vision.CameraIO;
 import frc.robot.subsystems.vision.CameraIOPhoton;
 import frc.robot.subsystems.vision.Vision;
+import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.wrist.Wrist;
 import frc.robot.subsystems.wrist.WristIO;
 import frc.robot.subsystems.wrist.WristIOSparkMax;
@@ -132,13 +134,13 @@ public class RobotContainer {
                         // Real robot, instantiate hardware IO implementations
                         case REAL:
                                 s_Vision = new Vision(
-                                                new CameraIOPhoton(Constants.Vision.leftCameraName),
-                                                new CameraIOPhoton(Constants.Vision.rightCameraName));
+                                                new CameraIOPhoton(VisionConstants.leftCameraName),
+                                                new CameraIOPhoton(VisionConstants.rightCameraName));
                                 s_Swerve = new Swerve(new GyroIOPigeon2(),
-                                                new ModuleIOSparkMax(Constants.Swerve.Mod0.constants),
-                                                new ModuleIOSparkMax(Constants.Swerve.Mod1.constants),
-                                                new ModuleIOSparkMax(Constants.Swerve.Mod2.constants),
-                                                new ModuleIOSparkMax(Constants.Swerve.Mod3.constants),
+                                                new ModuleIOSparkMax(SwerveConstants.Mod0.constants),
+                                                new ModuleIOSparkMax(SwerveConstants.Mod1.constants),
+                                                new ModuleIOSparkMax(SwerveConstants.Mod2.constants),
+                                                new ModuleIOSparkMax(SwerveConstants.Mod3.constants),
                                                 s_Vision);
                                 s_Intake = new Intake(new IntakeIOSparkMax());
                                 s_Wrist = new Wrist(new WristIOSparkMax());
@@ -190,7 +192,7 @@ public class RobotContainer {
                 autoBuilder = new SwerveAutoBuilder(
                                 s_Swerve::getPose,
                                 s_Swerve::resetOdometry,
-                                Constants.Swerve.swerveKinematics, // SwerveDriveKinematics
+                                SwerveConstants.swerveKinematics, // SwerveDriveKinematics
                                 new PIDConstants(Constants.Autonomous.kPXController, 0, 0),
                                 new PIDConstants(Constants.Autonomous.kPThetaController,
                                                 0,

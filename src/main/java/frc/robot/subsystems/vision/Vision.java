@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.VectorTools.CustomPhoton.PhotonPoseEstimator;
 import frc.VectorTools.util.PoseMeasurement;
 import frc.VectorTools.util.PoseMeasurement.Measurement;
-import frc.robot.Constants;
 
 public class Vision extends SubsystemBase {
     private ArrayList<Camera> cameras;
@@ -29,8 +28,8 @@ public class Vision extends SubsystemBase {
         try {
             aprilTagLayout = AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();
 
-            cameras.add(new Camera(leftCamera, Constants.Vision.leftCameraPosition, aprilTagLayout));
-            cameras.add(new Camera(rightCamera, Constants.Vision.rightCameraPosition, aprilTagLayout));
+            cameras.add(new Camera(leftCamera, VisionConstants.leftCameraPosition, aprilTagLayout));
+            cameras.add(new Camera(rightCamera, VisionConstants.rightCameraPosition, aprilTagLayout));
         } catch (IOException e) {
             DriverStation.reportError("Failed to load AprilTagFieldLayout", e.getStackTrace());
         }

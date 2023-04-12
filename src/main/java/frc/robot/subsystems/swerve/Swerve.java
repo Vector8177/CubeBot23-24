@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.VectorTools.util.PoseMeasurement;
-import frc.robot.Constants;
 import frc.robot.subsystems.vision.Vision;
 
 public class Swerve extends SubsystemBase {
@@ -56,11 +55,11 @@ public class Swerve extends SubsystemBase {
         };
 
         swervePoseEstimator = new SwerveDrivePoseEstimator(
-                Constants.Swerve.swerveKinematics,
+                SwerveConstants.swerveKinematics,
                 getYaw(),
                 getPositions(),
                 new Pose2d(),
-                Constants.PoseEstimation.STATE_STANDARD_DEVIATIONS,
+                SwerveConstants.STATE_STANDARD_DEVIATIONS,
                 VecBuilder.fill(0, 0, 0));
 
         this.s_Vision = s_Vision;
@@ -77,8 +76,8 @@ public class Swerve extends SubsystemBase {
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(
                         translation.getX(), translation.getY(), rotation, getYaw())
                 : new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
-        SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(chassisSpeeds);
-        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.fastSpeedLimit);
+        SwerveModuleState[] swerveModuleStates = SwerveConstants.swerveKinematics.toSwerveModuleStates(chassisSpeeds);
+        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, SwerveConstants.fastSpeedLimit);
 
         for (Module mod : mSwerveMods) {
             mod.setDesiredState(swerveModuleStates[mod.index], isOpenLoop);
@@ -87,7 +86,7 @@ public class Swerve extends SubsystemBase {
 
     /* Used by SwerveControllerCommand in Auto */
     public void setModuleStates(SwerveModuleState[] desiredStates) {
-        SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.Swerve.fastSpeedLimit);
+        SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, SwerveConstants.fastSpeedLimit);
 
         for (Module mod : mSwerveMods) {
             mod.setDesiredState(desiredStates[mod.index], false);
@@ -148,7 +147,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public Rotation2d getYaw() {
-        return (Constants.Swerve.invertGyro)
+        return (SwerveConstants.invertGyro)
                 ? Rotation2d.fromDegrees(360 - gyroInputs.yawPosition)
                 : Rotation2d.fromDegrees(gyroInputs.yawPosition);
     }

@@ -3,24 +3,24 @@ package frc.robot.subsystems.LEDs.LEDModes;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import frc.VectorTools.util.HSV;
-import frc.robot.Constants.LEDs;
+import frc.robot.subsystems.LEDs.LEDConstants;
 
 /*
      * Orange with black wave
      */
 public class VectorWave extends LEDModeBase {
-    private double vectorWaveMiddleIndex = -LEDs.VectorWave.pauseBetween;
-    private HSV hsv = LEDs.VectorWave.hsv;
+    private double vectorWaveMiddleIndex = -LEDConstants.VectorWave.pauseBetween;
+    private HSV hsv = LEDConstants.VectorWave.hsv;
 
     public VectorWave(AddressableLEDBuffer m_ledBuffer) {
         super(m_ledBuffer);
     }
 
     public void execute() {
-        for (int i = 0; i < m_ledBuffer.getLength() / 2 + LEDs.VectorWave.pauseBetween; i++) {
+        for (int i = 0; i < m_ledBuffer.getLength() / 2 + LEDConstants.VectorWave.pauseBetween; i++) {
             int value = MathUtil.clamp(
-                    (int) ((1 / LEDs.VectorWave.spread) * (Math.abs(vectorWaveMiddleIndex - i)) * hsv.v)
-                            - LEDs.VectorWave.length,
+                    (int) ((1 / LEDConstants.VectorWave.spread) * (Math.abs(vectorWaveMiddleIndex - i)) * hsv.v)
+                            - LEDConstants.VectorWave.length,
                     0,
                     hsv.v - 10) + 10;
 
@@ -29,8 +29,8 @@ public class VectorWave extends LEDModeBase {
                 m_ledBuffer.setHSV(m_ledBuffer.getLength() - i - 1, hsv.h, hsv.s, value);
             }
         }
-        vectorWaveMiddleIndex = (vectorWaveMiddleIndex + LEDs.VectorWave.speed) > m_ledBuffer.getLength()
-                + LEDs.VectorWave.pauseBetween ? -LEDs.VectorWave.pauseBetween
-                        : (vectorWaveMiddleIndex + LEDs.VectorWave.speed);
+        vectorWaveMiddleIndex = (vectorWaveMiddleIndex + LEDConstants.VectorWave.speed) > m_ledBuffer.getLength()
+                + LEDConstants.VectorWave.pauseBetween ? -LEDConstants.VectorWave.pauseBetween
+                        : (vectorWaveMiddleIndex + LEDConstants.VectorWave.speed);
     }
 }

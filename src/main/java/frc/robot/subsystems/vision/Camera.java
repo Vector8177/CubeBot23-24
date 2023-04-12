@@ -12,7 +12,6 @@ import edu.wpi.first.math.geometry.Transform3d;
 import frc.VectorTools.CustomPhoton.PhotonPoseEstimator;
 import frc.VectorTools.CustomPhoton.PhotonPoseEstimator.PoseStrategy;
 import frc.VectorTools.util.PoseMeasurement;
-import frc.robot.Constants;
 
 public class Camera {
     private final CameraIO cameraIO;
@@ -67,17 +66,17 @@ public class Camera {
                 getCameraMatrixData(),
                 getDistCoeffsData()).flatMap((result) -> {
                     if (result.targetsUsed.get(0).getBestCameraToTarget().getTranslation()
-                            .getNorm() > Constants.PoseEstimation.POSE_DISTANCE_CUTOFF
+                            .getNorm() > VisionConstants.PoseEstimation.POSE_DISTANCE_CUTOFF
                             || result.targetsUsed.get(0)
-                                    .getPoseAmbiguity() > Constants.PoseEstimation.POSE_AMBIGUITY_CUTOFF) {
+                                    .getPoseAmbiguity() > VisionConstants.PoseEstimation.POSE_AMBIGUITY_CUTOFF) {
                         return Optional.empty();
                     }
 
                     // Reject pose estimates outside the field
                     if (result.estimatedPose.toPose2d().getX() < 0
-                            || result.estimatedPose.toPose2d().getX() > Constants.FieldConstants.fieldLength ||
+                            || result.estimatedPose.toPose2d().getX() > VisionConstants.FieldConstants.fieldLength ||
                             result.estimatedPose.toPose2d().getY() < 0
-                            || result.estimatedPose.toPose2d().getY() > Constants.FieldConstants.fieldWidth) {
+                            || result.estimatedPose.toPose2d().getY() > VisionConstants.FieldConstants.fieldWidth) {
                         return Optional.empty();
                     }
 
@@ -87,7 +86,7 @@ public class Camera {
                     return Optional.of(new PoseMeasurement.Measurement(
                             result.timestampSeconds,
                             result.estimatedPose,
-                            Constants.PoseEstimation.PHOTON_VISION_STD_DEV.forMeasurement(
+                            VisionConstants.PoseEstimation.PHOTON_VISION_STD_DEV.forMeasurement(
                                     result.targetsUsed.get(0).getBestCameraToTarget().getX(),
                                     result.targetsUsed.size())));
                 });
