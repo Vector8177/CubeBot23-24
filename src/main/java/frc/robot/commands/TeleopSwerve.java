@@ -6,9 +6,10 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.VectorTools.util.SlewRateLimiter;
 import frc.robot.Constants;
-import frc.robot.Constants.LEDs.LEDMode;
 import frc.robot.subsystems.LEDs.LEDs;
+import frc.robot.subsystems.LEDs.LEDConstants.LEDMode;
 import frc.robot.subsystems.swerve.Swerve;
+import frc.robot.subsystems.swerve.SwerveConstants;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
@@ -106,27 +107,27 @@ public class TeleopSwerve extends CommandBase {
                         ? Speed.FAST
                         : Speed.NORMAL;
 
-        double speedLimit = Constants.Swerve.speedLimit;
-        double angularSpeedLimit = Constants.Swerve.angularVelocityLimit;
+        double speedLimit = SwerveConstants.speedLimit;
+        double angularSpeedLimit = SwerveConstants.angularVelocityLimit;
 
         switch (speed) {
             case FAST:
-                translationLimiter.setRateLimit(Constants.Swerve.fastAccelerationLimit);
-                strafeLimiter.setRateLimit(Constants.Swerve.fastAccelerationLimit);
+                translationLimiter.setRateLimit(SwerveConstants.fastAccelerationLimit);
+                strafeLimiter.setRateLimit(SwerveConstants.fastAccelerationLimit);
 
-                speedLimit = Constants.Swerve.fastSpeedLimit;
-                angularSpeedLimit = Constants.Swerve.fastAngularVelocityLimit;
+                speedLimit = SwerveConstants.fastSpeedLimit;
+                angularSpeedLimit = SwerveConstants.fastAngularVelocityLimit;
                 break;
             case SLOW:
-                translationLimiter.setRateLimit(Constants.Swerve.accelerationLimit);
-                strafeLimiter.setRateLimit(Constants.Swerve.accelerationLimit);
+                translationLimiter.setRateLimit(SwerveConstants.accelerationLimit);
+                strafeLimiter.setRateLimit(SwerveConstants.accelerationLimit);
 
-                speedLimit = Constants.Swerve.slowSpeedLimit;
-                angularSpeedLimit = Constants.Swerve.slowAngularVelocityLimit;
+                speedLimit = SwerveConstants.slowSpeedLimit;
+                angularSpeedLimit = SwerveConstants.slowAngularVelocityLimit;
                 break;
             default:
-                translationLimiter.setRateLimit(Constants.Swerve.accelerationLimit);
-                strafeLimiter.setRateLimit(Constants.Swerve.accelerationLimit);
+                translationLimiter.setRateLimit(SwerveConstants.accelerationLimit);
+                strafeLimiter.setRateLimit(SwerveConstants.accelerationLimit);
                 break;
         }
 
@@ -141,7 +142,7 @@ public class TeleopSwerve extends CommandBase {
         double rotationVal;
         double strafeVal = strafeLimiter
                 .calculate(MathUtil.applyDeadband(strafeSup.getAsDouble(),
-                        Constants.Swerve.stickDeadband));
+                        SwerveConstants.stickDeadband));
 
         if (gridLineUp.getAsBoolean()) {
             if (currentLineUpPosition == Integer.MAX_VALUE)
@@ -174,9 +175,9 @@ public class TeleopSwerve extends CommandBase {
                 s_LEDs.setLEDMode(previousMode);
 
             rotationVal = MathUtil.applyDeadband(rotationSup.getAsDouble(),
-                    Constants.Swerve.stickDeadband);
+                    SwerveConstants.stickDeadband);
             translationVal = MathUtil.applyDeadband(translationSup.getAsDouble(),
-                    Constants.Swerve.stickDeadband);
+                    SwerveConstants.stickDeadband);
         }
 
         s_Swerve.drive(

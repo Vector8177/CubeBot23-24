@@ -14,7 +14,6 @@ import frc.lib.util.CANCoderUtil;
 import frc.lib.util.CANCoderUtil.CCUsage;
 import frc.lib.util.CANSparkMaxUtil;
 import frc.lib.util.CANSparkMaxUtil.Usage;
-import frc.robot.Constants;
 import frc.robot.Robot;
 
 public class ModuleIOSparkMax implements ModuleIO {
@@ -84,18 +83,18 @@ public class ModuleIOSparkMax implements ModuleIO {
     private void configAngleMotor() {
         angleMotor.restoreFactoryDefaults();
         CANSparkMaxUtil.setCANSparkMaxBusUsage(angleMotor, Usage.kPositionOnly);
-        angleMotor.setSmartCurrentLimit(Constants.Swerve.angleContinuousCurrentLimit);
-        angleMotor.setInverted(Constants.Swerve.angleInvert);
-        angleMotor.setIdleMode(Constants.Swerve.angleNeutralMode);
-        integratedAngleEncoder.setPositionConversionFactor(Constants.Swerve.angleConversionFactor);
+        angleMotor.setSmartCurrentLimit(SwerveConstants.angleContinuousCurrentLimit);
+        angleMotor.setInverted(SwerveConstants.angleInvert);
+        angleMotor.setIdleMode(SwerveConstants.angleNeutralMode);
+        integratedAngleEncoder.setPositionConversionFactor(SwerveConstants.angleConversionFactor);
         angleController.setPositionPIDWrappingEnabled(true);
         angleController.setPositionPIDWrappingMinInput(-180.0);
         angleController.setPositionPIDWrappingMaxInput(180.0);
-        angleController.setP(Constants.Swerve.angleKP);
-        angleController.setI(Constants.Swerve.angleKI);
-        angleController.setD(Constants.Swerve.angleKD);
-        angleController.setFF(Constants.Swerve.angleKFF);
-        angleMotor.enableVoltageCompensation(Constants.Swerve.voltageComp);
+        angleController.setP(SwerveConstants.angleKP);
+        angleController.setI(SwerveConstants.angleKI);
+        angleController.setD(SwerveConstants.angleKD);
+        angleController.setFF(SwerveConstants.angleKFF);
+        angleMotor.enableVoltageCompensation(SwerveConstants.voltageComp);
         angleMotor.burnFlash();
         resetToAbsolute();
     }
@@ -124,16 +123,16 @@ public class ModuleIOSparkMax implements ModuleIO {
     private void configDriveMotor() {
         driveMotor.restoreFactoryDefaults();
         CANSparkMaxUtil.setCANSparkMaxBusUsage(driveMotor, Usage.kVelocityOnly);
-        driveMotor.setSmartCurrentLimit(Constants.Swerve.driveContinuousCurrentLimit);
-        driveMotor.setInverted(Constants.Swerve.driveInvert);
-        driveMotor.setIdleMode(Constants.Swerve.driveNeutralMode);
-        driveEncoder.setVelocityConversionFactor(Constants.Swerve.driveConversionVelocityFactor);
-        driveEncoder.setPositionConversionFactor(Constants.Swerve.driveConversionPositionFactor);
-        driveController.setP(Constants.Swerve.angleKP);
-        driveController.setI(Constants.Swerve.angleKI);
-        driveController.setD(Constants.Swerve.angleKD);
-        driveController.setFF(Constants.Swerve.angleKFF);
-        driveMotor.enableVoltageCompensation(Constants.Swerve.voltageComp);
+        driveMotor.setSmartCurrentLimit(SwerveConstants.driveContinuousCurrentLimit);
+        driveMotor.setInverted(SwerveConstants.driveInvert);
+        driveMotor.setIdleMode(SwerveConstants.driveNeutralMode);
+        driveEncoder.setVelocityConversionFactor(SwerveConstants.driveConversionVelocityFactor);
+        driveEncoder.setPositionConversionFactor(SwerveConstants.driveConversionPositionFactor);
+        driveController.setP(SwerveConstants.angleKP);
+        driveController.setI(SwerveConstants.angleKI);
+        driveController.setD(SwerveConstants.angleKD);
+        driveController.setFF(SwerveConstants.angleKFF);
+        driveMotor.enableVoltageCompensation(SwerveConstants.voltageComp);
         driveMotor.burnFlash();
         driveEncoder.setPosition(0.0);
     }

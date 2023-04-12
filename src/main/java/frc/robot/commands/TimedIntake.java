@@ -2,10 +2,10 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.Constants.GamePiece;
-import frc.robot.Constants.Intake.EjectSpeed;
+import frc.robot.subsystems.intake.IntakeConstants.EjectSpeed;
 import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.intake.IntakeConstants;
 
 public class TimedIntake extends CommandBase {
 
@@ -51,9 +51,9 @@ public class TimedIntake extends CommandBase {
                 break;
             case CUBE:
                 if (direction == Direction.INTAKE) {
-                    s_Intake.setMotor(Constants.Intake.cubeOuttakeSpeed);
+                    s_Intake.setMotor(IntakeConstants.cubeOuttakeSpeed);
                 } else {
-                    s_Intake.setMotor(-Constants.Intake.cubeOuttakeSpeed);
+                    s_Intake.setMotor(-IntakeConstants.cubeOuttakeSpeed);
                 }
                 break;
 
