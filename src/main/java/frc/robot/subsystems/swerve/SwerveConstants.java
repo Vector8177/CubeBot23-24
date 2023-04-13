@@ -11,7 +11,7 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import frc.lib.config.SwerveModuleConstants;
 
-public class SwerveConstants {
+public final class SwerveConstants {
     public static final double stickDeadband = 0.1;
 
     public static final Vector<N3> STATE_STANDARD_DEVIATIONS = VecBuilder.fill(0.02, 0.02, 0.005);

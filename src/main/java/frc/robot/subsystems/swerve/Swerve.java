@@ -16,7 +16,6 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -169,19 +168,18 @@ public class Swerve extends SubsystemBase {
 
         swervePoseEstimator.update(getYaw(), getPositions());
 
-            List<Optional<PoseMeasurement.Measurement>> poses = s_Vision.getEstimatedGlobalPoses(getPose());
+        List<Optional<PoseMeasurement.Measurement>> poses = s_Vision.getEstimatedGlobalPoses(getPose());
 
-            for (int i = 0; i < poses.size(); i++) {
-                // this is a hack to get around an issue in `SwerveDrivePoseEstimator`
-                // where two measurements cannot share the same timestamp
-                double timestampOffset = 1e-9 * i;
+        for (int i = 0; i < poses.size(); i++) {
+            // this is a hack to get around an issue in `SwerveDrivePoseEstimator`
+            // where two measurements cannot share the same timestamp
+            double timestampOffset = 1e-9 * i;
 
-                poses.get(i).map((measurement) -> {
-                    measurement.timestamp += timestampOffset;
-                    return measurement;
-                }).ifPresent(this::addVisionMeasurement);
-            }
-        
+            poses.get(i).map((measurement) -> {
+                measurement.timestamp += timestampOffset;
+                return measurement;
+            }).ifPresent(this::addVisionMeasurement);
+        }
 
         field.setRobotPose(getPose());
 
