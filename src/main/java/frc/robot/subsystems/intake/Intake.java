@@ -31,9 +31,8 @@ public class Intake extends SubsystemBase {
 
     }
 
-    public void resetIntakeEncoder() {
-        io.setPosition(0);
-
+    public void setIntakeEncoder(double position) {
+        io.setPosition(position);
     }
 
 }

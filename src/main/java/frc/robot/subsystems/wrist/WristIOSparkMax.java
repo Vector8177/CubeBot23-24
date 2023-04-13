@@ -43,7 +43,7 @@ public class WristIOSparkMax implements WristIO {
 
     }
 
-    public void resetEncoder() {
+    public void resetRelativeEncoder() {
         relativeEncoder.setPosition(0);
     }
 
