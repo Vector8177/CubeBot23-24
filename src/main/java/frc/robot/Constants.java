@@ -125,9 +125,9 @@ public final class Constants {
         public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
         public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
-        public static final double kPXController = 1.9;
-        public static final double kPYController = 1.9;
-        public static final double kPThetaController = 1.5;
+        public static final double kPXController = 1.8;
+        public static final double kPYController = 1.8;
+        public static final double kPThetaController = 1.9;
 
         /* Constants for line up */
         public static final double kPGridLineUp = 0.8;
