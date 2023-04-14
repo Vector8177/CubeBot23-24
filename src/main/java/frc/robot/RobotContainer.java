@@ -108,7 +108,7 @@ public class RobotContainer {
 
     private final PathPlannerTrajectory threePieceAuto = PathPlanner.loadPath("threePieceAuto",
             3.5,
-            2.5);
+            3.0);
 
     private final PathPlannerTrajectory threePieceAutoCopy = PathPlanner.loadPath("threePieceAuto Copy",
             3.5,
