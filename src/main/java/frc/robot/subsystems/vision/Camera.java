@@ -80,7 +80,7 @@ public class Camera {
                         return Optional.empty();
                     }
 
-                    Logger.getInstance().recordOutput("Odometry/" + cameraName + "/RobotPose",
+                    Logger.getInstance().recordOutput("Odometry/" + cameraName,
                             result.estimatedPose);
 
                     return Optional.of(new PoseMeasurement.Measurement(

@@ -18,9 +18,6 @@ public interface IntakeIO {
   public default void setVoltage(double speed) {
   }
 
-  public default void resetIntakeEncoder() {
-  }
-
   public default void setPosition(double position) {
   }
 }

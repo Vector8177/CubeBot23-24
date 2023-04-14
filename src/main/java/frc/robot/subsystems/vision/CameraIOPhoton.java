@@ -11,6 +11,8 @@ public class CameraIOPhoton implements CameraIO {
     public CameraIOPhoton(String cameraName) {
         this.cameraName = cameraName;
         camera = new PhotonCamera(cameraName);
+
+        camera.setDriverMode(false);
     }
 
     @Override
