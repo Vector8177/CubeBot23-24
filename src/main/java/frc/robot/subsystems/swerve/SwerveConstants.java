@@ -75,11 +75,11 @@ public final class SwerveConstants {
     public static final double angleConversionFactor = 360.0 / angleGearRatio;
 
     /* Swerve Profiling Values */
-    public static final double speedLimit = 3.0; // Base Meters Per Second Speed
-    public static final double slowSpeedLimit = 0.75; // Slow Meters Per Second Speed
+    public static final double speedLimit = 4.5; // Base Meters Per Second Speed
+    public static final double slowSpeedLimit = 1.0; // Slow Meters Per Second Speed
     public static final double fastSpeedLimit = 4.5; // Fast Meters Per Second Speed
 
-    public static final double accelerationLimit = 3.0;
+    public static final double accelerationLimit = 3.5;
     public static final double fastAccelerationLimit = 10.0;
 
     public static final double angularVelocityLimit = 5;

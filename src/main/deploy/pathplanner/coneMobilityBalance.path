@@ -40,7 +40,7 @@
         "x": 2.3260421396047257,
         "y": 2.1926904465279478
       },
-      "holonomicAngle": 90.0,
+      "holonomicAngle": -180.0,
       "isReversal": true,
       "velOverride": null,
       "isLocked": false,
@@ -65,7 +65,7 @@
         "x": 4.453489896947634,
         "y": 2.1898774113337707
       },
-      "holonomicAngle": 90.0,
+      "holonomicAngle": -180.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -90,7 +90,7 @@
         "x": 6.0176530034799836,
         "y": 2.1894776947448635
       },
-      "holonomicAngle": 90.0,
+      "holonomicAngle": -180.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -112,14 +112,14 @@
         "y": 2.185476891444918
       },
       "nextControl": null,
-      "holonomicAngle": 90.0,
+      "holonomicAngle": -180.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "AutoBalance"
+          "AutoBalanceStraight"
         ],
         "executionBehavior": "sequential",
         "waitBehavior": "none",
