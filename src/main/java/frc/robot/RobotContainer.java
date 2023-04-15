@@ -301,6 +301,15 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         driver.y().onTrue(new InstantCommand(() -> s_Swerve.setYaw(Rotation2d.fromDegrees(0))));
+
+        SequentialCommandGroup coneFlickOuttake =
+                new SequentialCommandGroup(
+                        new TimedIntake(s_Intake, .12, GamePiece.CONE, EjectSpeed.CONEFAST, Direction.OUTTAKE),
+                        new ParallelCommandGroup(
+                                new TimedIntake(
+                                        s_Intake, .75, GamePiece.CONE, EjectSpeed.CONENORMAL, Direction.OUTTAKE),
+                                new SetPosition(s_Wrist, s_Elevator, Position.CONEHIGHUP, () -> GamePiece.CONE)),
+                        new InstantCommand(() -> s_Wrist.setPIDFFMode(PIDFFmode.UNWEIGHTED)));
         driver
                 .x()
                 .onTrue(
@@ -314,28 +323,7 @@ public class RobotContainer {
                                                         GamePiece.CUBE,
                                                         EjectSpeed.CUBENORMAL,
                                                         Direction.OUTTAKE)),
-                                        Map.entry(
-                                                GamePiece.CONE,
-                                                new SequentialCommandGroup(
-                                                        new TimedIntake(
-                                                                s_Intake,
-                                                                .12,
-                                                                GamePiece.CONE,
-                                                                EjectSpeed.CONEFAST,
-                                                                Direction.OUTTAKE),
-                                                        new ParallelCommandGroup(
-                                                                new TimedIntake(
-                                                                        s_Intake,
-                                                                        .75,
-                                                                        GamePiece.CONE,
-                                                                        EjectSpeed.CONENORMAL,
-                                                                        Direction.OUTTAKE),
-                                                                new SetPosition(
-                                                                        s_Wrist,
-                                                                        s_Elevator,
-                                                                        Position.CONEHIGHUP,
-                                                                        () -> GamePiece.CONE)),
-                                                        new InstantCommand(() -> s_Wrist.setPIDFFMode(PIDFFmode.UNWEIGHTED))))),
+                                        Map.entry(GamePiece.CONE, coneFlickOuttake)),
                                 () -> gamePiece));
         /*
          * driver.b().whileTrue(
