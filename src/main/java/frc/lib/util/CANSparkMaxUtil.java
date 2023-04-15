@@ -13,19 +13,16 @@ public class CANSparkMaxUtil {
     };
 
     /**
-     * This function allows reducing a Spark Max's CAN bus utilization by reducing
-     * the periodic status
+     * This function allows reducing a Spark Max's CAN bus utilization by reducing the periodic status
      * frame period of nonessential frames from 20ms to 500ms.
      *
-     * <p>
-     * See
+     * <p>See
      * https://docs.revrobotics.com/sparkmax/operating-modes/control-interfaces#periodic-status-frames
      * for a description of the status frames.
      *
-     * @param motor           The motor to adjust the status frame periods on.
-     * @param usage           The status frame feedack to enable. kAll is the
-     *                        default when a CANSparkMax is
-     *                        constructed.
+     * @param motor The motor to adjust the status frame periods on.
+     * @param usage The status frame feedack to enable. kAll is the default when a CANSparkMax is
+     *     constructed.
      * @param enableFollowing Whether to enable motor following.
      */
     public static void setCANSparkMaxBusUsage(
@@ -56,19 +53,16 @@ public class CANSparkMaxUtil {
     }
 
     /**
-     * This function allows reducing a Spark Max's CAN bus utilization by reducing
-     * the periodic status
+     * This function allows reducing a Spark Max's CAN bus utilization by reducing the periodic status
      * frame period of nonessential frames from 20ms to 500ms.
      *
-     * <p>
-     * See
+     * <p>See
      * https://docs.revrobotics.com/sparkmax/operating-modes/control-interfaces#periodic-status-frames
      * for a description of the status frames.
      *
      * @param motor The motor to adjust the status frame periods on.
-     * @param usage The status frame feedack to enable. kAll is the default when a
-     *              CANSparkMax is
-     *              constructed.
+     * @param usage The status frame feedack to enable. kAll is the default when a CANSparkMax is
+     *     constructed.
      */
     public static void setCANSparkMaxBusUsage(CANSparkMax motor, Usage usage) {
         setCANSparkMaxBusUsage(motor, usage, false);

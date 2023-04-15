@@ -3,7 +3,7 @@ package frc.robot.subsystems.LEDs.LEDModes;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import frc.VectorTools.util.HSV;
-import frc.robot.Constants.LEDs;
+import frc.robot.subsystems.LEDs.LEDConstants;
 
 public class Flash extends LEDModeBase {
     private double brightness = 0;
@@ -18,7 +18,7 @@ public class Flash extends LEDModeBase {
     }
 
     public void execute() {
-        brightness = MathUtil.clamp(brightness + LEDs.Flash.speed * multiplier, 0, hsv.v);
+        brightness = MathUtil.clamp(brightness + LEDConstants.Flash.speed * multiplier, 0, hsv.v);
         if (brightness == hsv.v || brightness == 0) {
             multiplier *= -1;
         }
