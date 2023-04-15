@@ -12,10 +12,9 @@ public class HSV {
     }
 
     /**
-     * Returns an HSV object that converts the
-     * Google color picker range (360, 100,100)
-     * to WPILib compatible ones.
-     * 
+     * Returns an HSV object that converts the Google color picker range (360, 100,100) to WPILib
+     * compatible ones.
+     *
      * @param h
      * @param s
      * @param v
