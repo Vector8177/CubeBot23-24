@@ -1,7 +1,5 @@
 package frc.robot.subsystems.LEDs;
 
-import org.littletonrobotics.junction.Logger;
-
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -12,6 +10,7 @@ import frc.robot.subsystems.LEDs.LEDModes.Flash;
 import frc.robot.subsystems.LEDs.LEDModes.OrangeDot;
 import frc.robot.subsystems.LEDs.LEDModes.Rainbow;
 import frc.robot.subsystems.LEDs.LEDModes.VectorWave;
+import org.littletonrobotics.junction.Logger;
 
 public class LEDs extends SubsystemBase {
     private final AddressableLED m_led;

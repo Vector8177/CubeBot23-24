@@ -18,12 +18,9 @@ public interface ElevatorIO {
         public double[] rightTempCelcius = new double[] {};
     }
 
-    public default void updateInputs(ElevatorIOInputs inputs) {
-    }
+    public default void updateInputs(ElevatorIOInputs inputs) {}
 
-    public default void resetEncoder() {
-    }
+    public default void resetEncoder() {}
 
-    public default void move(double voltage) {
-    }
+    public default void move(double voltage) {}
 }

@@ -13,16 +13,9 @@ public interface WristIO {
         public double[] tempCelcius = new double[] {};
     }
 
-    public default void updateInputs(WristIOInputs inputs) {
+    public default void updateInputs(WristIOInputs inputs) {}
 
-    }
+    public default void setVoltage(double speed) {}
 
-    public default void setVoltage(double speed) {
-
-    }
-
-    public default void resetRelativeEncoder() {
-
-    }
-
+    public default void resetRelativeEncoder() {}
 }

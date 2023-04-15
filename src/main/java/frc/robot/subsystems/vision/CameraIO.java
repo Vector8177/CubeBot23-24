@@ -14,6 +14,5 @@ public interface CameraIO {
         public double[] distCoeffsData = {};
     }
 
-    public default void updateInputs(CameraIOInputs inputs) {
-    }
+    public default void updateInputs(CameraIOInputs inputs) {}
 }

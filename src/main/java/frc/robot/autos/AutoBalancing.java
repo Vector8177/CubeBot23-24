@@ -9,10 +9,8 @@ public class AutoBalancing extends CommandBase {
     private boolean sideways;
 
     /**
-     * 
      * @param s_Swerve TODO
      */
-
     public AutoBalancing(Swerve s_Swerve, boolean sideways) {
         this.s_Swerve = s_Swerve;
         this.sideways = sideways;
@@ -23,19 +21,16 @@ public class AutoBalancing extends CommandBase {
     public void execute() {
         if (!sideways) {
             double translationVal = s_Swerve.getPitch().getDegrees() > 0 ? -.75 : .75;
-            s_Swerve.drive(
-                    new Translation2d(translationVal, 0), 0, true, false);
+            s_Swerve.drive(new Translation2d(translationVal, 0), 0, true, false);
         } else {
             double translationVal = s_Swerve.getRoll().getDegrees() > 0 ? .435 : -.435;
-            s_Swerve.drive(
-                    new Translation2d(0, translationVal), 0, false, true);
+            s_Swerve.drive(new Translation2d(0, translationVal), 0, false, true);
         }
     }
 
     @Override
     public void end(boolean interrupted) {
-        s_Swerve.drive(
-                new Translation2d(0, .3), 0, true, false);
+        s_Swerve.drive(new Translation2d(0, .3), 0, true, false);
     }
 
     @Override

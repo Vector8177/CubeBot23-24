@@ -6,7 +6,6 @@ import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.lib.config.SwerveModuleConstants;
@@ -59,16 +58,15 @@ public class ModuleIOSparkMax implements ModuleIO {
         inputs.drivePosition = driveEncoder.getPosition();
         inputs.driveVelocityPerSec = driveEncoder.getVelocity();
         inputs.driveAppliedVolts = driveMotor.getAppliedOutput() * driveMotor.getBusVoltage();
-        inputs.driveCurrentAmps = new double[] { driveMotor.getOutputCurrent() };
-        inputs.driveTempCelcius = new double[] { driveMotor.getMotorTemperature() };
+        inputs.driveCurrentAmps = new double[] {driveMotor.getOutputCurrent()};
+        inputs.driveTempCelcius = new double[] {driveMotor.getMotorTemperature()};
 
         inputs.turnAbsolutePosition = angleEncoder.getAbsolutePosition();
         inputs.turnPosition = integratedAngleEncoder.getPosition();
         inputs.turnVelocityPerSec = integratedAngleEncoder.getVelocity();
-        inputs.turnAppliedVolts = angleMotor.getAppliedOutput()
-                * angleMotor.getBusVoltage();
-        inputs.turnCurrentAmps = new double[] { angleMotor.getOutputCurrent() };
-        inputs.turnTempCelcius = new double[] { angleMotor.getMotorTemperature() };
+        inputs.turnAppliedVolts = angleMotor.getAppliedOutput() * angleMotor.getBusVoltage();
+        inputs.turnCurrentAmps = new double[] {angleMotor.getOutputCurrent()};
+        inputs.turnTempCelcius = new double[] {angleMotor.getMotorTemperature()};
     }
 
     @Override
@@ -99,27 +97,22 @@ public class ModuleIOSparkMax implements ModuleIO {
         resetToAbsolute();
     }
 
-    /**
-     * 
-     */
+    /** */
     private void configAngleEncoder() {
         angleEncoder.configFactoryDefault();
         CANCoderUtil.setCANCoderBusUsage(angleEncoder, CCUsage.kMinimal);
         angleEncoder.configAllSettings(Robot.ctreConfigs.swerveCanCoderConfig);
     }
 
-    /**
-     * 
-     */
+    /** */
     @Override
     public void resetToAbsolute() {
-        double absolutePosition = angleEncoder.getAbsolutePosition() - moduleConstants.angleOffset.getDegrees();
+        double absolutePosition =
+                angleEncoder.getAbsolutePosition() - moduleConstants.angleOffset.getDegrees();
         setPosition(absolutePosition);
     }
 
-    /**
-     * 
-     */
+    /** */
     private void configDriveMotor() {
         driveMotor.restoreFactoryDefaults();
         CANSparkMaxUtil.setCANSparkMaxBusUsage(driveMotor, Usage.kVelocityOnly);
@@ -140,10 +133,7 @@ public class ModuleIOSparkMax implements ModuleIO {
     @Override
     public void setVelocity(SwerveModuleState desiredState, double ffVoltage) {
         driveController.setReference(
-                desiredState.speedMetersPerSecond,
-                ControlType.kVelocity,
-                0,
-                ffVoltage);
+                desiredState.speedMetersPerSecond, ControlType.kVelocity, 0, ffVoltage);
     }
 
     @Override

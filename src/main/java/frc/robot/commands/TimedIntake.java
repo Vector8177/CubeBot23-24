@@ -3,9 +3,9 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.GamePiece;
-import frc.robot.subsystems.intake.IntakeConstants.EjectSpeed;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeConstants;
+import frc.robot.subsystems.intake.IntakeConstants.EjectSpeed;
 
 public class TimedIntake extends CommandBase {
 
@@ -21,8 +21,8 @@ public class TimedIntake extends CommandBase {
         OUTTAKE
     }
 
-    public TimedIntake(Intake s_Intake, double time, GamePiece gamePiece, EjectSpeed eject,
-            Direction direction) {
+    public TimedIntake(
+            Intake s_Intake, double time, GamePiece gamePiece, EjectSpeed eject, Direction direction) {
         this.time = time;
         this.eject = eject;
         this.s_Intake = s_Intake;
@@ -56,9 +56,7 @@ public class TimedIntake extends CommandBase {
                     s_Intake.setMotor(-IntakeConstants.cubeOuttakeSpeed);
                 }
                 break;
-
         }
-
     }
 
     @Override

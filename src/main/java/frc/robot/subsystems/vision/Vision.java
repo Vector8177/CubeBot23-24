@@ -1,27 +1,24 @@
 package frc.robot.subsystems.vision;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.VectorTools.CustomPhoton.PhotonPoseEstimator;
 import frc.VectorTools.util.PoseMeasurement;
 import frc.VectorTools.util.PoseMeasurement.Measurement;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class Vision extends SubsystemBase {
     private ArrayList<Camera> cameras;
     private AprilTagFieldLayout aprilTagLayout;
 
-    /**
-     * Sets up the cameras and AprilTag layout.
-     */
+    /** Sets up the cameras and AprilTag layout. */
     public Vision(CameraIO leftCamera, CameraIO rightCamera) {
         this.cameras = new ArrayList<>();
 
@@ -35,10 +32,9 @@ public class Vision extends SubsystemBase {
         }
     }
 
-    /**
-     * Returns a list of estimated global poses for each pose estimator.
-     */
-    public List<Optional<PoseMeasurement.Measurement>> getEstimatedGlobalPoses(Pose2d prevEstimatedRobotPose) {
+    /** Returns a list of estimated global poses for each pose estimator. */
+    public List<Optional<PoseMeasurement.Measurement>> getEstimatedGlobalPoses(
+            Pose2d prevEstimatedRobotPose) {
         ArrayList<Optional<Measurement>> robotPoses = new ArrayList<>();
 
         for (Camera camera : cameras) {
@@ -56,9 +52,7 @@ public class Vision extends SubsystemBase {
         }
     }
 
-    /**
-     * Update the origin of pose based on alliance
-     */
+    /** Update the origin of pose based on alliance */
     public void updatePoseAlliance() {
         // Sets the april tag positions depending on which side the robot starts on.
         for (Camera camera : cameras) {

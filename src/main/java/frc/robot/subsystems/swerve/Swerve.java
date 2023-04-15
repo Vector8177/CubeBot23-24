@@ -1,12 +1,6 @@
 package frc.robot.subsystems.swerve;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.littletonrobotics.junction.Logger;
-
 import com.pathplanner.lib.PathPoint;
-
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -21,6 +15,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.VectorTools.util.PoseMeasurement;
 import frc.robot.subsystems.vision.Vision;
+import java.util.List;
+import java.util.Optional;
+import org.littletonrobotics.junction.Logger;
 
 public class Swerve extends SubsystemBase {
 
@@ -36,7 +33,8 @@ public class Swerve extends SubsystemBase {
 
     private Field2d field;
 
-    public Swerve(GyroIO gyroIO,
+    public Swerve(
+            GyroIO gyroIO,
             ModuleIO flModuleIO,
             ModuleIO frModuleIO,
             ModuleIO blModuleIO,
@@ -46,20 +44,22 @@ public class Swerve extends SubsystemBase {
         this.gyroIO = gyroIO;
         setYaw(Rotation2d.fromDegrees(0));
 
-        mSwerveMods = new Module[] {
-                new Module(flModuleIO, 0),
-                new Module(frModuleIO, 1),
-                new Module(blModuleIO, 2),
-                new Module(brModuleIO, 3)
-        };
+        mSwerveMods =
+                new Module[] {
+                    new Module(flModuleIO, 0),
+                    new Module(frModuleIO, 1),
+                    new Module(blModuleIO, 2),
+                    new Module(brModuleIO, 3)
+                };
 
-        swervePoseEstimator = new SwerveDrivePoseEstimator(
-                SwerveConstants.swerveKinematics,
-                getYaw(),
-                getPositions(),
-                new Pose2d(),
-                SwerveConstants.STATE_STANDARD_DEVIATIONS,
-                VecBuilder.fill(0, 0, 0));
+        swervePoseEstimator =
+                new SwerveDrivePoseEstimator(
+                        SwerveConstants.swerveKinematics,
+                        getYaw(),
+                        getPositions(),
+                        new Pose2d(),
+                        SwerveConstants.STATE_STANDARD_DEVIATIONS,
+                        VecBuilder.fill(0, 0, 0));
 
         this.s_Vision = s_Vision;
 
@@ -70,12 +70,15 @@ public class Swerve extends SubsystemBase {
         SmartDashboard.putData(field);
     }
 
-    public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
-        chassisSpeeds = fieldRelative
-                ? ChassisSpeeds.fromFieldRelativeSpeeds(
-                        translation.getX(), translation.getY(), rotation, getYaw())
-                : new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
-        SwerveModuleState[] swerveModuleStates = SwerveConstants.swerveKinematics.toSwerveModuleStates(chassisSpeeds);
+    public void drive(
+            Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
+        chassisSpeeds =
+                fieldRelative
+                        ? ChassisSpeeds.fromFieldRelativeSpeeds(
+                                translation.getX(), translation.getY(), rotation, getYaw())
+                        : new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
+        SwerveModuleState[] swerveModuleStates =
+                SwerveConstants.swerveKinematics.toSwerveModuleStates(chassisSpeeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, SwerveConstants.fastSpeedLimit);
 
         for (Module mod : mSwerveMods) {
@@ -108,7 +111,6 @@ public class Swerve extends SubsystemBase {
 
     public void resetOdometry(Pose2d pose) {
         swervePoseEstimator.resetPosition(getYaw(), getPositions(), pose);
-
     }
 
     public void resetToAbsolute() {
@@ -175,10 +177,14 @@ public class Swerve extends SubsystemBase {
             // where two measurements cannot share the same timestamp
             double timestampOffset = 1e-9 * i;
 
-            poses.get(i).map((measurement) -> {
-                measurement.timestamp += timestampOffset;
-                return measurement;
-            }).ifPresent(this::addVisionMeasurement);
+            poses
+                    .get(i)
+                    .map(
+                            (measurement) -> {
+                                measurement.timestamp += timestampOffset;
+                                return measurement;
+                            })
+                    .ifPresent(this::addVisionMeasurement);
         }
 
         field.setRobotPose(getPose());
@@ -189,7 +195,7 @@ public class Swerve extends SubsystemBase {
     }
 
     private void addVisionMeasurement(PoseMeasurement.Measurement measurement) {
-        swervePoseEstimator.addVisionMeasurement(measurement.pose.toPose2d(), measurement.timestamp,
-                measurement.stdDeviation);
+        swervePoseEstimator.addVisionMeasurement(
+                measurement.pose.toPose2d(), measurement.timestamp, measurement.stdDeviation);
     }
 }

@@ -2,9 +2,9 @@ package frc.robot.subsystems.wrist;
 
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxAbsoluteEncoder;
 
 public class WristIOSparkMax implements WristIO {
@@ -29,7 +29,6 @@ public class WristIOSparkMax implements WristIO {
         relativeEncoder.setPosition(absoluteEncoder.getPosition());
 
         wristMotor.setSmartCurrentLimit(WristConstants.currentLimit);
-
     }
 
     @Override
@@ -38,9 +37,8 @@ public class WristIOSparkMax implements WristIO {
         inputs.absoluteEncoderPosition = absoluteEncoder.getPosition();
 
         inputs.appliedVolts = wristMotor.getAppliedOutput() * wristMotor.getBusVoltage();
-        inputs.currentAmps = new double[] { wristMotor.getOutputCurrent() };
-        inputs.tempCelcius = new double[] { wristMotor.getMotorTemperature() };
-
+        inputs.currentAmps = new double[] {wristMotor.getOutputCurrent()};
+        inputs.tempCelcius = new double[] {wristMotor.getMotorTemperature()};
     }
 
     @Override

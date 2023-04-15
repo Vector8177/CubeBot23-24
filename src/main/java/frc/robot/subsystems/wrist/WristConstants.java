@@ -5,22 +5,9 @@ public final class WristConstants {
     public static final double maxMotorVoltage = 10.0;
 
     public enum PIDFFmode {
-        WEIGHTED(
-                weightedP,
-                weightedI,
-                weightedD,
-                weightedS,
-                weightedV,
-                weightedA,
-                weightedG),
+        WEIGHTED(weightedP, weightedI, weightedD, weightedS, weightedV, weightedA, weightedG),
         UNWEIGHTED(
-                unweightedP,
-                unweightedI,
-                unweightedD,
-                unweightedS,
-                unweightedV,
-                unweightedA,
-                unweightedG);
+                unweightedP, unweightedI, unweightedD, unweightedS, unweightedV, unweightedA, unweightedG);
 
         public final double kP;
         public final double kI;
@@ -39,7 +26,6 @@ public final class WristConstants {
             this.kA = kA;
             this.kG = kG;
         }
-
     }
 
     public static double weightedP = 2.8;

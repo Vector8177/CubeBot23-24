@@ -1,12 +1,12 @@
 package frc.robot.subsystems.wrist;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Position;
 import frc.robot.subsystems.wrist.WristConstants.PIDFFmode;
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.ArmFeedforward;
-import edu.wpi.first.math.controller.PIDController;
 import org.littletonrobotics.junction.Logger;
 
 public class Wrist extends SubsystemBase {
@@ -21,17 +21,20 @@ public class Wrist extends SubsystemBase {
     public Wrist(WristIO io) {
 
         this.io = io;
-        pidController = new PIDController(WristConstants.unweightedP, WristConstants.unweightedI,
-                WristConstants.unweightedD);
+        pidController =
+                new PIDController(
+                        WristConstants.unweightedP, WristConstants.unweightedI, WristConstants.unweightedD);
         pidController.enableContinuousInput(0, Math.PI * 2);
         pidController.setTolerance(.25);
 
-        feedForward = new ArmFeedforward(WristConstants.unweightedS, WristConstants.unweightedG,
-                WristConstants.unweightedV,
-                WristConstants.unweightedA);
+        feedForward =
+                new ArmFeedforward(
+                        WristConstants.unweightedS,
+                        WristConstants.unweightedG,
+                        WristConstants.unweightedV,
+                        WristConstants.unweightedA);
 
         setPosition(Position.STANDBY.getWrist());
-
     }
 
     @Override
@@ -39,13 +42,12 @@ public class Wrist extends SubsystemBase {
         io.updateInputs(inputs);
         Logger.getInstance().processInputs("Wrist", inputs);
 
-        double pidMotorSpeed = pidController.calculate(inputs.absoluteEncoderPosition, targetPosition)
-                + feedForward.calculate(targetPosition, 0);
+        double pidMotorSpeed =
+                pidController.calculate(inputs.absoluteEncoderPosition, targetPosition)
+                        + feedForward.calculate(targetPosition, 0);
         setMotor(
                 MathUtil.clamp(
-                        (pidMotorSpeed), -WristConstants.maxMotorVoltage,
-                        WristConstants.maxMotorVoltage));
-
+                        (pidMotorSpeed), -WristConstants.maxMotorVoltage, WristConstants.maxMotorVoltage));
     }
 
     public void setPIDFFMode(PIDFFmode mode) {
@@ -56,7 +58,6 @@ public class Wrist extends SubsystemBase {
         } else {
             Logger.getInstance().recordOutput("WristPIDMode", "Unweighted");
         }
-
     }
 
     public double getEncoderPosition() {
@@ -86,7 +87,5 @@ public class Wrist extends SubsystemBase {
 
     public void resetRelativeEncoder() {
         io.resetRelativeEncoder();
-
     }
-
 }

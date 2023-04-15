@@ -15,8 +15,9 @@ public class Module {
 
     private final ModuleIOInputsAutoLogged inputs = new ModuleIOInputsAutoLogged();
 
-    private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(
-            SwerveConstants.driveKS, SwerveConstants.driveKV, SwerveConstants.driveKA);
+    private final SimpleMotorFeedforward feedforward =
+            new SimpleMotorFeedforward(
+                    SwerveConstants.driveKS, SwerveConstants.driveKV, SwerveConstants.driveKA);
 
     public Module(ModuleIO io, int index) {
         this.io = io;
@@ -31,14 +32,12 @@ public class Module {
     }
 
     /**
-     * 
-     * 
      * @param desiredState
      * @param isOpenLoop
      */
-
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
-        desiredState = SwerveModuleState.optimize(desiredState, Rotation2d.fromDegrees(inputs.turnPosition));
+        desiredState =
+                SwerveModuleState.optimize(desiredState, Rotation2d.fromDegrees(inputs.turnPosition));
         // Custom optimize command, since default WPILib optimize assumes
         // continuous controller which REV and CTRE are not
 
@@ -47,11 +46,9 @@ public class Module {
     }
 
     /**
-     * 
      * @param desiredState
      * @param isOpenLoop
      */
-
     private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop) {
         if (isOpenLoop) {
             double percentOutput = desiredState.speedMetersPerSecond / SwerveConstants.fastSpeedLimit;
@@ -62,13 +59,13 @@ public class Module {
     }
 
     /**
-     * 
      * @param desiredState
      */
     private void setAngle(SwerveModuleState desiredState) {
         // Prevent rotating module if speed is less then 1%. Prevents jittering.
-        Rotation2d angle = (Math
-                .abs(desiredState.speedMetersPerSecond) <= (SwerveConstants.fastAngularVelocityLimit * 0.01))
+        Rotation2d angle =
+                (Math.abs(desiredState.speedMetersPerSecond)
+                                <= (SwerveConstants.fastAngularVelocityLimit * 0.01))
                         ? lastAngle
                         : desiredState.angle;
 
@@ -81,10 +78,12 @@ public class Module {
     }
 
     public SwerveModuleState getState() {
-        return new SwerveModuleState(inputs.driveVelocityPerSec, Rotation2d.fromDegrees(inputs.turnPosition));
+        return new SwerveModuleState(
+                inputs.driveVelocityPerSec, Rotation2d.fromDegrees(inputs.turnPosition));
     }
 
     public SwerveModulePosition getPosition() {
-        return new SwerveModulePosition(inputs.drivePosition, Rotation2d.fromDegrees(inputs.turnPosition));
+        return new SwerveModulePosition(
+                inputs.drivePosition, Rotation2d.fromDegrees(inputs.turnPosition));
     }
 }

@@ -1,8 +1,8 @@
 package frc.robot.subsystems.intake;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
 
 public class IntakeIOSparkMax implements IntakeIO {
     private final CANSparkMax intakeMotor;
@@ -18,8 +18,8 @@ public class IntakeIOSparkMax implements IntakeIO {
         inputs.velocity = intakeEncoder.getVelocity();
 
         inputs.appliedVolts = intakeMotor.getAppliedOutput() * intakeMotor.getBusVoltage();
-        inputs.currentAmps = new double[] { intakeMotor.getOutputCurrent() };
-        inputs.tempCelcius = new double[] { intakeMotor.getMotorTemperature() };
+        inputs.currentAmps = new double[] {intakeMotor.getOutputCurrent()};
+        inputs.tempCelcius = new double[] {intakeMotor.getMotorTemperature()};
     }
 
     @Override

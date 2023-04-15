@@ -6,8 +6,7 @@ import frc.robot.subsystems.swerve.Swerve;
 
 public class rotateWheels extends CommandBase {
     /**
-     * 
-     * @param s_Swerve 
+     * @param s_Swerve
      * @param degrees the rotation for swerve
      */
     public rotateWheels(Swerve s_Swerve, Rotation2d degrees) {
