@@ -2,15 +2,16 @@ package frc.robot.subsystems.LEDs;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.VectorTools.util.HSV;
+import frc.robot.Constants;
 import frc.robot.Constants.GamePiece;
-import frc.robot.subsystems.LEDs.LEDConstants.LEDMode;
+import frc.robot.Constants.LEDs.LEDMode;
 import frc.robot.subsystems.LEDs.LEDModes.Flash;
 import frc.robot.subsystems.LEDs.LEDModes.OrangeDot;
 import frc.robot.subsystems.LEDs.LEDModes.Rainbow;
 import frc.robot.subsystems.LEDs.LEDModes.VectorWave;
-import org.littletonrobotics.junction.Logger;
 
 public class LEDs extends SubsystemBase {
     private final AddressableLED m_led;
@@ -28,9 +29,9 @@ public class LEDs extends SubsystemBase {
     private final Flash redFlash;
 
     public LEDs() {
-        this.mode = LEDConstants.defaultMode;
-        this.m_led = new AddressableLED(LEDConstants.id);
-        this.m_ledBuffer = new AddressableLEDBuffer(LEDConstants.length);
+        this.mode = Constants.LEDs.defaultMode;
+        this.m_led = new AddressableLED(Constants.LEDs.id);
+        this.m_ledBuffer = new AddressableLEDBuffer(Constants.LEDs.length);
 
         this.orangeDot = new OrangeDot(m_ledBuffer);
         this.rainbow = new Rainbow(m_ledBuffer);
@@ -71,10 +72,10 @@ public class LEDs extends SubsystemBase {
                 break;
         }
         m_led.setData(m_ledBuffer);
+        SmartDashboard.putString("LED Mode", mode.toString());
     }
 
     public void setLEDMode(LEDMode mode) {
-        Logger.getInstance().recordOutput("LEDMode", mode.toString());
         this.mode = mode;
     }
 

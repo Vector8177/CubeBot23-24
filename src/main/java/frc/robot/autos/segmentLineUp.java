@@ -1,23 +1,25 @@
 package frc.robot.autos;
 
+import java.util.function.Supplier;
+
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.PathPoint;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.Constants;
-import java.util.function.Supplier;
 
 public class segmentLineUp {
 
     /**
+     * 
      * @param s_Swerve
-     * @param segment the segment TODO
+     * @param segment    the segment TODO
      * @param startPoint
      */
-    public static PathPlannerTrajectory getTrajectory(
-            Constants.SEGMENT segment, Supplier<Pose2d> startPose) {
+    public static PathPlannerTrajectory getTrajectory(Constants.SEGMENT segment, Supplier<Pose2d> startPose) {
 
         Translation2d lineUpTranslation = startPose.get().getTranslation();
         Rotation2d lineUpRotation = startPose.get().getRotation();
@@ -65,20 +67,18 @@ public class segmentLineUp {
                 break;
         }
 
-        Rotation2d startHeading =
-                new Translation2d(lineUpTranslation.getX(), lineUpTranslation.getY())
-                        .minus(startPose.get().getTranslation())
-                        .getAngle();
-        Rotation2d endHeading =
-                new Translation2d(lineUpTranslation.getX(), lineUpTranslation.getY())
-                        .minus(startPose.get().getTranslation())
-                        .getAngle();
+        Rotation2d startHeading = new Translation2d(lineUpTranslation.getX(), lineUpTranslation.getY())
+                .minus(startPose.get().getTranslation()).getAngle();
+        Rotation2d endHeading = new Translation2d(lineUpTranslation.getX(), lineUpTranslation.getY())
+                .minus(startPose.get().getTranslation()).getAngle();
 
-        PathPoint startPoint =
-                new PathPoint(
-                        startPose.get().getTranslation(), startHeading, startPose.get().getRotation());
+        PathPoint startPoint = new PathPoint(startPose.get().getTranslation(), startHeading,
+                startPose.get().getRotation());
         PathPoint lineUpPoint = new PathPoint(lineUpTranslation, endHeading, lineUpRotation);
 
-        return PathPlanner.generatePath(Constants.Autonomous.constraints, startPoint, lineUpPoint);
+        return PathPlanner.generatePath(
+                Constants.Autonomous.constraints,
+                startPoint,
+                lineUpPoint);
     }
 }

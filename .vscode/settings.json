@@ -1,11 +1,4 @@
 {
-  "[java]": {
-    "spotlessGradle.format.enable": true,
-    "editor.codeActionsOnSave": {
-      "source.fixAll.spotlessGradle": true
-    }
-  },
-  "editor.formatOnSave": false,
   "java.configuration.updateBuildConfiguration": "automatic",
   "java.server.launchMode": "Standard",
   "files.exclude": {
@@ -32,6 +25,5 @@
       }
     },
   ],
-  "java.test.defaultConfig": "WPIlibUnitTests",
-  "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx16G -Xms100m -Xlog:disable"
+  "java.test.defaultConfig": "WPIlibUnitTests"
 }

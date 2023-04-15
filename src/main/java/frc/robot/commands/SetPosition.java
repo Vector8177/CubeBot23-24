@@ -1,12 +1,13 @@
 package frc.robot.commands;
 
+import java.util.function.Supplier;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.GamePiece;
 import frc.robot.Constants.Position;
-import frc.robot.subsystems.elevator.Elevator;
-import frc.robot.subsystems.wrist.Wrist;
-import java.util.function.Supplier;
+import frc.robot.Constants.GamePiece;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Wrist;
 
 public class SetPosition extends CommandBase {
     private Wrist s_Wrist;
@@ -15,8 +16,7 @@ public class SetPosition extends CommandBase {
     private Timer timer;
     private Supplier<GamePiece> gamePiece;
 
-    public SetPosition(
-            Wrist s_Wrist, Elevator s_Elevator, Position position, Supplier<GamePiece> gamePiece) {
+    public SetPosition(Wrist s_Wrist, Elevator s_Elevator, Position position, Supplier<GamePiece> gamePiece) {
         this.s_Wrist = s_Wrist;
         this.s_Elevator = s_Elevator;
         this.position = position;
@@ -24,6 +24,7 @@ public class SetPosition extends CommandBase {
         this.timer = new Timer();
 
         addRequirements(s_Wrist, s_Elevator);
+
     }
 
     @Override
@@ -56,21 +57,20 @@ public class SetPosition extends CommandBase {
                 }
                 break;
 
-            case LOW:
-                if (gamePiece.get() == GamePiece.CONE) {
-                    s_Wrist.setPosition(Position.CONELOW.getWrist());
-                    s_Elevator.setPosition(Position.CONELOW.getElev());
-                } else if (gamePiece.get() == GamePiece.CUBE) {
-                    s_Wrist.setPosition(Position.CUBELOW.getWrist());
-                    s_Elevator.setPosition(Position.CUBELOW.getElev());
-                }
-                break;
-
             default:
                 s_Wrist.setPosition(position.getWrist());
                 s_Elevator.setPosition(position.getElev());
                 break;
+
         }
+        /*
+         * if(sequential) {
+         * addCommands(setElevatorPose, setWristPose);
+         * }
+         * else {
+         * addCommands(new ParallelCommandGroup(setElevatorPose, setWristPose));
+         * }
+         */
     }
 
     @Override
@@ -84,4 +84,5 @@ public class SetPosition extends CommandBase {
     public boolean isFinished() {
         return (s_Wrist.atSetpoint() && s_Elevator.atSetpoint()) || timer.get() > .75;
     }
+
 }

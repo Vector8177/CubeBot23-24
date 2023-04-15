@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 
 public class Rainbow extends LEDModeBase {
     private int m_rainbowFirstPixelHue = 0;
-
     public Rainbow(AddressableLEDBuffer m_ledBuffer) {
         super(m_ledBuffer);
     }
@@ -23,4 +22,5 @@ public class Rainbow extends LEDModeBase {
         // Check bounds
         m_rainbowFirstPixelHue %= 180;
     }
+
 }

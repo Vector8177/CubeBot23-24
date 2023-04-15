@@ -1,8 +1,9 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.elevator.Elevator;
 import java.util.function.DoubleSupplier;
+
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Elevator;
 
 public class TeleopElevator extends CommandBase {
     private Elevator s_Elevator;
@@ -18,6 +19,6 @@ public class TeleopElevator extends CommandBase {
     @Override
     public void execute() {
         double deadbandController = Math.abs(moveVal.getAsDouble()) > .1 ? -moveVal.getAsDouble() : 0;
-        s_Elevator.setPosition(s_Elevator.getTargetPosition() + deadbandController * .2);
+        s_Elevator.setPosition((s_Elevator.getPosition() + deadbandController * .2));
     }
 }
