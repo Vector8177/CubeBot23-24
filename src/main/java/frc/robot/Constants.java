@@ -4,9 +4,9 @@ import com.pathplanner.lib.PathConstraints;
 import edu.wpi.first.wpilibj.RobotBase;
 
 /*
-    General Robot Constants
-    - For specific constants look in subsystem folder
-*/
+ * General Robot Constants
+ * - For specific constants look in subsystem folder
+ */
 public final class Constants {
 
     public static Mode getMode() {
@@ -21,7 +21,6 @@ public final class Constants {
     }
 
     public enum Position {
-
         HIGH(0, 0),
         CONEHIGH(.15, 34.5),
         CONEHIGHUP(1.55, 34.5),
@@ -72,8 +71,16 @@ public final class Constants {
     }
 
     public enum SEGMENT { // Numbers in order of segment from left to right (driver station POV)
-        CONE_1(0), CONE_2(31.8), CONE_3(35.2), CONE_4(-1), CONE_5(-1), CONE_6(-1),
-        CUBE_1(0), CUBE_2(20.6), CUBE_3(35.2), HUMANPLAYER(-1);
+        CONE_1(0),
+        CONE_2(31.8),
+        CONE_3(35.2),
+        CONE_4(-1),
+        CONE_5(-1),
+        CONE_6(-1),
+        CUBE_1(0),
+        CUBE_2(20.6),
+        CUBE_3(35.2),
+        HUMANPLAYER(-1);
 
         // intake Ground Cube: 0
         // intake Cone Upright: 12
@@ -114,7 +121,6 @@ public final class Constants {
         public double getValue() {
             return level;
         }
-
     }
 
     public static final class Autonomous {
