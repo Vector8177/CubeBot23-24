@@ -41,8 +41,8 @@ public final class SwerveConstants {
     public static final double voltageComp = 12.0;
 
     /* Swerve Current Limiting */
-    public static final int angleContinuousCurrentLimit = 20;
-    public static final int driveContinuousCurrentLimit = 30;
+    public static final int angleContinuousCurrentLimit = 30;
+    public static final int driveContinuousCurrentLimit = 40;
 
     public static final double pitchSetPoint = 0.0;
 
