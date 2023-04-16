@@ -109,6 +109,8 @@ public class RobotContainer {
 
     private final PathPlannerTrajectory bump2Piece = PathPlanner.loadPath("bump2PieceAuto", 3.5, 2.5);
 
+    private final PathPlannerTrajectory bump3Piece = PathPlanner.loadPath("bump3PieceAuto", 3.5, 2.5);
+
     private final PathPlannerTrajectory twoPlusPickup =
             PathPlanner.loadPath("score2Pickup1", 3.5, 2.25);
 
@@ -179,6 +181,9 @@ public class RobotContainer {
     }
 
     private void setDefaultCommands() {
+        // Set To Field Orientation When Robot Turns On
+        s_Swerve.setYaw(Rotation2d.fromDegrees(180));
+
         s_Swerve.setDefaultCommand(
                 new TeleopSwerve(
                         s_Swerve,
@@ -288,6 +293,8 @@ public class RobotContainer {
         eventMap.put("wait1Seconds", new WaitCommand(1));
 
         eventMap.put("AutoBalance", new AutoBalancing(s_Swerve, true));
+
+        eventMap.put("AutoBalanceStraight", new AutoBalancing(s_Swerve, false));
     }
 
     /**
@@ -481,6 +488,7 @@ public class RobotContainer {
         autoChooser.addOption("3 Game Piece Auto Copy", threePieceAutoCopy);
         autoChooser.addOption("Score 2 Plus Balance", twoPlusBalance);
         autoChooser.addOption("Bump 2 Piece", bump2Piece);
+        autoChooser.addOption("Bump 3 Piece", bump3Piece);
         autoChooser.addOption("Score 2 Plus Field", twoPlusPickup);
         // autoChooser.addOption("Back and Forth", backnForth);
         // autoChooser.addOption("S curve", sCurve);
