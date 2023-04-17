@@ -107,9 +107,12 @@ public class RobotContainer {
     private final PathPlannerTrajectory twoPlusBalance =
             PathPlanner.loadPath("score2Balance", 3.5, 2.5);
 
-    private final PathPlannerTrajectory bump2Piece = PathPlanner.loadPath("bump2PieceAuto", 3.5, 2.5);
+    private final PathPlannerTrajectory bump2Piece = PathPlanner.loadPath("bump2PieceAuto Copy", 3.5, 2.5);
 
     private final PathPlannerTrajectory bump3Piece = PathPlanner.loadPath("bump3PieceAuto", 3.5, 2.5);
+
+    private final PathPlannerTrajectory bump3PieceAlt =
+            PathPlanner.loadPath("bump3PieceAutoAlt", 2.0, 3.0);
 
     private final PathPlannerTrajectory twoPlusPickup =
             PathPlanner.loadPath("score2Pickup1", 3.5, 2.25);
@@ -269,12 +272,12 @@ public class RobotContainer {
         eventMap.put(
                 "cone3Deposit",
                 new SequentialCommandGroup(
-                        new InstantCommand(() -> s_Wrist.setPIDFFMode(PIDFFmode.UNWEIGHTED)),
-                        new TimedIntake(s_Intake, .1, GamePiece.CONE, EjectSpeed.CONEFAST, Direction.OUTTAKE),
+                        new TimedIntake(s_Intake, .12, GamePiece.CONE, EjectSpeed.CONEFAST, Direction.OUTTAKE),
                         new ParallelCommandGroup(
                                 new TimedIntake(
-                                        s_Intake, .2, GamePiece.CONE, EjectSpeed.CONESLOW, Direction.OUTTAKE),
-                                new SetPosition(s_Wrist, s_Elevator, Position.CONEHIGHUP, () -> GamePiece.CUBE))));
+                                        s_Intake, .75, GamePiece.CONE, EjectSpeed.CONENORMAL, Direction.OUTTAKE),
+                                new SetPosition(s_Wrist, s_Elevator, Position.CONEHIGHUP, () -> GamePiece.CONE)),
+                        new InstantCommand(() -> s_Wrist.setPIDFFMode(PIDFFmode.UNWEIGHTED))));
 
         eventMap.put(
                 "cubeDeposit",
@@ -489,6 +492,7 @@ public class RobotContainer {
         autoChooser.addOption("Score 2 Plus Balance", twoPlusBalance);
         autoChooser.addOption("Bump 2 Piece", bump2Piece);
         autoChooser.addOption("Bump 3 Piece", bump3Piece);
+        autoChooser.addOption("Bump 3 Piece Alt", bump3PieceAlt);
         autoChooser.addOption("Score 2 Plus Field", twoPlusPickup);
         // autoChooser.addOption("Back and Forth", backnForth);
         // autoChooser.addOption("S curve", sCurve);

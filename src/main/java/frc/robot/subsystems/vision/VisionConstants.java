@@ -48,7 +48,7 @@ public final class VisionConstants {
 
         public static final double POSE_AMBIGUITY_CUTOFF = .3;
 
-        public static final double POSE_DISTANCE_CUTOFF = FieldConstants.fieldLength / 4;
+        public static final double POSE_DISTANCE_CUTOFF = FieldConstants.fieldLength / 2;
     }
 
     public static class FieldConstants {
