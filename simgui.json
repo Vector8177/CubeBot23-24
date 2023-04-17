@@ -4,6 +4,7 @@
       "/FMSInfo": "FMSInfo",
       "/LiveWindow/Swerve": "Subsystem",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/SmartDashboard/Auto Choices": "String Chooser",
       "/SmartDashboard/Field": "Field2d"
     }
   },

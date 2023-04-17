@@ -13,7 +13,6 @@ import org.photonvision.targeting.PhotonPipelineResult;
 
 public class Camera {
     private final CameraIO cameraIO;
-    public final String cameraName;
 
     private final CameraIOInputsAutoLogged cameraInputs = new CameraIOInputsAutoLogged();
 
@@ -23,7 +22,6 @@ public class Camera {
 
     public Camera(CameraIO camera, Transform3d cameraPosition, AprilTagFieldLayout aprilTagLayout) {
         this.cameraIO = camera;
-        this.cameraName = cameraInputs.cameraName;
         this.cameraPosition = cameraPosition;
         this.aprilTagLayout = aprilTagLayout;
 
@@ -39,9 +37,13 @@ public class Camera {
         return positionEstimation;
     }
 
+    public String getCameraName() {
+        return cameraInputs.cameraName;
+    }
+
     public void periodic() {
         cameraIO.updateInputs(cameraInputs);
-        Logger.getInstance().processInputs("Cameras/" + cameraName, cameraInputs);
+        Logger.getInstance().processInputs("Cameras/" + getCameraName(), cameraInputs);
     }
 
     public PhotonPoseEstimator getPoseEstimator() {
@@ -79,7 +81,8 @@ public class Camera {
                                 return Optional.empty();
                             }
 
-                            Logger.getInstance().recordOutput(cameraName + "/RobotPose", result.estimatedPose);
+                            Logger.getInstance()
+                                    .recordOutput("Odometry/" + getCameraName() + "/RobotPose", result.estimatedPose);
 
                             return Optional.of(
                                     new PoseMeasurement.Measurement(

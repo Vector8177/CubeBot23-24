@@ -5,11 +5,9 @@ import org.photonvision.common.dataflow.structures.Packet;
 import org.photonvision.targeting.PhotonPipelineResult;
 
 public class CameraIOPhoton implements CameraIO {
-    private String cameraName;
     private PhotonCamera camera;
 
     public CameraIOPhoton(String cameraName) {
-        this.cameraName = cameraName;
         camera = new PhotonCamera(cameraName);
 
         camera.setDriverMode(false);
@@ -17,7 +15,7 @@ public class CameraIOPhoton implements CameraIO {
 
     @Override
     public void updateInputs(CameraIOInputs inputs) {
-        inputs.cameraName = cameraName;
+        inputs.cameraName = camera.getName();
         inputs.connected = camera.isConnected();
         inputs.driverMode = camera.getDriverMode();
         PhotonPipelineResult latestResult = camera.getLatestResult();
