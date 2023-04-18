@@ -107,12 +107,13 @@ public class RobotContainer {
     private final PathPlannerTrajectory twoPlusBalance =
             PathPlanner.loadPath("score2Balance", 3.5, 2.5);
 
-    private final PathPlannerTrajectory bump2Piece = PathPlanner.loadPath("bump2PieceAuto Copy", 3.5, 2.5);
+    private final PathPlannerTrajectory bump2Piece =
+            PathPlanner.loadPath("bump2PieceAuto Copy", 3.5, 2.5);
 
     private final PathPlannerTrajectory bump3Piece = PathPlanner.loadPath("bump3PieceAuto", 3.5, 2.5);
 
     private final PathPlannerTrajectory bump3PieceAlt =
-            PathPlanner.loadPath("bump3PieceAutoAlt", 2.0, 3.0);
+            PathPlanner.loadPath("bump3PieceAutoAlt", 2.0, 2.5);
 
     private final PathPlannerTrajectory twoPlusPickup =
             PathPlanner.loadPath("score2Pickup1", 3.5, 2.25);
@@ -242,6 +243,12 @@ public class RobotContainer {
                         new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
                         s_Wrist.moveWrist(Position.CUBEMID.getWrist()),
                         s_Elevator.moveElevator(Position.CUBEMID.getElev())));
+        eventMap.put(
+                "setCube1Position",
+                new SequentialCommandGroup(
+                        new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
+                        s_Wrist.moveWrist(Position.CUBELOW.getWrist()),
+                        s_Elevator.moveElevator(Position.CUBELOW.getElev())));
 
         eventMap.put(
                 "setCubeIntakePosition",
