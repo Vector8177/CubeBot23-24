@@ -29,7 +29,7 @@ public final class Constants {
         CONEMID(5.81731, 35),
         CUBEMID(1.427, 16.5),
         LOW(0, 0),
-        CONELOW(5.9, 1.5),
+        CONELOW(-0.15, 1.5),
         CUBELOW(1.425, .25),
         STANDBY(1.1765, .25),
         CUBEINTAKE(-0.05, 0.25),
