@@ -35,10 +35,9 @@ public class AutoBalancing extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        if(!sideways) {
+        if (!sideways) {
             return Math.abs(s_Swerve.getPitch().getDegrees()) < 7;
-        }
-        else {
+        } else {
             return Math.abs(s_Swerve.getRoll().getDegrees()) < 7;
         }
     }

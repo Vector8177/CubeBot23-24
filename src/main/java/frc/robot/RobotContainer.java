@@ -87,8 +87,8 @@ public class RobotContainer {
     private final SwerveAutoBuilder autoBuilder;
 
     private static Map<String, Command> eventMap;
-    private final PathPlannerTrajectory autoBalance = 
-            PathPlanner.loadPath("Autobalance", 1, 3);
+
+    private final PathPlannerTrajectory autoBalance = PathPlanner.loadPath("Autobalance", 1, 3);
 
     private final PathPlannerTrajectory coneMobilBalance =
             PathPlanner.loadPath("coneMobilityBalance", 2.0, 1.25);
@@ -105,25 +105,23 @@ public class RobotContainer {
     private final PathPlannerTrajectory threePieceAuto =
             PathPlanner.loadPath("threePieceAuto", 3.5, 3.0);
 
-    private final PathPlannerTrajectory bump2Piece =
-            PathPlanner.loadPath("bump2PieceAuto", 3.5, 2.5);
+    private final PathPlannerTrajectory bump2Piece = PathPlanner.loadPath("bump2PieceAuto", 3.5, 2.5);
 
-    private final PathPlannerTrajectory bump3Piece = 
-            PathPlanner.loadPath("bump3PieceAuto", 3.5, 2.5);
+    private final PathPlannerTrajectory bump3Piece = PathPlanner.loadPath("bump3PieceAuto", 3.5, 2.5);
 
     private final PathPlannerTrajectory bump3PieceAlt =
             PathPlanner.loadPath("bump3PieceAutoAlt", 2.0, 2.5);
 
-/** Old Auto Paths
- * private final PathPlannerTrajectory coneCubeDeposit =
-            PathPlanner.loadPath("coneCubeDeposit", 3, 1);
-
-   private final PathPlannerTrajectory threePieceAutoCopy =
-            PathPlanner.loadPath("threePieceAuto Copy", 3.5, 2.5);
-   
-   private final PathPlannerTrajectory coneCubeBalance =
-            PathPlanner.loadPath("coneCubeBalance", 3.5, 1.5);
- */
+    /**
+     * Old Auto Paths private final PathPlannerTrajectory coneCubeDeposit =
+     * PathPlanner.loadPath("coneCubeDeposit", 3, 1);
+     *
+     * <p>private final PathPlannerTrajectory threePieceAutoCopy =
+     * PathPlanner.loadPath("threePieceAuto Copy", 3.5, 2.5);
+     *
+     * <p>private final PathPlannerTrajectory coneCubeBalance =
+     * PathPlanner.loadPath("coneCubeBalance", 3.5, 1.5);
+     */
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -504,15 +502,15 @@ public class RobotContainer {
         autoChooser.addOption("Center: Cube Balance", autoBalance);
         autoChooser.addOption("Center: Cone Mobility Balance", coneMobilBalance);
         autoChooser.addOption("Center: Cube Mobility Balance", cubeMobilBalance);
- 
+
         autoChooser.addOption("Bump: 2 Piece", bump2Piece);
         autoChooser.addOption("Bump: 3 Piece", bump3Piece);
         autoChooser.addOption("Bump: 3 Piece Alt", bump3PieceAlt);
 
-        //autoChooser.addDefaultOption("Cone PickupCube Balance", coneCubeBalance);
+        // autoChooser.addDefaultOption("Cone PickupCube Balance", coneCubeBalance);
         // autoChooser.addOption("Back and Forth", backnForth);
         // autoChooser.addOption("S curve", sCurve);
-        //autoChooser.addOption("L3 Cone+Cube", coneCubeDeposit);   
+        // autoChooser.addOption("L3 Cone+Cube", coneCubeDeposit);
     }
 
     /** Ran once the robot is put in disabled */
