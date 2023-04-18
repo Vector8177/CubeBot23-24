@@ -79,18 +79,18 @@
     },
     {
       "anchorPoint": {
-        "x": 2.25,
-        "y": 3.1512835472226777
+        "x": 2.1173167024077677,
+        "y": 3.3871016178054125
       },
       "prevControl": {
-        "x": 1.9167827064870284,
-        "y": 3.1512835472226777
+        "x": 2.0814705953560457,
+        "y": 3.3876644905607702
       },
       "nextControl": {
-        "x": 2.6879427286170485,
-        "y": 3.1512835472226777
+        "x": 2.555205449707027,
+        "y": 3.380225678798233
       },
-      "holonomicAngle": 90.0,
+      "holonomicAngle": 180.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -104,22 +104,22 @@
     },
     {
       "anchorPoint": {
-        "x": 5.135327842084256,
-        "y": 3.1492434413440256
+        "x": 3.937173195124537,
+        "y": 3.419807487379876
       },
       "prevControl": {
-        "x": 4.878274501374249,
-        "y": 3.1492434413440256
+        "x": 3.68011985441453,
+        "y": 3.419807487379876
       },
       "nextControl": null,
-      "holonomicAngle": 90.0,
+      "holonomicAngle": 180.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "AutoBalance"
+          "AutoBalanceStraight"
         ],
         "executionBehavior": "sequential",
         "waitBehavior": "none",
@@ -129,7 +129,7 @@
   ],
   "markers": [
     {
-      "position": 0.05,
+      "position": 0.01,
       "names": [
         "setStandbyPosition"
       ]
@@ -141,13 +141,13 @@
       ]
     },
     {
-      "position": 0.9,
+      "position": 0.93,
       "names": [
         "runCubeIntake3"
       ]
     },
     {
-      "position": 1.3,
+      "position": 1.5188920454545443,
       "names": [
         "setStandbyPosition"
       ]

@@ -87,36 +87,43 @@ public class RobotContainer {
     private final SwerveAutoBuilder autoBuilder;
 
     private static Map<String, Command> eventMap;
-    private final PathPlannerTrajectory autoBalance = PathPlanner.loadPath("Autobalance", 1, 3);
-
-    private final PathPlannerTrajectory coneCubeBalance =
-            PathPlanner.loadPath("coneCubeBalance", 3.5, 1.5);
-
-    private final PathPlannerTrajectory coneCubeDeposit =
-            PathPlanner.loadPath("coneCubeDeposit", 3, 1);
+    private final PathPlannerTrajectory autoBalance = 
+            PathPlanner.loadPath("Autobalance", 1, 3);
 
     private final PathPlannerTrajectory coneMobilBalance =
-            PathPlanner.loadPath("coneMobilityBalance", 2.0, 1.0);
+            PathPlanner.loadPath("coneMobilityBalance", 2.0, 1.25);
 
-    private final PathPlannerTrajectory threePieceAuto =
-            PathPlanner.loadPath("threePieceAuto", 3.5, 3.0);
-
-    private final PathPlannerTrajectory threePieceAutoCopy =
-            PathPlanner.loadPath("threePieceAuto Copy", 3.5, 2.5);
+    private final PathPlannerTrajectory cubeMobilBalance =
+            PathPlanner.loadPath("cubeMobilityBalance", 2.0, 1.25);
 
     private final PathPlannerTrajectory twoPlusBalance =
             PathPlanner.loadPath("score2Balance", 3.5, 2.5);
 
-    private final PathPlannerTrajectory bump2Piece =
-            PathPlanner.loadPath("bump2PieceAuto Copy", 3.5, 2.5);
+    private final PathPlannerTrajectory twoPlusPickup =
+            PathPlanner.loadPath("score2Pickup1", 3.5, 2.25);
 
-    private final PathPlannerTrajectory bump3Piece = PathPlanner.loadPath("bump3PieceAuto", 3.5, 2.5);
+    private final PathPlannerTrajectory threePieceAuto =
+            PathPlanner.loadPath("threePieceAuto", 3.5, 3.0);
+
+    private final PathPlannerTrajectory bump2Piece =
+            PathPlanner.loadPath("bump2PieceAuto", 3.5, 2.5);
+
+    private final PathPlannerTrajectory bump3Piece = 
+            PathPlanner.loadPath("bump3PieceAuto", 3.5, 2.5);
 
     private final PathPlannerTrajectory bump3PieceAlt =
             PathPlanner.loadPath("bump3PieceAutoAlt", 2.0, 2.5);
 
-    private final PathPlannerTrajectory twoPlusPickup =
-            PathPlanner.loadPath("score2Pickup1", 3.5, 2.25);
+/** Old Auto Paths
+ * private final PathPlannerTrajectory coneCubeDeposit =
+            PathPlanner.loadPath("coneCubeDeposit", 3, 1);
+
+   private final PathPlannerTrajectory threePieceAutoCopy =
+            PathPlanner.loadPath("threePieceAuto Copy", 3.5, 2.5);
+   
+   private final PathPlannerTrajectory coneCubeBalance =
+            PathPlanner.loadPath("coneCubeBalance", 3.5, 1.5);
+ */
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -490,19 +497,22 @@ public class RobotContainer {
 
     private void configureSmartDashboard() {
         // Autonomous Mode Chooser
-        autoChooser.addDefaultOption("Cone PCube Balance", coneCubeBalance);
-        autoChooser.addOption("Auto Balance", autoBalance);
-        autoChooser.addOption("L3 Cone+Cube", coneCubeDeposit);
-        autoChooser.addOption("Cone Mobility Balance", coneMobilBalance);
-        autoChooser.addOption("3 Game Piece Auto", threePieceAuto);
-        autoChooser.addOption("3 Game Piece Auto Copy", threePieceAutoCopy);
-        autoChooser.addOption("Score 2 Plus Balance", twoPlusBalance);
-        autoChooser.addOption("Bump 2 Piece", bump2Piece);
-        autoChooser.addOption("Bump 3 Piece", bump3Piece);
-        autoChooser.addOption("Bump 3 Piece Alt", bump3PieceAlt);
-        autoChooser.addOption("Score 2 Plus Field", twoPlusPickup);
+        autoChooser.addOption("Clean: Score 2 Plus Balance", twoPlusBalance);
+        autoChooser.addOption("Clean: 3 Game Piece Auto", threePieceAuto);
+        autoChooser.addOption("Clean: Score 2 Plus Field", twoPlusPickup);
+
+        autoChooser.addOption("Center: Cube Balance", autoBalance);
+        autoChooser.addOption("Center: Cone Mobility Balance", coneMobilBalance);
+        autoChooser.addOption("Center: Cube Mobility Balance", cubeMobilBalance);
+ 
+        autoChooser.addOption("Bump: 2 Piece", bump2Piece);
+        autoChooser.addOption("Bump: 3 Piece", bump3Piece);
+        autoChooser.addOption("Bump: 3 Piece Alt", bump3PieceAlt);
+
+        //autoChooser.addDefaultOption("Cone PickupCube Balance", coneCubeBalance);
         // autoChooser.addOption("Back and Forth", backnForth);
         // autoChooser.addOption("S curve", sCurve);
+        //autoChooser.addOption("L3 Cone+Cube", coneCubeDeposit);   
     }
 
     /** Ran once the robot is put in disabled */
