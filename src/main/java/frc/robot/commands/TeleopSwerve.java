@@ -26,11 +26,9 @@ public class TeleopSwerve extends CommandBase {
 
     private SlewRateLimiter translationLimiter;
     private SlewRateLimiter strafeLimiter;
-
-    private double currentLineUpPosition;
     // private SlewRateLimiter rotationLimiter = new SlewRateLimiter(3.0);
 
-    private PIDController translationController;
+    private PIDController strafeController;
     private PIDController rotationController;
 
     private LEDMode previousMode;
@@ -78,14 +76,12 @@ public class TeleopSwerve extends CommandBase {
 
     @Override
     public void initialize() {
-        currentLineUpPosition = Integer.MAX_VALUE;
-
         translationLimiter = new SlewRateLimiter(3.0);
         strafeLimiter = new SlewRateLimiter(3.0);
 
-        translationController =
+        strafeController =
                 new PIDController(Constants.Autonomous.kPGridLineUp, Constants.Autonomous.kIGridLineUp, 0);
-        translationController.setTolerance(Constants.Autonomous.gridLineUpTolerance);
+        strafeController.setTolerance(Constants.Autonomous.gridLineUpTolerance);
 
         rotationController = new PIDController(Constants.Autonomous.kPThetaGridLineUp, 0, 0);
         rotationController.setTolerance(Constants.Autonomous.thetaGridLineUpTolerance);
@@ -132,19 +128,16 @@ public class TeleopSwerve extends CommandBase {
         }
 
         /* Get Values, Deadband */
-        double translationVal;
+        double translationVal =
+                MathUtil.applyDeadband(translationSup.getAsDouble(), SwerveConstants.stickDeadband);
         double rotationVal;
-        double strafeVal =
-                strafeLimiter.calculate(
-                        MathUtil.applyDeadband(strafeSup.getAsDouble(), SwerveConstants.stickDeadband));
+        double strafeVal;
 
         if (gridLineUp.getAsBoolean()) {
-            if (currentLineUpPosition == Integer.MAX_VALUE)
-                currentLineUpPosition = s_Swerve.getPose().getX();
-
-            translationVal =
+            strafeVal =
                     MathUtil.clamp(
-                            translationController.calculate(s_Swerve.getPose().getX(), currentLineUpPosition),
+                            strafeController.calculate(
+                                    s_Swerve.getPose().getY(), Constants.Autonomous.gridLineUpStrafePosition),
                             -1,
                             1);
 
@@ -155,26 +148,25 @@ public class TeleopSwerve extends CommandBase {
                             -1,
                             1);
 
-            if (translationController.atSetpoint()) translationVal = 0;
+            if (strafeController.atSetpoint()) strafeVal = 0;
 
-            if (translationController.atSetpoint() && rotationController.atSetpoint()) {
+            if (strafeController.atSetpoint() && rotationController.atSetpoint()) {
                 s_LEDs.setLEDMode(LEDMode.GREENFLASH);
             } else {
                 s_LEDs.setLEDMode(LEDMode.REDFLASH);
             }
 
         } else {
-            currentLineUpPosition = Integer.MAX_VALUE;
             if (s_LEDs.getLEDMode() != previousMode) s_LEDs.setLEDMode(previousMode);
 
             rotationVal =
                     MathUtil.applyDeadband(rotationSup.getAsDouble(), SwerveConstants.stickDeadband);
-            translationVal =
-                    MathUtil.applyDeadband(translationSup.getAsDouble(), SwerveConstants.stickDeadband);
+            strafeVal = MathUtil.applyDeadband(strafeSup.getAsDouble(), SwerveConstants.stickDeadband);
         }
 
         s_Swerve.drive(
-                new Translation2d(translationLimiter.calculate(translationVal), strafeVal)
+                new Translation2d(
+                                translationLimiter.calculate(translationVal), strafeLimiter.calculate(strafeVal))
                         .times(speedLimit),
                 rotationVal * (angularSpeedLimit),
                 !robotCentricSup.getAsBoolean(),

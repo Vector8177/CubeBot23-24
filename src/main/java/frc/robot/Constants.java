@@ -144,5 +144,6 @@ public final class Constants {
         public static final double thetaGridLineUpTolerance = 2.0;
 
         public static final double gridLineUpAngle = 180.0;
+        public static final double gridLineUpStrafePosition = 7.35;
     }
 }
