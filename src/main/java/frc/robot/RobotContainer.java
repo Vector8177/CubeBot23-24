@@ -2,6 +2,60 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+/*
+ *                         THANK YOU VECTOR!
+ * This club was one of the most incredible experiences of my entire life,
+ * I seriously can't imagine going through my high school career without
+ * having had spent all my free time coding robots. All of the amazing friends
+ * I would've never talked to otherwise, all of the learning I've done, and
+ * all the fun I had was so important to me so I want to say thank you to everyone
+ * on the team.
+ * If you're from the future reading this, hi, I hope you're having
+ * as much fun as I did and I hope you guys are having a good competition season.
+ * If you want some advice there's really only one thing I can tell you, savour
+ * your time spent. I wasn't super good at this for different reasons but when
+ * you're at comp just breathe in for a second and observe your surroundings, I
+ * promise it'll be worth it.
+ * It's really sad to be going as a senior, I wish I could've hung out with these
+ * people forever. It's also sad that I never really got to see my full programming
+ * potential though I hope people will look back at this code and be able to learn
+ * from it for years to come.
+ *
+ * Here's a few thank yous to people I think have made my experience so memorable:
+ * - Aakarsh Sagar
+ * - Connor Shen
+ * - Roland Wang
+ * - Connor Caudle
+ * - Mi Vo
+ * - Mason Wade
+ * - Zara Becera
+ * - Caden Wonzer, Brandon Bennoch, Wyatt Golden
+ *  (Grouped together bcuz they didn't really do much but they were fun to be around)
+ * - and Samantha Dabdub
+ *
+ * Also thank you to the amazing mentors/parents that have always been there for us:
+ * - Mr. Monroe (he just had his third child wooo!!)
+ * - Mrs. M
+ * - Mrs. Coronado
+ * - Mark Smith
+ * - David Konneker
+ * - Chris Caudle
+ * - Mrs. Chi
+ *
+ * If I didn't put u it doesnt mean I hate you I promise :)
+ * Again, thank you for everything
+ *
+ * ╭━━━┳╮╱╭╮╭╮╱╱╭┳━━━┳━━━┳╮╱╭┳╮
+ * ┃╭━╮┃┃╱┃┃┃╰╮╭╯┃╭━━┫╭━╮┃┃╱┃┃┃
+ * ┃┃╱┃┃╰━╯┃╰╮╰╯╭┫╰━━┫┃╱┃┃╰━╯┃┃
+ * ┃┃╱┃┃╭━╮┃╱╰╮╭╯┃╭━━┫╰━╯┃╭━╮┣╯
+ * ┃╰━╯┃┃╱┃┃╱╱┃┃╱┃╰━━┫╭━╮┃┃╱┃┣╮
+ * ╰━━━┻╯╱╰╯╱╱╰╯╱╰━━━┻╯╱╰┻╯╱╰┻╯
+ *
+ * - Murad Jouhari
+ * https://www.youtube.com/watch?v=8LVtTyBjyYg
+ */
+
 package frc.robot;
 
 import com.pathplanner.lib.PathPlanner;
